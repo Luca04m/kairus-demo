@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Disable the dev toolbar indicator that shows git commit info at the bottom of the screen
+  devIndicators: false,
 };
 
 export default nextConfig;

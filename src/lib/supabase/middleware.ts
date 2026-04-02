@@ -46,11 +46,10 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith(path),
   );
 
-  // Allow the root path and public paths without auth
+  // DEMO MODE: login redirect disabled — all routes accessible without auth
+  // Re-enable by removing the early return below
   if (!user && !isPublicPath && request.nextUrl.pathname !== "/") {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+    return supabaseResponse; // allow through without redirecting to login
   }
 
   return supabaseResponse;

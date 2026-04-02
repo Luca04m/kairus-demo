@@ -1,6 +1,9 @@
 "use client";
 import { Settings2, Search, SlidersHorizontal, CheckCircle2, Loader2, Circle, XCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { AGENT_TASKS_DEMO } from "@/data/mrlion";
+import { SkeletonTable, ErrorState } from "@/components/ui/LoadingSkeleton";
 
 type TarefaStatus = "em_progresso" | "concluida" | "pendente" | "falha";
 
@@ -12,14 +15,13 @@ interface Tarefa {
   resultado: string | null;
 }
 
-const AGENT_TAREFAS: Tarefa[] = [
-  { id: "AT-01", titulo: "Monitorar margem Honey Pingente", status: "em_progresso", tempo: "há 2h", resultado: "Margem -3,2% detectada" },
-  { id: "AT-02", titulo: "Gerar relatório semanal S13", status: "concluida", tempo: "há 5h", resultado: "Relatório entregue" },
-  { id: "AT-03", titulo: "Detectar chargebacks suspeitos", status: "em_progresso", tempo: "há 1h", resultado: "2 casos em análise" },
-  { id: "AT-04", titulo: "Atualizar DRE Mar/2026", status: "pendente", tempo: "há 30min", resultado: null },
-  { id: "AT-05", titulo: "Calcular CMV por produto", status: "concluida", tempo: "há 1d", resultado: "8 produtos analisados" },
-  { id: "AT-06", titulo: "Revisar precificação Honey", status: "falha", tempo: "há 3h", resultado: "Dados insuficientes" },
-];
+const AGENT_TAREFAS_MOCK: Tarefa[] = AGENT_TASKS_DEMO.map((t) => ({
+  id: t.id,
+  titulo: t.titulo,
+  status: t.status as TarefaStatus,
+  tempo: t.tempo,
+  resultado: t.resultado ?? null,
+}));
 
 const STATUS_CONFIG: Record<TarefaStatus, {
   label: string;
@@ -61,8 +63,43 @@ const STATUS_CONFIG: Record<TarefaStatus, {
 const ALL_STATUSES: TarefaStatus[] = ["em_progresso", "concluida", "pendente", "falha"];
 
 export function AgentTasksContent() {
+  const skip = !isSupabaseConfigured();
+
+  const fetchAgentTasks = useCallback(async () => {
+    const res = await fetch("/api/agents?scope=tasks");
+    if (!res.ok) throw new Error("Failed to fetch agent tasks");
+    const json = await res.json();
+    return (json.data ?? json ?? []) as Tarefa[];
+  }, []);
+
+  const { data: AGENT_TAREFAS, loading, error, refetch } = useSupabaseQuery({
+    queryFn: fetchAgentTasks,
+    mockData: AGENT_TAREFAS_MOCK,
+    skip,
+  });
+
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<TarefaStatus | null>(null);
+
+  if (loading) {
+    return (
+      <div className="p-6">
+        <div className="mb-6">
+          <div className="h-6 w-32 animate-pulse rounded bg-[rgba(255,255,255,0.06)] mb-2" />
+          <div className="h-4 w-64 animate-pulse rounded bg-[rgba(255,255,255,0.06)]" />
+        </div>
+        <SkeletonTable rows={6} cols={6} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6">
+        <ErrorState message="Erro ao carregar tarefas do agente." onRetry={refetch} />
+      </div>
+    );
+  }
 
   const filtered = AGENT_TAREFAS.filter((t) => {
     const matchSearch = t.titulo.toLowerCase().includes(search.toLowerCase());

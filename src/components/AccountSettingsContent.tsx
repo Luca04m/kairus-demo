@@ -21,7 +21,7 @@ export function AccountSettingsContent() {
               <span className="text-xl font-bold text-white">CM</span>
             </div>
             <div className="flex flex-col gap-1.5">
-              <p className="text-sm text-[rgba(255,255,255,0.55)]">Carlos Moreno</p>
+              <p className="text-sm text-[rgba(255,255,255,0.55)]">Luca Moreno</p>
               <div className="flex items-center gap-2">
                 <button className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-xs text-[rgba(255,255,255,0.55)] hover:bg-[rgba(255,255,255,0.06)] transition-colors">
                   <Upload size={13} />
@@ -59,7 +59,7 @@ export function AccountSettingsContent() {
         <div className="mb-2">
           <label className="block text-sm font-medium text-white mb-1.5">Nome completo</label>
           <input
-            defaultValue="Carlos Moreno"
+            defaultValue="Luca Moreno"
             className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none transition-all focus:border-[rgba(99,102,241,0.6)] focus:bg-[rgba(99,102,241,0.06)] focus:ring-1 focus:ring-[rgba(99,102,241,0.2)]"
           />
         </div>

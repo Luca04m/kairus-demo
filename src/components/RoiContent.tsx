@@ -1,10 +1,13 @@
 "use client";
+import { useCallback } from "react";
 import { DollarSign, TrendingUp, Target, CheckCircle2, BarChart2 } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend, ReferenceLine, ReferenceDot,
 } from "recharts";
 import { ROI_DADOS, ROI_TIMELINE, ROI_CATEGORIAS } from "@/data/mrlion";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { KpiGridSkeleton, SkeletonChart, SkeletonTable } from "@/components/ui/LoadingSkeleton";
 
 const CHART_THEME = {
   grid: { stroke: "rgba(255,255,255,0.06)", strokeDasharray: "3 3" },
@@ -20,12 +23,52 @@ const CHART_THEME = {
   },
 };
 
-const TOTAL_VALOR = ROI_CATEGORIAS.reduce((sum, cat) => {
-  const n = parseInt(cat.valor.replace(/\D/g, ""), 10);
-  return sum + (isNaN(n) ? 0 : n);
-}, 0);
-
 export function RoiContent() {
+  const skip = !isSupabaseConfigured();
+
+  const fetchRoiData = useCallback(async () => {
+    const res = await fetch("/api/financial?type=roi");
+    if (!res.ok) throw new Error("Failed to fetch ROI data");
+    return res.json();
+  }, []);
+
+  const fetchRoiTimeline = useCallback(async () => {
+    const res = await fetch("/api/financial?type=roi-timeline");
+    if (!res.ok) throw new Error("Failed to fetch ROI timeline");
+    const json = await res.json();
+    return json.timeline ?? json.data ?? [];
+  }, []);
+
+  const fetchRoiCategories = useCallback(async () => {
+    const res = await fetch("/api/financial?type=roi-categories");
+    if (!res.ok) throw new Error("Failed to fetch ROI categories");
+    const json = await res.json();
+    return json.categorias ?? json.data ?? [];
+  }, []);
+
+  const { data: roiDados, loading: loadingRoi } = useSupabaseQuery({
+    queryFn: fetchRoiData,
+    mockData: ROI_DADOS,
+    skip,
+  });
+
+  const { data: roiTimeline, loading: loadingTimeline } = useSupabaseQuery({
+    queryFn: fetchRoiTimeline,
+    mockData: ROI_TIMELINE,
+    skip,
+  });
+
+  const { data: roiCategorias, loading: loadingCategories } = useSupabaseQuery({
+    queryFn: fetchRoiCategories,
+    mockData: ROI_CATEGORIAS,
+    skip,
+  });
+
+  const TOTAL_VALOR = roiCategorias.reduce((sum: number, cat: typeof ROI_CATEGORIAS[number]) => {
+    const n = parseInt(cat.valor.replace(/\D/g, ""), 10);
+    return sum + (isNaN(n) ? 0 : n);
+  }, 0);
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -37,6 +80,7 @@ export function RoiContent() {
       </div>
 
       {/* Hero KPI cards */}
+      {loadingRoi ? <KpiGridSkeleton count={3} /> : (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Investimento Acumulado */}
         <div className="glass-card rounded-xl border border-red-500/20 bg-gradient-to-br from-red-500/10 via-amber-500/5 to-transparent p-6 relative overflow-hidden">
@@ -51,7 +95,7 @@ export function RoiContent() {
               </p>
             </div>
             <p className="text-3xl font-bold text-white tabular-nums">
-              R$ {ROI_DADOS.investimentoTotal.toLocaleString("pt-BR")}
+              R$ {roiDados.investimentoTotal.toLocaleString("pt-BR")}
             </p>
             <p className="text-xs text-[rgba(255,255,255,0.35)] mt-1.5">6 meses · setup + mensalidade</p>
           </div>
@@ -70,7 +114,7 @@ export function RoiContent() {
               </p>
             </div>
             <p className="text-3xl font-bold text-green-400 tabular-nums">
-              R$ {ROI_DADOS.valorGerado.toLocaleString("pt-BR")}
+              R$ {roiDados.valorGerado.toLocaleString("pt-BR")}
             </p>
             <p className="text-xs text-[rgba(255,255,255,0.35)] mt-1.5">receita + economia operacional</p>
           </div>
@@ -91,11 +135,12 @@ export function RoiContent() {
                 ROI
               </p>
             </div>
-            <p className="text-4xl font-bold text-green-300 tabular-nums">{ROI_DADOS.roiPercentual}</p>
+            <p className="text-4xl font-bold text-green-300 tabular-nums">{roiDados.roiPercentual}</p>
             <p className="text-xs text-green-400/70 mt-1.5">em 6 meses de operação</p>
           </div>
         </div>
       </div>
+      )}
 
       {/* Summary insight */}
       <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] border-l-4 border-l-green-500/70 px-5 py-4 flex items-center gap-3">
@@ -106,13 +151,14 @@ export function RoiContent() {
       </div>
 
       {/* ROI Timeline chart */}
+      {loadingTimeline ? <SkeletonChart height={320} /> : (
       <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] p-5">
         <div className="flex items-center gap-2 mb-4">
           <Target size={14} className="text-[rgba(255,255,255,0.4)]" />
           <span className="text-sm font-medium text-white">Evolução do ROI</span>
         </div>
         <ResponsiveContainer width="100%" height={320}>
-          <AreaChart data={ROI_TIMELINE} margin={{ top: 8, right: 4, bottom: 0, left: 0 }}>
+          <AreaChart data={roiTimeline} margin={{ top: 8, right: 4, bottom: 0, left: 0 }}>
             <defs>
               <linearGradient id="investGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#ef4444" stopOpacity={0.3} />
@@ -195,8 +241,14 @@ export function RoiContent() {
           </AreaChart>
         </ResponsiveContainer>
       </div>
+      )}
 
       {/* Category breakdown table */}
+      {loadingCategories ? (
+        <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] p-5">
+          <SkeletonTable rows={5} cols={4} />
+        </div>
+      ) : (
       <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] p-5">
         <div className="flex items-center gap-2 mb-4">
           <BarChart2 size={14} className="text-[rgba(255,255,255,0.4)]" />
@@ -212,7 +264,7 @@ export function RoiContent() {
             </tr>
           </thead>
           <tbody>
-            {ROI_CATEGORIAS.map((cat) => {
+            {roiCategorias.map((cat: typeof ROI_CATEGORIAS[number]) => {
               const raw = parseInt(cat.valor.replace(/\D/g, ""), 10);
               const pct = TOTAL_VALOR > 0 ? Math.round((raw / TOTAL_VALOR) * 100) : 0;
               return (
@@ -267,6 +319,7 @@ export function RoiContent() {
           </tfoot>
         </table>
       </div>
+      )}
     </div>
   );
 }

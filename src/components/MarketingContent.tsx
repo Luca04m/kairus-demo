@@ -1,4 +1,5 @@
 "use client";
+import { useCallback } from "react";
 import {
   Banknote, TrendingUp, Eye, MousePointer, Target,
   Calendar, Download, Megaphone, AlertTriangle,
@@ -8,6 +9,8 @@ import {
   ResponsiveContainer, Legend,
 } from "recharts";
 import { MARKETING_KPIS, TRAFEGO_MENSAL, CAMPANHAS_META } from "@/data/mrlion";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { KpiGridSkeleton, SkeletonChart, SkeletonTable } from "@/components/ui/LoadingSkeleton";
 
 const CHART_THEME = {
   grid: { stroke: "rgba(255,255,255,0.06)", strokeDasharray: "3 3" },
@@ -76,6 +79,47 @@ function CustomTrafficTooltip({ active, payload, label }: CustomTooltipProps) {
 }
 
 export function MarketingContent() {
+  const skip = !isSupabaseConfigured();
+
+  const fetchMarketingKpis = useCallback(async () => {
+    const res = await fetch("/api/campaigns?type=kpis");
+    if (!res.ok) throw new Error("Failed to fetch marketing KPIs");
+    const json = await res.json();
+    return json.kpis ?? json.data ?? [];
+  }, []);
+
+  const fetchTraffic = useCallback(async () => {
+    const res = await fetch("/api/campaigns?type=traffic");
+    if (!res.ok) throw new Error("Failed to fetch traffic");
+    const json = await res.json();
+    return json.traffic ?? json.data ?? [];
+  }, []);
+
+  const fetchCampaigns = useCallback(async () => {
+    const res = await fetch("/api/campaigns?type=meta");
+    if (!res.ok) throw new Error("Failed to fetch campaigns");
+    const json = await res.json();
+    return json.campaigns ?? json.data ?? [];
+  }, []);
+
+  const { data: marketingKpis, loading: loadingKpis } = useSupabaseQuery({
+    queryFn: fetchMarketingKpis,
+    mockData: MARKETING_KPIS,
+    skip,
+  });
+
+  const { data: trafegoMensal, loading: loadingTraffic } = useSupabaseQuery({
+    queryFn: fetchTraffic,
+    mockData: TRAFEGO_MENSAL,
+    skip,
+  });
+
+  const { data: campanhasMeta, loading: loadingCampaigns } = useSupabaseQuery({
+    queryFn: fetchCampaigns,
+    mockData: CAMPANHAS_META,
+    skip,
+  });
+
   return (
     <div className="p-6 space-y-6">
       <div>
@@ -111,8 +155,9 @@ export function MarketingContent() {
       </div>
 
       {/* KPI cards */}
+      {loadingKpis ? <KpiGridSkeleton count={5} /> : (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {MARKETING_KPIS.map((kpi) => {
+        {marketingKpis.map((kpi) => {
           const Icon = ICON_MAP[kpi.icon];
           const isRoas = kpi.label === "ROAS" || kpi.valor === "—";
           const isWarning = isRoas && kpi.valor === "—";
@@ -153,6 +198,7 @@ export function MarketingContent() {
           );
         })}
       </div>
+      )}
 
       {/* Insight callout */}
       <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] border-l-4 border-l-amber-500/70 px-5 py-4 flex items-start gap-3">
@@ -165,13 +211,14 @@ export function MarketingContent() {
 
       <div className="grid grid-cols-2 gap-6">
         {/* Traffic chart */}
+        {loadingTraffic ? <SkeletonChart height={280} /> : (
         <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5">
           <div className="flex items-center gap-2 mb-4">
             <Eye size={14} className="text-[rgba(255,255,255,0.4)]" />
             <span className="text-sm font-medium text-white">Trafego Mensal</span>
           </div>
           <ResponsiveContainer width="100%" height={280}>
-            <AreaChart data={TRAFEGO_MENSAL} style={{ cursor: "crosshair" }}>
+            <AreaChart data={trafegoMensal} style={{ cursor: "crosshair" }}>
               <defs>
                 <linearGradient id="gradSessoes" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#6366f1" stopOpacity={0.35} />
@@ -234,8 +281,10 @@ export function MarketingContent() {
             </AreaChart>
           </ResponsiveContainer>
         </div>
+        )}
 
         {/* Campaigns table */}
+        {loadingCampaigns ? <SkeletonChart height={280} /> : (
         <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5">
           <div className="flex items-center gap-2 mb-4">
             <Megaphone size={14} className="text-[rgba(255,255,255,0.4)]" />
@@ -255,7 +304,7 @@ export function MarketingContent() {
               </tr>
             </thead>
             <tbody>
-              {CAMPANHAS_META.map((c, idx) => (
+              {campanhasMeta.map((c, idx) => (
                 <tr
                   key={c.mes}
                   className={`border-b border-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.05)] transition-colors ${
@@ -275,6 +324,7 @@ export function MarketingContent() {
             </tbody>
           </table>
         </div>
+        )}
       </div>
     </div>
   );

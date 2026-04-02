@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   Bell,
   Brain,
@@ -10,6 +10,30 @@ import {
   CheckCircle2,
   Clock,
 } from "lucide-react";
+import { isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+
+// Settings are saved to API when Supabase is configured, otherwise local-only
+function usePersistSetting(key: string, defaultValue: unknown) {
+  const configured = isSupabaseConfigured();
+
+  const save = useCallback(
+    async (value: unknown) => {
+      if (!configured) return;
+      try {
+        await fetch("/api/settings", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ key, value }),
+        });
+      } catch {
+        // Silent fail -- local state remains
+      }
+    },
+    [key, configured],
+  );
+
+  return { save };
+}
 
 // ─── Toggle Component ───────────────────────────────────────────────────────
 

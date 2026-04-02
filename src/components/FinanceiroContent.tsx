@@ -1,4 +1,5 @@
 "use client";
+import { useCallback } from "react";
 import {
   DollarSign, ShoppingCart, TrendingUp, Package, Truck,
   Calendar, Download,
@@ -8,6 +9,8 @@ import {
   ResponsiveContainer, ReferenceLine,
 } from "recharts";
 import { FINANCEIRO_KPIS, VENDAS_MENSAIS, TOP_PRODUTOS } from "@/data/mrlion";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { KpiGridSkeleton, SkeletonChart, SkeletonTable } from "@/components/ui/LoadingSkeleton";
 
 const BRAND = "#6366f1";
 const BRAND_DIM = "rgba(99,102,241,0.18)";
@@ -57,6 +60,47 @@ function CustomTooltip({ active, payload, label }: {
 }
 
 export function FinanceiroContent() {
+  const skip = !isSupabaseConfigured();
+
+  const fetchFinancialKpis = useCallback(async () => {
+    const res = await fetch("/api/financial?type=kpis");
+    if (!res.ok) throw new Error("Failed to fetch financial KPIs");
+    const json = await res.json();
+    return json.kpis ?? json.data ?? [];
+  }, []);
+
+  const fetchSales = useCallback(async () => {
+    const res = await fetch("/api/financial?type=sales");
+    if (!res.ok) throw new Error("Failed to fetch sales");
+    const json = await res.json();
+    return json.sales ?? json.data ?? [];
+  }, []);
+
+  const fetchProducts = useCallback(async () => {
+    const res = await fetch("/api/financial?type=products");
+    if (!res.ok) throw new Error("Failed to fetch products");
+    const json = await res.json();
+    return json.products ?? json.data ?? [];
+  }, []);
+
+  const { data: finKpis, loading: loadingKpis } = useSupabaseQuery({
+    queryFn: fetchFinancialKpis,
+    mockData: FINANCEIRO_KPIS,
+    skip,
+  });
+
+  const { data: vendasMensais, loading: loadingSales } = useSupabaseQuery({
+    queryFn: fetchSales,
+    mockData: VENDAS_MENSAIS,
+    skip,
+  });
+
+  const { data: topProdutos, loading: loadingProducts } = useSupabaseQuery({
+    queryFn: fetchProducts,
+    mockData: TOP_PRODUTOS,
+    skip,
+  });
+
   return (
     <div className="p-6 space-y-6">
       {/* Page header */}
@@ -110,8 +154,9 @@ export function FinanceiroContent() {
       </div>
 
       {/* KPI cards — responsive grid */}
+      {loadingKpis ? <KpiGridSkeleton count={5} /> : (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-        {FINANCEIRO_KPIS.map((kpi) => {
+        {finKpis.map((kpi) => {
           const Icon = ICON_MAP[kpi.icon];
           const accent = KPI_ACCENT[kpi.label] ?? {
             icon: "text-[rgba(255,255,255,0.4)]",
@@ -135,17 +180,19 @@ export function FinanceiroContent() {
           );
         })}
       </div>
+      )}
 
       {/* Chart + Table */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Revenue chart */}
+        {loadingSales ? <SkeletonChart height={280} /> : (
         <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
           <div className="flex items-center gap-2 mb-5">
             <TrendingUp size={14} className="text-violet-400" />
             <span className="text-sm font-medium text-white">Receita Mensal</span>
           </div>
           <ResponsiveContainer width="100%" height={280}>
-            <AreaChart data={VENDAS_MENSAIS} margin={{ top: 8, right: 4, bottom: 0, left: 0 }}>
+            <AreaChart data={vendasMensais} margin={{ top: 8, right: 4, bottom: 0, left: 0 }}>
               <defs>
                 <linearGradient id="receitaGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor={BRAND} stopOpacity={0.35} />
@@ -196,8 +243,10 @@ export function FinanceiroContent() {
             </AreaChart>
           </ResponsiveContainer>
         </div>
+        )}
 
         {/* Products table */}
+        {loadingProducts ? <SkeletonChart height={280} /> : (
         <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
           <div className="flex items-center gap-2 mb-5">
             <Package size={14} className="text-violet-400" />
@@ -214,7 +263,7 @@ export function FinanceiroContent() {
               </tr>
             </thead>
             <tbody>
-              {TOP_PRODUTOS.map((p, idx) => (
+              {topProdutos.map((p, idx) => (
                 <tr
                   key={p.nome}
                   className={`border-b border-[rgba(255,255,255,0.05)] transition-colors hover:bg-[rgba(99,102,241,0.07)] ${
@@ -247,6 +296,7 @@ export function FinanceiroContent() {
             </tbody>
           </table>
         </div>
+        )}
       </div>
     </div>
   );

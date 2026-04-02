@@ -1,8 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Tag, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { SkeletonPulse, ErrorState } from "@/components/ui/LoadingSkeleton";
 
-const templates = [
+const TEMPLATES_MOCK = [
   {
     category: "Marketing",
     name: "Agente de Personalização Outbound B2B",
@@ -101,12 +103,27 @@ function InitialsIcon({ name, color }: { name: string; color: string }) {
 }
 
 export function AgentTemplatesContent() {
+  const skip = !isSupabaseConfigured();
+
+  const fetchTemplates = useCallback(async () => {
+    const res = await fetch("/api/agents?type=template");
+    if (!res.ok) throw new Error("Failed to fetch templates");
+    const json = await res.json();
+    return json.data ?? json ?? [];
+  }, []);
+
+  const { data: templates, loading, error, refetch } = useSupabaseQuery({
+    queryFn: fetchTemplates,
+    mockData: TEMPLATES_MOCK,
+    skip,
+  });
+
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("Todas");
   const [showCategoryMenu, setShowCategoryMenu] = useState(false);
   const [page, setPage] = useState(1);
 
-  const categories = ["Todas", ...Array.from(new Set(templates.map((t) => t.category)))];
+  const categories = ["Todas", ...Array.from(new Set(templates.map((t: { category: string }) => t.category)))];
 
   const filtered = templates.filter((t) => {
     const matchesSearch = t.name.toLowerCase().includes(search.toLowerCase());
@@ -127,6 +144,34 @@ export function AgentTemplatesContent() {
   function handleSearch(val: string) {
     setSearch(val);
     setPage(1);
+  }
+
+  if (loading) {
+    return (
+      <div className="p-6">
+        <SkeletonPulse className="h-6 w-52 mb-2" />
+        <SkeletonPulse className="h-4 w-80 mb-6" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5">
+              <SkeletonPulse className="h-4 w-24 mb-3" />
+              <SkeletonPulse className="h-5 w-40 mb-2" />
+              <SkeletonPulse className="h-3 w-full mb-1" />
+              <SkeletonPulse className="h-3 w-3/4 mb-4" />
+              <SkeletonPulse className="h-8 w-28" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6">
+        <ErrorState message="Erro ao carregar modelos de agente." onRetry={refetch} />
+      </div>
+    );
   }
 
   return (

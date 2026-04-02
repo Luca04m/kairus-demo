@@ -4,10 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   AlignJustify, BarChart2, ChevronDown, ChevronRight, ChevronsUpDown,
-  DollarSign, FileText, Inbox, LayoutDashboard, LayoutGrid, Link2,
-  ListTodo, Megaphone, MessageCircle, MessageSquare, Settings, Target,
-  Users, Workflow,
+  DollarSign, FileText, Globe, Headphones, Inbox, LayoutDashboard, LayoutGrid,
+  Link2, ListTodo, LogOut, Map, Megaphone, MessageCircle, MessageSquare,
+  Settings, Target, Users, Workflow,
 } from "lucide-react";
+import { useAuth } from "@/providers/AuthProvider";
 
 const AGENT_ID = "demo-agent";
 
@@ -109,14 +110,22 @@ interface SidebarContentProps {
 }
 
 function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarContentProps) {
+  const { user, signOut } = useAuth();
+
+  const displayName = user?.user_metadata?.full_name ?? user?.email?.split("@")[0] ?? "Luca Moreno";
+  const initials = displayName
+    .split(" ")
+    .slice(0, 2)
+    .map((w: string) => w[0]?.toUpperCase() ?? "")
+    .join("");
+
   return (
     <div className="flex h-full flex-col">
       {/* Top — User avatar */}
       <div className="pl-7 pt-5">
         <div className="flex items-center gap-2">
-          <Image src="/images/sphere.webp" alt="Account avatar" width={16} height={16} className="rounded-full" />
           <button className="flex items-center gap-1 text-sm text-white transition-opacity hover:opacity-80">
-            <span>Carlos</span>
+            <span>{displayName}</span>
             <ChevronDown size={14} />
           </button>
         </div>
@@ -125,10 +134,7 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
       {/* Beam section */}
       <div className="flex flex-col gap-1 px-3 py-2">
         {navItem("/", <><Image src="/images/sphere.webp" alt="" width={16} height={16} className="rounded-full" />Kairus AI</>)}
-        {navItem("/inbox", <><Inbox size={16} />Caixa de entrada</>)}
-        {navItem("/tasks", <><ListTodo size={16} />Tarefas</>)}
         {navItem("/agent-templates", <><LayoutGrid size={16} />Modelos de agente</>)}
-        {navItem("/integrations", <><Link2 size={16} />Integrações</>)}
         {navItem("/views", <><AlignJustify size={16} />Visualizações</>)}
       </div>
 
@@ -167,19 +173,47 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
         )}
       </div>
 
-      {/* Gradient fade separator before settings */}
+      {/* Gradient fade separator */}
       <div className="mx-3 my-2 h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.12)] to-transparent" />
 
-      {/* Mr. Lion section */}
+      {/* Principal section */}
       <div className="px-3">
-        <p className="px-3 py-1 text-xs font-medium text-[rgba(255,255,255,0.4)]">Mr. Lion</p>
+        <p className="px-3 py-1 text-xs font-medium text-[rgba(255,255,255,0.4)]">Principal</p>
         <div className="flex flex-col gap-1">
           {navItem("/dashboard", <><LayoutDashboard size={16} />Dashboard</>, 3)}
+          {navItem("/world", <><Globe size={16} />World</>)}
           {navItem("/equipe", <><Users size={16} />Minha Equipe</>)}
-          {navItem("/financeiro", <><DollarSign size={16} />Financeiro</>)}
+          {navItem("/sales-room", <><Headphones size={16} />Sales Room</>)}
+        </div>
+      </div>
+
+      {/* Produto section */}
+      <div className="px-3 mt-2">
+        <p className="px-3 py-1 text-xs font-medium text-[rgba(255,255,255,0.4)]">Produto</p>
+        <div className="flex flex-col gap-1">
+          {navItem("/roadmap", <><Map size={16} />Roadmap</>)}
+          {navItem("/tasks", <><ListTodo size={16} />Tarefas</>)}
           {navItem("/marketing", <><Megaphone size={16} />Marketing</>)}
-          {navItem("/relatorios", <><FileText size={16} />Relatórios</>)}
+        </div>
+      </div>
+
+      {/* Financeiro section */}
+      <div className="px-3 mt-2">
+        <p className="px-3 py-1 text-xs font-medium text-[rgba(255,255,255,0.4)]">Financeiro</p>
+        <div className="flex flex-col gap-1">
+          {navItem("/financeiro", <><DollarSign size={16} />Financeiro</>)}
           {navItem("/roi", <><Target size={16} />ROI / Impacto</>)}
+          {navItem("/relatorios", <><FileText size={16} />Relatórios</>)}
+        </div>
+      </div>
+
+      {/* Sistema section */}
+      <div className="px-3 mt-2">
+        <p className="px-3 py-1 text-xs font-medium text-[rgba(255,255,255,0.4)]">Sistema</p>
+        <div className="flex flex-col gap-1">
+          {navItem("/configuracoes", <><Settings size={16} />Configurações</>)}
+          {navItem("/integrations", <><Link2 size={16} />Integrações</>)}
+          {navItem("/inbox", <><Inbox size={16} />Caixa de entrada</>)}
         </div>
       </div>
 
@@ -195,7 +229,6 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
 
       {/* Bottom — Settings + Profile */}
       <div className="flex flex-col gap-1 border-t border-[rgba(255,255,255,0.08)] px-3 py-2">
-        {navItem("/configuracoes", <><Settings size={16} />Configurações</>)}
         <a
           href="#"
           className="flex items-center gap-2 rounded-[10px] px-4 py-2 text-sm text-[rgba(255,255,255,0.4)] transition-all duration-150 hover:bg-[rgba(255,255,255,0.06)] hover:text-[rgba(255,255,255,0.7)]"
@@ -209,11 +242,20 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
           className="flex w-full items-center gap-2 rounded-[10px] px-4 py-2 text-sm text-white transition-all duration-150 hover:bg-[rgba(255,255,255,0.06)]"
         >
           <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(255,255,255,0.12)] text-[10px] font-bold text-white">
-            CM
+            {initials || "CM"}
           </span>
-          <span className="flex-1 text-left">Carlos Moreno</span>
+          <span className="flex-1 text-left">{displayName}</span>
           <ChevronsUpDown size={14} color="rgba(255,255,255,0.4)" />
         </Link>
+        {user && (
+          <button
+            onClick={signOut}
+            className="flex items-center gap-2 rounded-[10px] px-4 py-2 text-sm text-[rgba(255,255,255,0.4)] transition-all duration-150 hover:bg-[rgba(255,255,255,0.06)] hover:text-red-400"
+          >
+            <LogOut size={16} />
+            Sair
+          </button>
+        )}
       </div>
     </div>
   );

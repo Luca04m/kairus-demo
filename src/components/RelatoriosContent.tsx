@@ -1,7 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Search, Calendar, CalendarDays, FileText } from "lucide-react";
 import { RELATORIOS, AGENTES } from "@/data/mrlion";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { SkeletonPulse } from "@/components/ui/LoadingSkeleton";
 
 const tipoBadge: Record<string, string> = {
   Semanal: "bg-blue-500/20 text-blue-400 border border-blue-500/20",
@@ -13,15 +15,42 @@ const tipoIcon: Record<string, React.ReactNode> = {
   Mensal: <CalendarDays size={11} className="inline-block mr-1 -mt-px" />,
 };
 
-function getAgente(nome: string) {
-  return AGENTES.find((a) => a.nome === nome);
-}
-
 export function RelatoriosContent() {
   const [filtro, setFiltro] = useState("Todos");
   const [busca, setBusca] = useState("");
+  const skip = !isSupabaseConfigured();
 
-  const relatoriosFiltrados = RELATORIOS.filter((r) => {
+  const fetchReports = useCallback(async () => {
+    const res = await fetch("/api/reports");
+    if (!res.ok) throw new Error("Failed to fetch reports");
+    const json = await res.json();
+    return json.data ?? json ?? [];
+  }, []);
+
+  const fetchAgents = useCallback(async () => {
+    const res = await fetch("/api/agents");
+    if (!res.ok) throw new Error("Failed to fetch agents");
+    const json = await res.json();
+    return json.data ?? json ?? [];
+  }, []);
+
+  const { data: relatorios, loading } = useSupabaseQuery({
+    queryFn: fetchReports,
+    mockData: RELATORIOS,
+    skip,
+  });
+
+  const { data: agentesData } = useSupabaseQuery({
+    queryFn: fetchAgents,
+    mockData: AGENTES,
+    skip,
+  });
+
+  function getAgente(nome: string) {
+    return agentesData.find((a: typeof AGENTES[number]) => a.nome === nome);
+  }
+
+  const relatoriosFiltrados = relatorios.filter((r: typeof RELATORIOS[number]) => {
     const matchTipo = filtro === "Todos" || r.tipo === filtro;
     const matchBusca =
       busca === "" ||
@@ -79,7 +108,19 @@ export function RelatoriosContent() {
       </div>
 
       {/* Grid */}
-      {relatoriosFiltrados.length === 0 ? (
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5 flex flex-col gap-3">
+              <SkeletonPulse className="h-5 w-16 rounded-full" />
+              <SkeletonPulse className="h-4 w-3/4" />
+              <SkeletonPulse className="h-3 w-24" />
+              <SkeletonPulse className="h-10 w-full" />
+              <SkeletonPulse className="h-2 w-28" />
+            </div>
+          ))}
+        </div>
+      ) : relatoriosFiltrados.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] py-16 text-center">
           <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(255,255,255,0.06)]">
             <FileText size={22} className="text-[rgba(255,255,255,0.3)]" />

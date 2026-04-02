@@ -1,15 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Tag, List, Search, Settings, Unplug, CheckCircle, Clock } from "lucide-react";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { SkeletonPulse } from "@/components/ui/LoadingSkeleton";
 
-const connectedIntegrations = [
+const connectedIntegrationsMock = [
   { name: "Meta Ads", category: "Marketing", status: "connected", color: "#6366f1", lastSync: "há 2 minutos" },
   { name: "Shopify", category: "E-commerce", status: "connected", color: "#22c55e", lastSync: "há 5 minutos" },
   { name: "WhatsApp Business", category: "Communication", status: "connected", color: "#06b6d4", lastSync: "há 1 minuto" },
   { name: "Google Analytics", category: "Data Analytics", status: "pending", color: "#f59e0b", lastSync: "Aguardando sincronização" },
 ];
 
-const availableIntegrations = [
+const availableIntegrationsMock = [
   { category: "Developer Tools", name: "BrowserStack", desc: "Automatize testes de navegadores reais para garantir qualidade em múltiplas plataformas.", color: "#f97316" },
   { category: "Data Analytics", name: "Adytel", desc: "Unifique dados de anúncios e métricas de campanha em um painel centralizado.", color: "#8b5cf6" },
   { category: "Business Management", name: "Drata", desc: "Automatize conformidade e auditoria de segurança para certificações como SOC 2.", color: "#e0e0e0" },
@@ -24,7 +26,7 @@ const availableIntegrations = [
   { category: "General", name: "Zoho Sprints", desc: "Gerencie sprints e tarefas ágeis sincronizando seu time com atualizações automáticas.", color: "#f43f5e" },
 ];
 
-const allCategories = ["All", ...Array.from(new Set(availableIntegrations.map((i) => i.category)))];
+const allCategoriesMock = ["All", ...Array.from(new Set(availableIntegrationsMock.map((i) => i.category)))];
 
 function InitialCircle({ name, color }: { name: string; color: string }) {
   return (
@@ -41,8 +43,37 @@ export function IntegrationsContent() {
   const [activeTab, setActiveTab] = useState<"conexoes" | "disponiveis">("conexoes");
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const skip = !isSupabaseConfigured();
 
-  const filteredAvailable = availableIntegrations.filter((i) => {
+  const fetchConnected = useCallback(async () => {
+    const res = await fetch("/api/integrations?type=connected");
+    if (!res.ok) throw new Error("Failed to fetch integrations");
+    const json = await res.json();
+    return json.data ?? json ?? [];
+  }, []);
+
+  const fetchAvailable = useCallback(async () => {
+    const res = await fetch("/api/integrations?type=available");
+    if (!res.ok) throw new Error("Failed to fetch available integrations");
+    const json = await res.json();
+    return json.data ?? json ?? [];
+  }, []);
+
+  const { data: connectedIntegrations, loading: loadingConnected } = useSupabaseQuery({
+    queryFn: fetchConnected,
+    mockData: connectedIntegrationsMock,
+    skip,
+  });
+
+  const { data: availableIntegrations, loading: loadingAvailable } = useSupabaseQuery({
+    queryFn: fetchAvailable,
+    mockData: availableIntegrationsMock,
+    skip,
+  });
+
+  const allCategories = ["All", ...Array.from(new Set(availableIntegrations.map((i: typeof availableIntegrationsMock[number]) => i.category)))];
+
+  const filteredAvailable = availableIntegrations.filter((i: typeof availableIntegrationsMock[number]) => {
     const matchesSearch = i.name.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = activeCategory === "All" || i.category === activeCategory;
     return matchesSearch && matchesCategory;
@@ -87,9 +118,32 @@ export function IntegrationsContent() {
       </div>
 
       {/* Connected integrations tab */}
-      {activeTab === "conexoes" && (
+      {activeTab === "conexoes" && loadingConnected && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {connectedIntegrations.map((i) => (
+          {Array.from({ length: 4 }).map((_, idx) => (
+            <div key={idx} className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5 flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <SkeletonPulse className="h-8 w-8 rounded-full" />
+                  <div>
+                    <SkeletonPulse className="h-3 w-20 mb-1" />
+                    <SkeletonPulse className="h-2.5 w-14" />
+                  </div>
+                </div>
+                <SkeletonPulse className="h-5 w-16 rounded-full" />
+              </div>
+              <SkeletonPulse className="h-2.5 w-32" />
+              <div className="flex gap-2">
+                <SkeletonPulse className="h-8 flex-1 rounded-lg" />
+                <SkeletonPulse className="h-8 w-28 rounded-lg" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      {activeTab === "conexoes" && !loadingConnected && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {connectedIntegrations.map((i: typeof connectedIntegrationsMock[number]) => (
             <div
               key={i.name}
               className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5 flex flex-col gap-4 hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.07)] hover:shadow-lg transition-all duration-200"

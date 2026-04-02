@@ -1,7 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Search, CheckCircle2, XCircle, ThumbsUp, Clock } from "lucide-react";
 import { AGENTES, DEPARTAMENTOS } from "@/data/mrlion";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { SkeletonPulse } from "@/components/ui/LoadingSkeleton";
 
 const statusCor: Record<string, string> = {
   ativo: "bg-green-500",
@@ -18,8 +20,35 @@ const statusLabel: Record<string, string> = {
 export function EquipeContent() {
   const [filtro, setFiltro] = useState("todos");
   const [busca, setBusca] = useState("");
+  const skip = !isSupabaseConfigured();
 
-  const agentesFiltrados = AGENTES.filter((a) => {
+  const fetchAgents = useCallback(async () => {
+    const res = await fetch("/api/agents");
+    if (!res.ok) throw new Error("Failed to fetch agents");
+    const json = await res.json();
+    return json.data ?? json ?? [];
+  }, []);
+
+  const fetchDepartments = useCallback(async () => {
+    const res = await fetch("/api/departments");
+    if (!res.ok) throw new Error("Failed to fetch departments");
+    const json = await res.json();
+    return json.data ?? json ?? [];
+  }, []);
+
+  const { data: agentes, loading: loadingAgents } = useSupabaseQuery({
+    queryFn: fetchAgents,
+    mockData: AGENTES,
+    skip,
+  });
+
+  const { data: departamentos } = useSupabaseQuery({
+    queryFn: fetchDepartments,
+    mockData: DEPARTAMENTOS,
+    skip,
+  });
+
+  const agentesFiltrados = agentes.filter((a: typeof AGENTES[number]) => {
     const matchDept = filtro === "todos" || a.departamento === filtro;
     const matchBusca =
       busca === "" ||
@@ -57,7 +86,7 @@ export function EquipeContent() {
         >
           Todos
         </button>
-        {DEPARTAMENTOS.map((dept) => (
+        {departamentos.map((dept: typeof DEPARTAMENTOS[number]) => (
           <button
             key={dept.id}
             onClick={() => setFiltro(dept.id)}
@@ -98,8 +127,33 @@ export function EquipeContent() {
       </div>
 
       {/* Grid */}
+      {loadingAgents ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-4 flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <SkeletonPulse className="h-3 w-20" />
+                <SkeletonPulse className="h-3 w-12" />
+              </div>
+              <div className="flex items-center gap-3">
+                <SkeletonPulse className="h-9 w-9 rounded-full" />
+                <div className="flex-1">
+                  <SkeletonPulse className="h-3 w-24 mb-1.5" />
+                  <SkeletonPulse className="h-2.5 w-full" />
+                </div>
+              </div>
+              <SkeletonPulse className="h-12 w-full rounded-lg" />
+              <div className="flex gap-4">
+                <SkeletonPulse className="h-3 w-10" />
+                <SkeletonPulse className="h-3 w-10" />
+                <SkeletonPulse className="h-3 w-10" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {agentesFiltrados.map((agente) => (
+        {agentesFiltrados.map((agente: typeof AGENTES[number]) => (
           <div
             key={agente.id}
             className="glass-card group relative rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-4 flex flex-col gap-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.35)] hover:border-[rgba(255,255,255,0.13)]"
@@ -108,7 +162,7 @@ export function EquipeContent() {
             {/* Department label row */}
             <div className="flex items-center justify-between">
               <span className="text-xs text-[rgba(255,255,255,0.4)]">
-                {DEPARTAMENTOS.find((d) => d.id === agente.departamento)?.nome}
+                {departamentos.find((d: typeof DEPARTAMENTOS[number]) => d.id === agente.departamento)?.nome}
               </span>
               {/* Status badge */}
               <span className="flex items-center gap-1.5 text-[10px] text-[rgba(255,255,255,0.4)]">
@@ -178,6 +232,7 @@ export function EquipeContent() {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 }

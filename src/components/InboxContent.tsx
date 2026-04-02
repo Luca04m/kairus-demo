@@ -1,6 +1,7 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { SlidersHorizontal, MoreHorizontal, Search, Reply, CheckCheck, Archive, Inbox } from "lucide-react";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
 
 type Prioridade = "alta" | "media" | "baixa";
 
@@ -16,7 +17,7 @@ interface Mensagem {
   prioridade: Prioridade;
 }
 
-const MENSAGENS: Mensagem[] = [
+const MENSAGENS_MOCK: Mensagem[] = [
   { id: 1, remetente: "Leo", iniciais: "LE", cor: "#22c55e", assunto: "Alerta: Margem negativa Honey Pingente", resumo: "A margem do produto Honey Pingente ficou negativa em Mar/2026. Recomendo revisar precificação com urgência antes que o impacto se amplie nas próximas semanas.", tempo: "há 2h", lida: false, prioridade: "alta" },
   { id: 2, remetente: "Mia", iniciais: "MI", cor: "#6366f1", assunto: "Relatório semanal de campanhas", resumo: "CTR caiu para 1,64% em Mar/26. CPC subindo. Sugiro revisão de criativos e ajuste de segmentação para recuperar eficiência no canal pago.", tempo: "há 45min", lida: false, prioridade: "alta" },
   { id: 3, remetente: "Sol", iniciais: "SO", cor: "#f59e0b", assunto: "Estoque crítico: Honey Garrafa", resumo: "Estoque abaixo de 50 unidades. Última reposição há 15 dias. Risco de ruptura nas próximas 48h se não houver pedido imediato ao fornecedor.", tempo: "há 3h", lida: true, prioridade: "alta" },
@@ -36,11 +37,26 @@ const PRIORIDADE_DOT: Record<Prioridade, string | null> = {
 };
 
 export function InboxContent() {
+  const skip = !isSupabaseConfigured();
+
+  const fetchMessages = useCallback(async () => {
+    const res = await fetch("/api/inbox");
+    if (!res.ok) throw new Error("Failed to fetch messages");
+    const json = await res.json();
+    return (json.data ?? json ?? []) as Mensagem[];
+  }, []);
+
+  const { data: MENSAGENS } = useSupabaseQuery({
+    queryFn: fetchMessages,
+    mockData: MENSAGENS_MOCK,
+    skip,
+  });
+
   const [selecionadoId, setSelecionadoId] = useState<number | null>(null);
   const [filtro, setFiltro] = useState<Filtro>("todas");
   const [busca, setBusca] = useState("");
   const [lidas, setLidas] = useState<Set<number>>(
-    new Set(MENSAGENS.filter((m) => m.lida).map((m) => m.id))
+    new Set(MENSAGENS_MOCK.filter((m) => m.lida).map((m) => m.id))
   );
   const [arquivadas, setArquivadas] = useState<Set<number>>(new Set());
 
@@ -59,7 +75,7 @@ export function InboxContent() {
       }
       return true;
     });
-  }, [filtro, busca, lidas, arquivadas]);
+  }, [filtro, busca, lidas, arquivadas, MENSAGENS]);
 
   const naoLidasCount = MENSAGENS.filter(
     (m) => !lidas.has(m.id) && !arquivadas.has(m.id)

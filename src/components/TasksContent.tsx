@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
   Settings2,
   Search,
@@ -9,6 +9,8 @@ import {
   Circle,
   XCircle,
 } from "lucide-react";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { SkeletonTable } from "@/components/ui/LoadingSkeleton";
 
 type Status = "em_progresso" | "concluida" | "pendente" | "falha";
 type Prioridade = "alta" | "media" | "baixa";
@@ -26,7 +28,7 @@ interface Tarefa {
   descricao: string;
 }
 
-const TAREFAS: Tarefa[] = [
+const TAREFAS_MOCK: Tarefa[] = [
   { id: "T-001", titulo: "Monitorar margem por produto", agente: "Leo", iniciais: "LE", cor: "#22c55e", status: "em_progresso", prioridade: "alta", departamento: "Financeiro", criadaEm: "28/03/2026", descricao: "Análise contínua de margens" },
   { id: "T-002", titulo: "Otimizar campanha Meta 'Verão 2026'", agente: "Mia", iniciais: "MI", cor: "#6366f1", status: "concluida", prioridade: "alta", departamento: "Marketing", criadaEm: "25/03/2026", descricao: "CPC reduzido em 18%" },
   { id: "T-003", titulo: "Reposição estoque Honey Garrafa", agente: "Sol", iniciais: "SO", cor: "#f59e0b", status: "pendente", prioridade: "alta", departamento: "Operações", criadaEm: "30/03/2026", descricao: "Estoque crítico <50 un" },
@@ -84,6 +86,20 @@ const STATUS_LABELS: Record<Status, string> = {
 export function TasksContent() {
   const [activeStatus, setActiveStatus] = useState<Status | null>(null);
   const [search, setSearch] = useState("");
+  const skip = !isSupabaseConfigured();
+
+  const fetchTasks = useCallback(async () => {
+    const res = await fetch("/api/tasks");
+    if (!res.ok) throw new Error("Failed to fetch tasks");
+    const json = await res.json();
+    return (json.data ?? json ?? []) as Tarefa[];
+  }, []);
+
+  const { data: TAREFAS, loading } = useSupabaseQuery({
+    queryFn: fetchTasks,
+    mockData: TAREFAS_MOCK,
+    skip,
+  });
 
   const counts: Record<Status, number> = {
     em_progresso: TAREFAS.filter((t) => t.status === "em_progresso").length,
@@ -171,6 +187,11 @@ export function TasksContent() {
       </div>
 
       {/* Table */}
+      {loading ? (
+        <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
+          <SkeletonTable rows={8} cols={7} />
+        </div>
+      ) : (
       <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] overflow-hidden">
         <table className="w-full text-sm">
           <thead>
@@ -258,6 +279,7 @@ export function TasksContent() {
           </tbody>
         </table>
       </div>
+      )}
     </div>
   );
 }

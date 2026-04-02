@@ -51,8 +51,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     let cancelled = false;
 
+    // Fallback: if Supabase doesn't respond in 2s (paused project, network issue),
+    // resolve as unauthenticated so the UI doesn't hang forever
+    const timeout = setTimeout(() => {
+      if (cancelled) return;
+      setLoading(false);
+    }, 2000);
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+      clearTimeout(timeout);
       if (cancelled) return;
       setSession(initialSession);
       setUser(initialSession?.user ?? null);
@@ -71,6 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => {
       cancelled = true;
+      clearTimeout(timeout);
       subscription.unsubscribe();
     };
   }, [supabase]);

@@ -1,10 +1,10 @@
-import { type NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/middleware";
+import { NextResponse, type NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
-  // Delegate to Supabase session refresh when configured.
-  // If Supabase env vars are missing, updateSession returns NextResponse.next().
-  return updateSession(request);
+// DEMO MODE: middleware is a no-op — Supabase project may be paused,
+// so skipping auth checks to avoid hanging requests server-side.
+// Re-enable by restoring the updateSession call.
+export function middleware(_request: NextRequest) {
+  return NextResponse.next();
 }
 
 export const config = {

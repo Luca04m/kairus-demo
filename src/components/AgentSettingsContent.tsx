@@ -1,14 +1,82 @@
 "use client";
 import { Lightbulb, X, ChevronDown, User } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { SkeletonPulse, ErrorState } from "@/components/ui/LoadingSkeleton";
+
+interface AgentConfig {
+  name: string;
+  description: string;
+  category: string;
+  avatarUrl: string | null;
+}
+
+const MOCK_AGENT_CONFIG: AgentConfig = {
+  name: "Agente sem título",
+  description: "",
+  category: "",
+  avatarUrl: null,
+};
 
 export function AgentSettingsContent() {
+  const skip = !isSupabaseConfigured();
+
+  const fetchAgentConfig = useCallback(async () => {
+    const res = await fetch("/api/agents?type=config");
+    if (!res.ok) throw new Error("Failed to fetch agent config");
+    const json = await res.json();
+    return (json.data?.[0] ?? json ?? MOCK_AGENT_CONFIG) as AgentConfig;
+  }, []);
+
+  const { data: agentConfig, loading, error, refetch } = useSupabaseQuery({
+    queryFn: fetchAgentConfig,
+    mockData: MOCK_AGENT_CONFIG,
+    skip,
+  });
+
   const [showBanner, setShowBanner] = useState(true);
   const [activeTab, setActiveTab] = useState("Configurações");
   const [avatarMode, setAvatarMode] = useState<"avatar" | "imagem">("imagem");
-  const [agentName, setAgentName] = useState("Agente sem título");
+  const [agentName, setAgentName] = useState(agentConfig?.name || "Agente sem título");
+
+  // Sync agentName when agentConfig updates (e.g. after refetch)
+  // queueMicrotask defers the setState out of the synchronous effect body
+  useEffect(() => {
+    if (agentConfig?.name) {
+      queueMicrotask(() => setAgentName(agentConfig.name));
+    }
+  }, [agentConfig?.name]);
 
   const tabs = ["Configurações", "Memória", "Contexto de tarefa", "Ferramentas", "Interface"];
+
+  if (loading) {
+    return (
+      <div className="p-6 max-w-3xl">
+        <SkeletonPulse className="h-6 w-40 mb-2" />
+        <SkeletonPulse className="h-4 w-72 mb-6" />
+        <div className="flex gap-1 mb-6 border-b border-[rgba(255,255,255,0.06)] pb-2">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <SkeletonPulse key={i} className="h-8 w-24" />
+          ))}
+        </div>
+        <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-6">
+          <SkeletonPulse className="h-5 w-20 mb-4" />
+          <SkeletonPulse className="h-20 w-20 rounded-xl mb-4" />
+          <SkeletonPulse className="h-10 w-full mb-3" />
+          <SkeletonPulse className="h-20 w-full mb-3" />
+          <SkeletonPulse className="h-10 w-full" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 max-w-3xl">
+        <ErrorState message="Erro ao carregar configurações do agente." onRetry={refetch} />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-3xl">

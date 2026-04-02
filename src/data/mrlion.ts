@@ -11,10 +11,10 @@ export const EMPRESA = {
 };
 
 export const USUARIO = {
-  nome: "Carlos",
-  nomeCompleto: "Carlos Moreno",
-  email: "carlos@mrlion.com.br",
-  iniciais: "CM",
+  nome: "Luca",
+  nomeCompleto: "Luca Moreno",
+  email: "luca@mrlion.com.br",
+  iniciais: "LM",
 };
 
 // =============================================
@@ -321,26 +321,26 @@ export const RELATORIOS = [
 // ALERTAS
 // =============================================
 export const ALERTAS = [
-  { id: 1, severidade: "critico" as const, departamento: "Operacoes", titulo: "Estoque Honey Garrafa abaixo de 50 unidades", tempo: "ha 3h", agente: "Sol" },
-  { id: 2, severidade: "alto" as const, departamento: "Financeiro", titulo: "Prejuizo detectado em Fev/2026: R$ -2.329", tempo: "ha 1d", agente: "Leo" },
-  { id: 3, severidade: "alto" as const, departamento: "Financeiro", titulo: "Chargebacks Fev/2026: R$ 6.132 (7,9% do faturamento)", tempo: "ha 1d", agente: "Leo" },
-  { id: 4, severidade: "medio" as const, departamento: "Marketing", titulo: "CTR Meta Ads caiu de 4,59% para 1,64% (Set/25 → Mar/26)", tempo: "ha 6h", agente: "Mia" },
-  { id: 5, severidade: "medio" as const, departamento: "Vendas", titulo: "Receita Mar/26 -38% vs Fev/26", tempo: "ha 12h", agente: "Rex" },
-  { id: 6, severidade: "baixo" as const, departamento: "Marketing", titulo: "CPC Meta Ads subiu de R$ 0,15 para R$ 0,32", tempo: "ha 1d", agente: "Mia" },
-  { id: 7, severidade: "info" as const, departamento: "Financeiro", titulo: "Relatorio semanal Semana 13 pronto para revisao", tempo: "ha 5h", agente: "Leo" },
+  { id: "alerta-001", severidade: "critico" as const, departamento: "Operacoes", titulo: "Estoque Honey Garrafa abaixo de 50 unidades", tempo: "ha 3h", agente: "Sol", status: "novo" as const },
+  { id: "alerta-002", severidade: "alto" as const, departamento: "Financeiro", titulo: "Prejuizo detectado em Fev/2026: R$ -2.329", tempo: "ha 1d", agente: "Leo", status: "novo" as const },
+  { id: "alerta-003", severidade: "alto" as const, departamento: "Financeiro", titulo: "Chargebacks Fev/2026: R$ 6.132 (7,9% do faturamento)", tempo: "ha 1d", agente: "Leo", status: "novo" as const },
+  { id: "alerta-004", severidade: "medio" as const, departamento: "Marketing", titulo: "CTR Meta Ads caiu de 4,59% para 1,64% (Set/25 → Mar/26)", tempo: "ha 6h", agente: "Mia", status: "visto" as const },
+  { id: "alerta-005", severidade: "medio" as const, departamento: "Vendas", titulo: "Receita Mar/26 -38% vs Fev/26", tempo: "ha 12h", agente: "Rex", status: "novo" as const },
+  { id: "alerta-006", severidade: "baixo" as const, departamento: "Marketing", titulo: "CPC Meta Ads subiu de R$ 0,15 para R$ 0,32", tempo: "ha 1d", agente: "Mia", status: "visto" as const },
+  { id: "alerta-007", severidade: "info" as const, departamento: "Financeiro", titulo: "Relatorio semanal Semana 13 pronto para revisao", tempo: "ha 5h", agente: "Leo", status: "resolvido" as const },
 ];
 
 // =============================================
 // ATIVIDADE RECENTE
 // =============================================
 export const ATIVIDADE_RECENTE = [
-  { agente: "Sol", acao: "Alerta de estoque critico: Honey Garrafa < 50 un.", tempo: "ha 3h" },
-  { agente: "Mia", acao: "Otimizou campanha Meta 'Verao 2026' — CPC -18%", tempo: "ha 45min" },
-  { agente: "Leo", acao: "Gerou relatorio semanal Semana 13/2026", tempo: "ha 5h" },
-  { agente: "Rex", acao: "Enviou lembrete de recompra para 12 clientes B2B", tempo: "ha 1h" },
-  { agente: "Iris", acao: "Respondeu 23 mensagens WhatsApp automaticamente", tempo: "ha 30min" },
-  { agente: "Leo", acao: "Detectou margem negativa no Honey Pingente", tempo: "ha 2h" },
-  { agente: "Mia", acao: "Publicou 3 posts Instagram (alcance 12.400)", tempo: "ha 8h" },
+  { id: "ativ-001", agente: "Sol", acao: "Alerta de estoque critico: Honey Garrafa < 50 un.", tempo: "ha 3h" },
+  { id: "ativ-002", agente: "Mia", acao: "Otimizou campanha Meta 'Verao 2026' — CPC -18%", tempo: "ha 45min" },
+  { id: "ativ-003", agente: "Leo", acao: "Gerou relatorio semanal Semana 13/2026", tempo: "ha 5h" },
+  { id: "ativ-004", agente: "Rex", acao: "Enviou lembrete de recompra para 12 clientes B2B", tempo: "ha 1h" },
+  { id: "ativ-005", agente: "Iris", acao: "Respondeu 23 mensagens WhatsApp automaticamente", tempo: "ha 30min" },
+  { id: "ativ-006", agente: "Leo", acao: "Detectou margem negativa no Honey Pingente", tempo: "ha 2h" },
+  { id: "ativ-007", agente: "Mia", acao: "Publicou 3 posts Instagram (alcance 12.400)", tempo: "ha 8h" },
 ];
 
 // =============================================
@@ -359,7 +359,7 @@ export interface InboxMensagem {
 
 export const INBOX_MENSAGENS: InboxMensagem[] = [
   {
-    id: "msg-001",
+    id: "inbox-msg-001",
     remetente: "Sol",
     assunto: "CRITICO: Estoque Honey Garrafa abaixo do limite",
     resumo: "Restam apenas 47 unidades do Mr. Lion Honey Garrafa 375ml. Com a taxa de venda atual, o produto esgota em 3 dias. Recomendo emitir pedido de reposicao imediatamente.",
@@ -369,7 +369,7 @@ export const INBOX_MENSAGENS: InboxMensagem[] = [
     tipo: "alerta",
   },
   {
-    id: "msg-002",
+    id: "inbox-msg-002",
     remetente: "Leo",
     assunto: "Relatorio Semanal — Semana 13/2026 disponivel",
     resumo: "O relatorio da semana 13 foi gerado. Receita R$ 8.200 (-12% vs semana anterior). Destaque negativo: 2 chargebacks abertos no valor total de R$ 1.340. Revisao necessaria.",
@@ -379,7 +379,7 @@ export const INBOX_MENSAGENS: InboxMensagem[] = [
     tipo: "relatorio",
   },
   {
-    id: "msg-003",
+    id: "inbox-msg-003",
     remetente: "Mia",
     assunto: "Sugestao: Aumentar budget campanha 'Honey Premium'",
     resumo: "A campanha 'Honey Premium' esta com ROAS 3,2x nas ultimas 48h, acima da media. Sugiro aumentar o orcamento diario de R$ 180 para R$ 320 para capturar mais trafego qualificado.",
@@ -389,7 +389,7 @@ export const INBOX_MENSAGENS: InboxMensagem[] = [
     tipo: "sugestao",
   },
   {
-    id: "msg-004",
+    id: "inbox-msg-004",
     remetente: "Rex",
     assunto: "12 clientes B2B com lembrete de recompra enviado",
     resumo: "Disparei lembretes de recompra para 12 clientes B2B com ultima compra ha mais de 30 dias. Media historica de resposta: 4 clientes convertem em 72h. Valor estimado: R$ 6.800.",
@@ -399,7 +399,7 @@ export const INBOX_MENSAGENS: InboxMensagem[] = [
     tipo: "tarefa",
   },
   {
-    id: "msg-005",
+    id: "inbox-msg-005",
     remetente: "Iris",
     assunto: "Pico de mensagens WhatsApp — 23 respondidas automaticamente",
     resumo: "Entre 09h e 11h recebi 23 mensagens. Resolvi 20 automaticamente (rastreamento, duvidas de produto, trocas). 3 foram escaladas para atendimento humano (reclamacoes com nota < 3).",
@@ -409,7 +409,7 @@ export const INBOX_MENSAGENS: InboxMensagem[] = [
     tipo: "relatorio",
   },
   {
-    id: "msg-006",
+    id: "inbox-msg-006",
     remetente: "Leo",
     assunto: "Alerta: Margem bruta do Honey Pingente negativa",
     resumo: "Com o preco atual de R$ 89,90 e CMV de R$ 52,00 mais frete medio R$ 38,00, o produto esta gerando prejuizo de R$ 0,10 por unidade vendida. Sugiro revisao de precificacao.",
@@ -419,7 +419,7 @@ export const INBOX_MENSAGENS: InboxMensagem[] = [
     tipo: "alerta",
   },
   {
-    id: "msg-007",
+    id: "inbox-msg-007",
     remetente: "Sol",
     assunto: "Tarefa concluida: Auditoria de estoque Marzo/2026",
     resumo: "Auditoria mensal de estoque concluida. Total de SKUs ativos: 12. 3 produtos com giro lento (> 45 dias sem venda). Relatorio completo disponivel na aba Relatorios.",
@@ -429,7 +429,7 @@ export const INBOX_MENSAGENS: InboxMensagem[] = [
     tipo: "tarefa",
   },
   {
-    id: "msg-008",
+    id: "inbox-msg-008",
     remetente: "Mia",
     assunto: "CTR Meta Ads caiu 64% — analise disponivel",
     resumo: "O CTR medio das campanhas caiu de 4,59% (Set/25) para 1,64% (Mar/26). Preparei analise com 3 hipoteses: saturacao de audiencia, criativos desatualizados e mudancas no algoritmo Meta.",
@@ -439,7 +439,7 @@ export const INBOX_MENSAGENS: InboxMensagem[] = [
     tipo: "sugestao",
   },
   {
-    id: "msg-009",
+    id: "inbox-msg-009",
     remetente: "Rex",
     assunto: "Ticket medio caindo — recomendo bundle promocional",
     resumo: "Ticket medio caiu de R$ 235 (Fev/26) para R$ 217 (Mar/26). Sugiro criar bundle 'Kit Honey Completo' com desconto de 8% para estimular aumento de itens por pedido.",
@@ -449,7 +449,7 @@ export const INBOX_MENSAGENS: InboxMensagem[] = [
     tipo: "sugestao",
   },
   {
-    id: "msg-010",
+    id: "inbox-msg-010",
     remetente: "Leo",
     assunto: "Chargeback critico: R$ 6.132 em Fevereiro (7,9%)",
     resumo: "Taxa de chargeback de 7,9% em Fev/26 esta 4x acima do limite aceitavel (2%). Identifiquei 18 transacoes suspeitas com mesmo padrao de CEP. Recomendo revisao manual urgente.",
@@ -526,7 +526,7 @@ export const TAREFAS: Tarefa[] = [
     prioridade: "media",
     criadaEm: "31/03/2026",
     concluidaEm: "31/03/2026",
-    descricao: "Compilar dados de vendas, financeiro e operacoes da semana 13 e gerar relatorio consolidado para Carlos.",
+    descricao: "Compilar dados de vendas, financeiro e operacoes da semana 13 e gerar relatorio consolidado para Luca.",
     departamento: "Financeiro",
   },
   {
@@ -634,7 +634,7 @@ export const VISUALIZACOES: Visualizacao[] = [
     nome: "Tarefas por Agente",
     descricao: "Visao kanban de todas as tarefas agrupadas por agente responsavel",
     tipo: "kanban",
-    criadaPor: "Carlos",
+    criadaPor: "Luca",
     criadaEm: "15/03/2026",
     colunas: ["agente", "titulo", "status", "prioridade", "criadaEm"],
   },
@@ -652,7 +652,7 @@ export const VISUALIZACOES: Visualizacao[] = [
     nome: "Pipeline de Tarefas Pendentes",
     descricao: "Tabela com todas as tarefas em andamento e pendentes, ordenadas por prioridade",
     tipo: "tabela",
-    criadaPor: "Carlos",
+    criadaPor: "Luca",
     criadaEm: "20/03/2026",
     colunas: ["titulo", "agente", "departamento", "prioridade", "criadaEm", "status"],
   },
@@ -670,7 +670,7 @@ export const VISUALIZACOES: Visualizacao[] = [
     nome: "Alertas Criticos por Departamento",
     descricao: "Tabela filtrando apenas alertas de severidade critica e alta com agente responsavel",
     tipo: "tabela",
-    criadaPor: "Carlos",
+    criadaPor: "Luca",
     criadaEm: "10/03/2026",
     colunas: ["departamento", "titulo", "severidade", "agente", "tempo"],
   },

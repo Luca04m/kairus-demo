@@ -1,14 +1,17 @@
 "use client";
+import { useCallback } from "react";
 import { Calendar, Download, CheckCircle2, XCircle, ThumbsUp, ThumbsDown, BarChart2, CheckSquare, TrendingUp, TrendingDown } from "lucide-react";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { AGENT_ANALYTICS_DEMO } from "@/data/mrlion";
+import type { AgentAnalyticsDemo } from "@/data/mrlion";
+import { SkeletonCard, ErrorState } from "@/components/ui/LoadingSkeleton";
 
 // 30-day mock data: [concluidas, falhadas]
-const DAILY_DATA = [
+const DAILY_DATA_MOCK = [
   [1,0],[2,0],[1,1],[3,0],[2,0],[4,1],[2,0],[1,0],[3,0],[2,1],
   [3,0],[2,0],[1,0],[4,0],[2,1],[3,0],[1,0],[2,0],[3,0],[2,0],
   [4,0],[2,0],[1,1],[3,0],[2,0],[2,0],[3,1],[1,0],[2,0],[3,0],
 ];
-
-const MAX_VAL = Math.max(...DAILY_DATA.map(([c, f]) => c + f));
 
 // SVG arc helpers for semicircle gauge (radius 60, center 70,70)
 function arcPath(pct: number) {
@@ -23,17 +26,66 @@ function arcPath(pct: number) {
 }
 
 export function AgentAnalyticsContent() {
+  const skip = !isSupabaseConfigured();
+
+  const fetchAnalytics = useCallback(async () => {
+    const res = await fetch("/api/agents?scope=analytics");
+    if (!res.ok) throw new Error("Failed to fetch analytics");
+    const json = await res.json();
+    return (json.data ?? json) as AgentAnalyticsDemo;
+  }, []);
+
+  const { data: analyticsData, loading, error, refetch } = useSupabaseQuery({
+    queryFn: fetchAnalytics,
+    mockData: AGENT_ANALYTICS_DEMO,
+    skip,
+  });
+
+  const DAILY_DATA = analyticsData?.tarefasPorDia
+    ? analyticsData.tarefasPorDia.map((d) => [d.concluidas, d.falhadas] as [number, number])
+    : DAILY_DATA_MOCK;
+  const MAX_VAL = Math.max(1, ...DAILY_DATA.map(([c, f]) => c + f));
+
+  if (loading) {
+    return (
+      <div className="p-6">
+        <div className="mb-6">
+          <div className="h-6 w-32 animate-pulse rounded bg-[rgba(255,255,255,0.06)] mb-2" />
+          <div className="h-4 w-64 animate-pulse rounded bg-[rgba(255,255,255,0.06)]" />
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonCard key={i} className="h-48" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6">
+        <ErrorState message="Erro ao carregar análises do agente." onRetry={refetch} />
+      </div>
+    );
+  }
+
   const stats = [
     {
       label: "Tarefas concluídas",
-      value: "47",
+      value: String(analyticsData.tarefasConcluidas),
       sub: "+12% em relação ao período anterior",
       icon: CheckCircle2,
       up: true,
     },
     {
       label: "Tarefas com falha",
-      value: "2",
+      value: String(analyticsData.tarefasFalhadas),
       sub: "-50% em relação ao período anterior",
       icon: XCircle,
       up: false,
@@ -41,14 +93,14 @@ export function AgentAnalyticsContent() {
     },
     {
       label: "Taxa de aprovação de tarefas",
-      value: "96%",
+      value: `${analyticsData.taxaAprovacao}%`,
       sub: "+4% em relação ao período anterior",
       icon: CheckSquare,
       up: true,
     },
     {
       label: "Duração média de execução",
-      value: "12m",
+      value: analyticsData.duracaoMedia,
       sub: "-8% em relação ao período anterior",
       icon: BarChart2,
       up: false,
@@ -56,7 +108,7 @@ export function AgentAnalyticsContent() {
     },
     {
       label: "Duração total de execução",
-      value: "9h 24m",
+      value: analyticsData.duracaoTotal,
       sub: "+18% em relação ao período anterior",
       icon: BarChart2,
       up: true,
@@ -131,9 +183,9 @@ export function AgentAnalyticsContent() {
               <svg width="140" height="80" viewBox="0 0 140 80">
                 {/* Background track */}
                 <path d="M 10 70 A 60 60 0 0 1 130 70" stroke="rgba(255,255,255,0.08)" strokeWidth="12" fill="none" strokeLinecap="round" />
-                {/* 96% fill in green */}
+                {/* Completion rate fill */}
                 <path
-                  d={arcPath(0.96)}
+                  d={arcPath(analyticsData.taxaAprovacao / 100)}
                   stroke="#34d399"
                   strokeWidth="12"
                   fill="none"
@@ -141,7 +193,7 @@ export function AgentAnalyticsContent() {
                 />
               </svg>
               <div className="absolute inset-0 flex items-end justify-center pb-0">
-                <span className="text-2xl font-bold text-white">96%</span>
+                <span className="text-2xl font-bold text-white">{analyticsData.taxaAprovacao}%</span>
               </div>
             </div>
           </div>
@@ -154,19 +206,19 @@ export function AgentAnalyticsContent() {
             <span className="text-sm font-medium text-white">Pontuação de avaliação</span>
           </div>
           <div className="flex flex-col items-center py-4 gap-2">
-            <p className="text-3xl font-bold text-white">91%</p>
+            <p className="text-3xl font-bold text-white">{(analyticsData.feedbackPositivo + analyticsData.feedbackNegativo) > 0 ? Math.round((analyticsData.feedbackPositivo / (analyticsData.feedbackPositivo + analyticsData.feedbackNegativo)) * 100) : 0}%</p>
             <p className="text-sm text-[rgba(255,255,255,0.4)]">Avaliação positiva</p>
             <div className="flex items-center gap-4 mt-2">
               <div className="flex items-center gap-1.5 text-sm text-emerald-400">
-                <ThumbsUp size={14} /> <span>43</span>
+                <ThumbsUp size={14} /> <span>{analyticsData.feedbackPositivo}</span>
               </div>
               <div className="flex items-center gap-1.5 text-sm text-red-400">
-                <ThumbsDown size={14} /> <span>4</span>
+                <ThumbsDown size={14} /> <span>{analyticsData.feedbackNegativo}</span>
               </div>
             </div>
             {/* Progress bar */}
             <div className="w-full mt-2 h-1.5 rounded-full bg-[rgba(255,255,255,0.08)] overflow-hidden">
-              <div className="h-full rounded-full bg-emerald-400" style={{ width: "91%" }} />
+              <div className="h-full rounded-full bg-emerald-400" style={{ width: `${(analyticsData.feedbackPositivo + analyticsData.feedbackNegativo) > 0 ? Math.round((analyticsData.feedbackPositivo / (analyticsData.feedbackPositivo + analyticsData.feedbackNegativo)) * 100) : 0}%` }} />
             </div>
             <div className="flex items-center gap-4 mt-1 text-xs text-[rgba(255,255,255,0.4)]">
               <div className="flex items-center gap-1.5">
@@ -230,7 +282,7 @@ export function AgentAnalyticsContent() {
               const cH = (c / MAX_VAL) * maxH;
               const fH = (f / MAX_VAL) * maxH;
               return (
-                <g key={i}>
+                <g key={`bar-${i}`}>
                   {f > 0 && (
                     <rect
                       x={x}

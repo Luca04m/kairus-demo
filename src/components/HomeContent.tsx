@@ -1,6 +1,9 @@
 "use client";
+import { useCallback } from "react";
 import { Activity, Bell, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { KPIS_VISAO_GERAL, ATIVIDADE_RECENTE, ALERTAS, AGENTES } from "@/data/mrlion";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { KpiGridSkeleton, AgentGridSkeleton, SkeletonRow } from "@/components/ui/LoadingSkeleton";
 
 // Map KPI departamento label → accent color
 const kpiAccentColor: Record<string, string> = {
@@ -59,8 +62,62 @@ function VariacaoIcon({ direcao }: { direcao: "up" | "down" | "neutral" }) {
 }
 
 export function HomeContent() {
-  const alertasCriticosAltos = ALERTAS.filter(
-    (a) => a.severidade === "critico" || a.severidade === "alto"
+  const skip = !isSupabaseConfigured();
+
+  const fetchKpis = useCallback(async () => {
+    const res = await fetch("/api/dashboard/stats");
+    if (!res.ok) throw new Error("Failed to fetch KPIs");
+    const json = await res.json();
+    return json.kpis ?? [];
+  }, []);
+
+  const fetchActivity = useCallback(async () => {
+    const res = await fetch("/api/dashboard/stats");
+    if (!res.ok) throw new Error("Failed to fetch activity");
+    const json = await res.json();
+    return json.atividade ?? [];
+  }, []);
+
+  const fetchAlerts = useCallback(async () => {
+    const res = await fetch("/api/alerts");
+    if (!res.ok) throw new Error("Failed to fetch alerts");
+    const json = await res.json();
+    return json.data ?? json ?? [];
+  }, []);
+
+  const fetchAgents = useCallback(async () => {
+    const res = await fetch("/api/agents");
+    if (!res.ok) throw new Error("Failed to fetch agents");
+    const json = await res.json();
+    return json.data ?? json ?? [];
+  }, []);
+
+  const { data: kpis, loading: loadingKpis } = useSupabaseQuery({
+    queryFn: fetchKpis,
+    mockData: KPIS_VISAO_GERAL,
+    skip,
+  });
+
+  const { data: atividade, loading: loadingActivity } = useSupabaseQuery({
+    queryFn: fetchActivity,
+    mockData: ATIVIDADE_RECENTE,
+    skip,
+  });
+
+  const { data: alertas, loading: loadingAlerts } = useSupabaseQuery({
+    queryFn: fetchAlerts,
+    mockData: ALERTAS,
+    skip,
+  });
+
+  const { data: agentes, loading: loadingAgents } = useSupabaseQuery({
+    queryFn: fetchAgents,
+    mockData: AGENTES,
+    skip,
+  });
+
+  const alertasCriticosAltos = alertas.filter(
+    (a: typeof ALERTAS[number]) => a.severidade === "critico" || a.severidade === "alto"
   ).length;
 
   const greeting = getGreeting();
@@ -70,7 +127,7 @@ export function HomeContent() {
       {/* Page header */}
       <div className="pb-4 border-b border-[rgba(255,255,255,0.06)]">
         <h1 className="text-xl font-semibold text-white">
-          {greeting}, Carlos
+          {greeting}, Luca
         </h1>
         <p className="text-sm text-[rgba(255,255,255,0.4)] mt-0.5">
           Quarta-feira, 2 de Abril de 2026
@@ -81,8 +138,9 @@ export function HomeContent() {
       </div>
 
       {/* KPI cards — responsive grid */}
+      {loadingKpis ? <KpiGridSkeleton count={5} /> : (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {KPIS_VISAO_GERAL.map((kpi) => {
+        {kpis.map((kpi) => {
           const accent = kpiAccentColor[kpi.departamento] ?? "rgba(255,255,255,0.4)";
           return (
             <div
@@ -114,6 +172,7 @@ export function HomeContent() {
           );
         })}
       </div>
+      )}
 
       {/* Activity + Alerts row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -124,11 +183,11 @@ export function HomeContent() {
             <span className="text-sm font-medium text-white">Atividade Recente</span>
           </div>
           <div className="flex flex-col gap-2">
-            {ATIVIDADE_RECENTE.map((item, i) => {
+            {loadingActivity ? Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={`skel-activity-${i}`} />) : atividade.map((item, i) => {
               const cor = getAgenteCor(item.agente);
               return (
                 <div
-                  key={i}
+                  key={item.acao ? `${item.agente}-${item.tempo}-${i}` : `activity-${i}`}
                   className="flex items-start gap-3 rounded-lg p-2 -mx-2 transition-colors duration-150 hover:bg-[rgba(255,255,255,0.04)] cursor-default"
                 >
                   <span
@@ -157,7 +216,7 @@ export function HomeContent() {
             </span>
           </div>
           <div className="flex flex-col gap-3">
-            {ALERTAS.slice(0, 5).map((alerta) => {
+            {loadingAlerts ? Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={`skel-alert-${i}`} />) : alertas.slice(0, 5).map((alerta) => {
               const isCritico = alerta.severidade === "critico";
               return (
                 <div key={alerta.id} className="flex items-start gap-3">
@@ -190,11 +249,12 @@ export function HomeContent() {
         <div className="flex items-center gap-2 mb-3">
           <span className="text-sm font-medium text-white">Agentes</span>
           <span className="text-xs text-[rgba(255,255,255,0.35)]">
-            {AGENTES.filter((a) => a.status === "ativo").length} ativos de {AGENTES.length}
+            {agentes.filter((a: typeof AGENTES[number]) => a.status === "ativo").length} ativos de {agentes.length}
           </span>
         </div>
+        {loadingAgents ? <AgentGridSkeleton count={5} /> : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {AGENTES.map((agente) => (
+          {agentes.map((agente: typeof AGENTES[number]) => (
             <div
               key={agente.id}
               className="glass-card rounded-xl p-4"
@@ -237,6 +297,7 @@ export function HomeContent() {
             </div>
           ))}
         </div>
+        )}
       </div>
     </div>
   );

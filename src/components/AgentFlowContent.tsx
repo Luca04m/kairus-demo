@@ -1,7 +1,62 @@
 "use client";
+import { useCallback } from "react";
 import { Plus, MessageSquare, Minus, Maximize, Keyboard, Webhook, CalendarClock, Brain, Zap } from "lucide-react";
+import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { SkeletonPulse, ErrorState } from "@/components/ui/LoadingSkeleton";
+
+interface FlowNode {
+  id: string;
+  type: string;
+  label: string;
+  icon: string;
+  color: string;
+  borderColor: string;
+}
+
+const MOCK_FLOW_NODES: FlowNode[] = [
+  { id: "n1", type: "action", label: "Analisar mensagem", icon: "brain", color: "rgba(139,92,246,0.18)", borderColor: "rgba(139,92,246,0.30)" },
+  { id: "n2", type: "action", label: "Executar ação", icon: "zap", color: "rgba(245,158,11,0.14)", borderColor: "rgba(245,158,11,0.28)" },
+  { id: "n3", type: "action", label: "Responder", icon: "message", color: "rgba(34,197,94,0.12)", borderColor: "rgba(34,197,94,0.26)" },
+];
 
 export function AgentFlowContent() {
+  const skip = !isSupabaseConfigured();
+
+  const fetchFlow = useCallback(async () => {
+    const res = await fetch("/api/agents?type=flow");
+    if (!res.ok) throw new Error("Failed to fetch flow");
+    const json = await res.json();
+    return (json.data ?? json ?? []) as FlowNode[];
+  }, []);
+
+  const { data: _flowNodes, loading, error, refetch } = useSupabaseQuery({
+    queryFn: fetchFlow,
+    mockData: MOCK_FLOW_NODES,
+    skip,
+  });
+
+  if (loading) {
+    return (
+      <div className="relative h-full w-full overflow-hidden" style={{ backgroundColor: "#080808" }}>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4">
+          <SkeletonPulse className="h-24 w-60 rounded-xl" />
+          <SkeletonPulse className="h-1 w-px" style={{ height: 28 }} />
+          <SkeletonPulse className="h-12 w-52 rounded-xl" />
+          <SkeletonPulse className="h-1 w-px" style={{ height: 28 }} />
+          <SkeletonPulse className="h-12 w-52 rounded-xl" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex h-full items-center justify-center" style={{ backgroundColor: "#080808" }}>
+        <ErrorState message="Erro ao carregar fluxo do agente." onRetry={refetch} />
+      </div>
+    );
+  }
+
   return (
     <div
       className="relative h-full w-full overflow-hidden"
@@ -115,16 +170,16 @@ export function AgentFlowContent() {
       {/* Zoom controls — glass surface */}
       <div className="absolute bottom-6 left-6 flex flex-col gap-1">
         {([
-          <Plus key="plus" size={15} />,
-          <Minus key="minus" size={15} />,
-          <Maximize key="max" size={15} />,
-          <Keyboard key="kb" size={15} />,
-        ] as React.ReactNode[]).map((icon, i) => (
+          { id: "zoom-in", icon: <Plus size={15} /> },
+          { id: "zoom-out", icon: <Minus size={15} /> },
+          { id: "maximize", icon: <Maximize size={15} /> },
+          { id: "keyboard", icon: <Keyboard size={15} /> },
+        ] as { id: string; icon: React.ReactNode }[]).map((item) => (
           <button
-            key={i}
+            key={item.id}
             className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(255,255,255,0.10)] bg-[rgba(255,255,255,0.05)] text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.10)] hover:border-[rgba(255,255,255,0.18)] backdrop-blur-md transition-all"
           >
-            {icon}
+            {item.icon}
           </button>
         ))}
       </div>

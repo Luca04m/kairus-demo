@@ -127,6 +127,7 @@ export function WorldNotifications() {
                     {n.title}
                   </span>
                   <button
+                    aria-label="Dispensar notificação"
                     onClick={() => setDismissed((s) => new Set(s).add(n.id))}
                     className="flex-shrink-0 text-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.5)] transition-colors cursor-pointer"
                   >

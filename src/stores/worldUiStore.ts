@@ -21,6 +21,8 @@ interface WorldUiState {
   notificationPanelOpen: boolean;
   /** Highlighted room IDs (e.g., from workflow hover) */
   highlightedRoomIds: string[];
+  /** World zoom level: map (isometric overview) or room (interior view) */
+  worldZoom: 'map' | 'room';
 
   // Actions
   selectRoom: (roomId: string | null) => void;
@@ -34,6 +36,10 @@ interface WorldUiState {
   zoomOut: () => void;
   resetZoom: () => void;
   closeAll: () => void;
+  /** Enter a room interior view */
+  enterRoom: (roomId: string) => void;
+  /** Exit back to map view */
+  exitRoom: () => void;
 }
 
 export const useWorldUiStore = create<WorldUiState>((set) => ({
@@ -45,6 +51,7 @@ export const useWorldUiStore = create<WorldUiState>((set) => ({
   detailPanelOpen: false,
   notificationPanelOpen: false,
   highlightedRoomIds: [],
+  worldZoom: 'map',
 
   selectRoom: (roomId) =>
     set({
@@ -87,5 +94,20 @@ export const useWorldUiStore = create<WorldUiState>((set) => ({
       detailPanelOpen: false,
       notificationPanelOpen: false,
       highlightedRoomIds: [],
+    }),
+
+  enterRoom: (roomId) =>
+    set({
+      selectedRoomId: roomId,
+      worldZoom: 'room',
+      selectedAgentId: null,
+      detailPanelOpen: false,
+    }),
+
+  exitRoom: () =>
+    set({
+      selectedRoomId: null,
+      worldZoom: 'map',
+      selectedAgentId: null,
     }),
 }));

@@ -2,15 +2,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
 import {
-  AlignJustify, BarChart2, ChevronDown, ChevronRight, ChevronsUpDown,
-  DollarSign, FileText, Globe, Headphones, Inbox, LayoutDashboard, LayoutGrid,
+  BarChart2, Bot, ChevronDown, ChevronRight, ChevronsUpDown,
+  DollarSign, Globe, Headphones, Inbox, LayoutDashboard,
   Link2, ListTodo, LogOut, Map, Megaphone, MessageCircle, MessageSquare,
-  Settings, Target, Users, Workflow,
+  Settings, ShoppingBag, Users, Workflow, User,
 } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
+import { DEMO_USER } from "@/lib/constants";
 
 const AGENT_ID = "demo-agent";
+const UNREAD_COUNT = 3;
 
 interface AppSidebarProps {
   mobileOpen?: boolean;
@@ -111,34 +114,81 @@ interface SidebarContentProps {
 
 function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarContentProps) {
   const { user, signOut } = useAuth();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const displayName = user?.user_metadata?.full_name ?? user?.email?.split("@")[0] ?? "Luca Moreno";
+  const displayName = user?.user_metadata?.full_name ?? user?.email?.split("@")[0] ?? DEMO_USER.name;
   const initials = displayName
     .split(" ")
+    .filter((w: string) => w.length > 0)
     .slice(0, 2)
     .map((w: string) => w[0]?.toUpperCase() ?? "")
-    .join("");
+    .join("") || DEMO_USER.initials;
+
+  // Close user menu on click outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    }
+    if (userMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [userMenuOpen]);
+
+  const sectionHeader = (label: string) => (
+    <p className="px-3 py-1 text-xs font-medium text-[rgba(255,255,255,0.4)]">{label}</p>
+  );
 
   return (
     <div className="flex h-full flex-col">
-      {/* Top — User avatar */}
-      <div className="pl-7 pt-5">
+      {/* Top — User dropdown */}
+      <div className="pl-7 pt-5 relative" ref={userMenuRef}>
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-1 text-sm text-white transition-opacity hover:opacity-80">
+          <button
+            onClick={() => setUserMenuOpen((prev) => !prev)}
+            className="flex items-center gap-1 text-sm text-white transition-opacity hover:opacity-80"
+          >
             <span>{displayName}</span>
-            <ChevronDown size={14} />
+            <ChevronDown size={14} className={`transition-transform duration-150 ${userMenuOpen ? "rotate-180" : ""}`} />
           </button>
         </div>
+
+        {/* Dropdown menu */}
+        {userMenuOpen && (
+          <div className="absolute left-5 top-full mt-1 z-50 w-48 rounded-lg border border-[rgba(255,255,255,0.1)] bg-[#141414] shadow-xl">
+            <Link
+              href="/settings"
+              onClick={() => { setUserMenuOpen(false); onClose?.(); }}
+              className="flex items-center gap-2 px-3 py-2 text-sm text-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,0.06)] hover:text-white rounded-t-lg transition-colors"
+            >
+              <User size={14} />
+              Minha conta
+            </Link>
+            <button
+              className="flex w-full items-center gap-2 px-3 py-2 text-sm text-[rgba(255,255,255,0.4)] cursor-default"
+            >
+              <ShoppingBag size={14} />
+              Plano
+            </button>
+            <button
+              onClick={() => { setUserMenuOpen(false); signOut(); }}
+              className="flex w-full items-center gap-2 px-3 py-2 text-sm text-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,0.06)] hover:text-red-400 rounded-b-lg transition-colors"
+            >
+              <LogOut size={14} />
+              Sair
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Beam section */}
+      {/* Kairus AI + Caixa de entrada */}
       <div className="flex flex-col gap-1 px-3 py-2">
         {navItem("/", <><Image src="/images/sphere.webp" alt="" width={16} height={16} className="rounded-full" />Kairus AI</>)}
-        {navItem("/agent-templates", <><LayoutGrid size={16} />Modelos de agente</>)}
-        {navItem("/views", <><AlignJustify size={16} />Visualizações</>)}
+        {navItem("/inbox", <><Inbox size={16} />Caixa de entrada</>, UNREAD_COUNT)}
       </div>
-
-      <div className="mx-3 my-2 border-t border-[rgba(255,255,255,0.08)]" />
 
       {/* Agent section */}
       <div className="px-3">
@@ -178,42 +228,33 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
 
       {/* Principal section */}
       <div className="px-3">
-        <p className="px-3 py-1 text-xs font-medium text-[rgba(255,255,255,0.4)]">Principal</p>
+        {sectionHeader("Principal")}
         <div className="flex flex-col gap-1">
-          {navItem("/dashboard", <><LayoutDashboard size={16} />Dashboard</>, 3)}
-          {navItem("/world", <><Globe size={16} />World</>)}
-          {navItem("/equipe", <><Users size={16} />Minha Equipe</>)}
-          {navItem("/sales-room", <><Headphones size={16} />Sales Room</>)}
-        </div>
-      </div>
-
-      {/* Produto section */}
-      <div className="px-3 mt-2">
-        <p className="px-3 py-1 text-xs font-medium text-[rgba(255,255,255,0.4)]">Produto</p>
-        <div className="flex flex-col gap-1">
-          {navItem("/roadmap", <><Map size={16} />Roadmap</>)}
-          {navItem("/tasks", <><ListTodo size={16} />Tarefas</>)}
+          {navItem("/dashboard", <><LayoutDashboard size={16} />Dashboard</>)}
+          {navItem("/financeiro", <><DollarSign size={16} />Financeiro</>)}
           {navItem("/marketing", <><Megaphone size={16} />Marketing</>)}
         </div>
       </div>
 
-      {/* Financeiro section */}
+      {/* IA & Agentes section */}
       <div className="px-3 mt-2">
-        <p className="px-3 py-1 text-xs font-medium text-[rgba(255,255,255,0.4)]">Financeiro</p>
+        {sectionHeader("IA & Agentes")}
         <div className="flex flex-col gap-1">
-          {navItem("/financeiro", <><DollarSign size={16} />Financeiro</>)}
-          {navItem("/roi", <><Target size={16} />ROI / Impacto</>)}
-          {navItem("/relatorios", <><FileText size={16} />Relatórios</>)}
+          {navItem("/equipe", <><Users size={16} />Visão Geral</>)}
+          {navItem("/sales-room", <><Headphones size={16} />Vendas</>)}
+          {navItem("/world", <><Globe size={16} />World</>)}
+          {navItem("/tasks", <><ListTodo size={16} />Tarefas</>)}
+          {navItem("/agent-templates", <><Bot size={16} />Meus Agentes</>)}
         </div>
       </div>
 
       {/* Sistema section */}
       <div className="px-3 mt-2">
-        <p className="px-3 py-1 text-xs font-medium text-[rgba(255,255,255,0.4)]">Sistema</p>
+        {sectionHeader("Sistema")}
         <div className="flex flex-col gap-1">
-          {navItem("/configuracoes", <><Settings size={16} />Configurações</>)}
+          {navItem("/roadmap", <><Map size={16} />Roadmap Kairus</>)}
           {navItem("/integrations", <><Link2 size={16} />Integrações</>)}
-          {navItem("/inbox", <><Inbox size={16} />Caixa de entrada</>)}
+          {navItem("/configuracoes", <><Settings size={16} />Configurações</>)}
         </div>
       </div>
 
@@ -227,35 +268,25 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
         }}
       />
 
-      {/* Bottom — Settings + Profile */}
+      {/* Bottom — Support + Profile */}
       <div className="flex flex-col gap-1 border-t border-[rgba(255,255,255,0.08)] px-3 py-2">
-        <a
-          href="#"
+        <button
           className="flex items-center gap-2 rounded-[10px] px-4 py-2 text-sm text-[rgba(255,255,255,0.4)] transition-all duration-150 hover:bg-[rgba(255,255,255,0.06)] hover:text-[rgba(255,255,255,0.7)]"
         >
           <MessageCircle size={16} />
           Chat e suporte
-        </a>
+        </button>
         <Link
           href="/settings"
           onClick={onClose}
           className="flex w-full items-center gap-2 rounded-[10px] px-4 py-2 text-sm text-white transition-all duration-150 hover:bg-[rgba(255,255,255,0.06)]"
         >
           <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(255,255,255,0.12)] text-[10px] font-bold text-white">
-            {initials || "CM"}
+            {initials || DEMO_USER.initials}
           </span>
           <span className="flex-1 text-left">{displayName}</span>
           <ChevronsUpDown size={14} color="rgba(255,255,255,0.4)" />
         </Link>
-        {user && (
-          <button
-            onClick={signOut}
-            className="flex items-center gap-2 rounded-[10px] px-4 py-2 text-sm text-[rgba(255,255,255,0.4)] transition-all duration-150 hover:bg-[rgba(255,255,255,0.06)] hover:text-red-400"
-          >
-            <LogOut size={16} />
-            Sair
-          </button>
-        )}
       </div>
     </div>
   );

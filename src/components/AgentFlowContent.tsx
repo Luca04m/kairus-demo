@@ -66,30 +66,6 @@ export function AgentFlowContent() {
         backgroundColor: "#080808",
       }}
     >
-      <style>{`
-        @keyframes activePulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50%       { opacity: 0.5; transform: scale(1.35); }
-        }
-        .pulse-dot { animation: activePulse 2s ease-in-out infinite; }
-
-        @keyframes nodeGlow {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.04); }
-          50%       { box-shadow: 0 0 14px 2px rgba(255,255,255,0.07); }
-        }
-        .node-card {
-          backdrop-filter: blur(12px);
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.12);
-          border-radius: 14px;
-          animation: nodeGlow 4s ease-in-out infinite;
-        }
-        .node-card:hover {
-          background: rgba(255,255,255,0.08);
-          border-color: rgba(255,255,255,0.18);
-        }
-      `}</style>
-
       {/* Header */}
       <div className="absolute top-4 left-4 right-4 flex items-start justify-between z-10">
         <div>
@@ -98,7 +74,7 @@ export function AgentFlowContent() {
         </div>
         <div className="flex items-center gap-2">
           <button className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-1.5 text-sm text-white hover:bg-[rgba(255,255,255,0.10)] transition-colors backdrop-blur-md">
-            <span className="pulse-dot h-2 w-2 rounded-full bg-[#22c55e]" />
+            <span className="animate-pulse-soft h-2 w-2 rounded-full bg-[#22c55e]" />
             Ativo
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[rgba(255,255,255,0.4)]"><path d="m6 9 6 6 6-6"/></svg>
           </button>
@@ -112,32 +88,32 @@ export function AgentFlowContent() {
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[58%] flex flex-col items-center">
 
         {/* Trigger node */}
-        <div className="node-card p-4 min-w-[240px] transition-all">
-          <p className="text-xs font-medium text-[rgba(255,255,255,0.35)] mb-3 uppercase tracking-wider">Gatilho</p>
+        <div className="backdrop-blur-[12px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.12)] rounded-xl hover:bg-[rgba(255,255,255,0.08)] hover:border-[rgba(255,255,255,0.18)] p-4 min-w-[240px] transition-all">
+          <p className="text-xs font-medium text-[rgba(255,255,255,0.5)] mb-3 uppercase tracking-wider">Gatilho</p>
           <div className="flex items-center gap-2">
             {/* Chat */}
             <div className="relative group">
               <button className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border border-[rgba(255,255,255,0.10)] bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] hover:text-white hover:bg-[rgba(255,255,255,0.12)] transition-all">
                 <MessageSquare size={14} />
               </button>
-              <span className="mt-1 block text-center text-[10px] text-[rgba(255,255,255,0.35)]">Chat</span>
+              <span className="mt-1 block text-center text-[10px] text-[rgba(255,255,255,0.5)]">Chat</span>
             </div>
             {/* Webhook */}
             <div className="relative group">
               <button className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border border-[rgba(255,255,255,0.10)] bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] hover:text-white hover:bg-[rgba(255,255,255,0.12)] transition-all">
                 <Webhook size={14} />
               </button>
-              <span className="mt-1 block text-center text-[10px] text-[rgba(255,255,255,0.35)]">Webhook</span>
+              <span className="mt-1 block text-center text-[10px] text-[rgba(255,255,255,0.5)]">Webhook</span>
             </div>
             {/* Agenda */}
             <div className="relative group">
               <button className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border border-[rgba(255,255,255,0.10)] bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] hover:text-white hover:bg-[rgba(255,255,255,0.12)] transition-all">
                 <CalendarClock size={14} />
               </button>
-              <span className="mt-1 block text-center text-[10px] text-[rgba(255,255,255,0.35)]">Agenda</span>
+              <span className="mt-1 block text-center text-[10px] text-[rgba(255,255,255,0.5)]">Agenda</span>
             </div>
             {/* Add */}
-            <button className="flex h-9 w-9 items-center justify-center rounded-lg border border-dashed border-[rgba(255,255,255,0.12)] text-[rgba(255,255,255,0.3)] hover:text-white hover:border-[rgba(255,255,255,0.25)] transition-all">
+            <button className="flex h-9 w-9 items-center justify-center rounded-lg border border-dashed border-[rgba(255,255,255,0.12)] text-[rgba(255,255,255,0.5)] hover:text-white hover:border-[rgba(255,255,255,0.25)] transition-all">
               <Plus size={14} />
             </button>
           </div>
@@ -161,7 +137,7 @@ export function AgentFlowContent() {
 
         {/* Add step at bottom */}
         <div className="mt-3">
-          <button className="flex h-8 w-8 items-center justify-center rounded-full border border-dashed border-[rgba(255,255,255,0.14)] text-[rgba(255,255,255,0.35)] hover:text-white hover:border-[rgba(255,255,255,0.28)] hover:bg-[rgba(255,255,255,0.04)] transition-all">
+          <button className="flex h-8 w-8 items-center justify-center rounded-full border border-dashed border-[rgba(255,255,255,0.14)] text-[rgba(255,255,255,0.5)] hover:text-white hover:border-[rgba(255,255,255,0.28)] hover:bg-[rgba(255,255,255,0.04)] transition-all">
             <Plus size={16} />
           </button>
         </div>
@@ -213,7 +189,7 @@ function FlowNode({
 }) {
   return (
     <div
-      className="flex items-center gap-3 px-4 py-3 min-w-[200px] rounded-[12px] backdrop-blur-md transition-all cursor-default hover:brightness-110"
+      className="flex items-center gap-3 px-4 py-3 min-w-[200px] rounded-xl backdrop-blur-md transition-all cursor-default hover:brightness-110"
       style={{
         background: color,
         border: `1px solid ${borderColor}`,

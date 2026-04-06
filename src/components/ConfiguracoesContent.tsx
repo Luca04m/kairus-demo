@@ -297,12 +297,17 @@ function SegurancaPanel() {
               Controle permissões de usuários e tokens de API
             </p>
           </div>
-          <button
-            disabled
-            className="rounded-lg border border-[rgba(255,255,255,0.08)] px-4 py-2 text-sm font-medium text-[rgba(255,255,255,0.3)] cursor-not-allowed"
-          >
-            Gerenciar acessos
-          </button>
+          <div className="relative group">
+            <button
+              disabled
+              className="rounded-lg border border-[rgba(255,255,255,0.08)] px-4 py-2 text-sm font-medium text-[rgba(255,255,255,0.5)] cursor-not-allowed"
+            >
+              Gerenciar acessos
+            </button>
+            <span className="pointer-events-none absolute right-0 top-full mt-1 z-10 whitespace-nowrap rounded-md bg-[#1a1a2e] border border-[rgba(255,255,255,0.1)] px-2 py-1 text-xs text-[rgba(255,255,255,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+              Disponível em breve
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -385,7 +390,7 @@ function PlanoPanel() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-[rgba(255,255,255,0.6)]">Próximo faturamento</p>
-              <p className="mt-0.5 text-xs text-[rgba(255,255,255,0.35)]">01/05/2026</p>
+              <p className="mt-0.5 text-xs text-[rgba(255,255,255,0.5)]">01/05/2026</p>
             </div>
             <p className="text-sm font-semibold text-white">R$ 7.500<span className="text-xs font-normal text-[rgba(255,255,255,0.4)]">/mês</span></p>
           </div>
@@ -415,7 +420,7 @@ export function ConfiguracoesContent() {
   };
 
   return (
-    <div className="p-6 max-w-4xl">
+    <div className="p-6 max-w-4xl mx-auto">
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-white mb-1">Configurações</h1>
         <p className="text-sm text-[rgba(255,255,255,0.4)]">
@@ -438,7 +443,7 @@ export function ConfiguracoesContent() {
                     : "text-[rgba(255,255,255,0.45)] hover:bg-[rgba(255,255,255,0.05)] hover:text-[rgba(255,255,255,0.7)]"
                 }`}
               >
-                <Icon size={15} className={active ? "text-white" : "text-[rgba(255,255,255,0.35)]"} />
+                <Icon size={15} className={active ? "text-white" : "text-[rgba(255,255,255,0.5)]"} />
                 {label}
               </button>
             );

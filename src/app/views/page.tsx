@@ -1,13 +1,5 @@
-import { AppHeader } from "@/components/AppHeader";
-import { ViewsContent } from "@/components/ViewsContent";
+import { redirect } from "next/navigation";
 
 export default function ViewsPage() {
-  return (
-    <>
-      <AppHeader title="Visualizações" />
-      <div className="flex-1 overflow-auto">
-        <ViewsContent />
-      </div>
-    </>
-  );
+  redirect("/dashboard");
 }

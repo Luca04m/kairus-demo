@@ -308,6 +308,160 @@ export const WORKFLOW_LINKS: WorkflowLink[] = [
   { from: "ops-logistica", to: "ops-estoque", label: "Atualizar estoque" },
 ];
 
+// ─── Isometric tile constants ───────────────────────────
+export const TILE_WIDTH = 140;
+export const TILE_HEIGHT = 70;
+export const ROOM_COLS = 20;
+export const ROOM_ROWS = 14;
+
+// ─── Furniture types ────────────────────────────────────
+export type FurnitureType =
+  | 'desk' | 'monitor' | 'whiteboard' | 'plant' | 'coffee' | 'bookshelf'
+  | 'serverRack' | 'camera' | 'chartBoard' | 'rug' | 'lamp' | 'couch'
+  | 'meetingTable' | 'waterCooler' | 'printer' | 'stickyWall' | 'cabinet' | 'projectorScreen';
+
+export interface FurnitureItem {
+  type: FurnitureType;
+  x: number;
+  y: number;
+}
+
+// Furniture templates per domain type
+export const furnitureTemplates: Record<DepartmentId, FurnitureItem[]> = {
+  vendas: [
+    { type: 'rug', x: 6, y: 5 },
+    { type: 'rug', x: 13, y: 9 },
+    { type: 'chartBoard', x: 4, y: 2 },
+    { type: 'projectorScreen', x: 10, y: 2 },
+    { type: 'stickyWall', x: 16, y: 2 },
+    { type: 'plant', x: 0, y: 2 },
+    { type: 'desk', x: 1, y: 3 },
+    { type: 'desk', x: 4, y: 3 },
+    { type: 'monitor', x: 7, y: 3 },
+    { type: 'monitor', x: 14, y: 3 },
+    { type: 'meetingTable', x: 8, y: 6 },
+    { type: 'whiteboard', x: 0, y: 6 },
+    { type: 'couch', x: 15, y: 7 },
+    { type: 'coffee', x: 19, y: 5 },
+    { type: 'waterCooler', x: 19, y: 8 },
+    { type: 'bookshelf', x: 0, y: 11 },
+    { type: 'lamp', x: 6, y: 12 },
+    { type: 'printer', x: 14, y: 12 },
+    { type: 'cabinet', x: 19, y: 12 },
+    { type: 'plant', x: 10, y: 13 },
+  ],
+  marketing: [
+    { type: 'rug', x: 5, y: 4 },
+    { type: 'rug', x: 12, y: 8 },
+    { type: 'projectorScreen', x: 6, y: 2 },
+    { type: 'stickyWall', x: 14, y: 2 },
+    { type: 'camera', x: 0, y: 2 },
+    { type: 'plant', x: 19, y: 2 },
+    { type: 'desk', x: 1, y: 3 },
+    { type: 'desk', x: 4, y: 3 },
+    { type: 'monitor', x: 1, y: 5 },
+    { type: 'meetingTable', x: 8, y: 5 },
+    { type: 'whiteboard', x: 12, y: 3 },
+    { type: 'couch', x: 15, y: 6 },
+    { type: 'coffee', x: 19, y: 4 },
+    { type: 'waterCooler', x: 19, y: 7 },
+    { type: 'bookshelf', x: 0, y: 10 },
+    { type: 'lamp', x: 5, y: 12 },
+    { type: 'printer', x: 15, y: 12 },
+    { type: 'cabinet', x: 19, y: 11 },
+    { type: 'plant', x: 10, y: 13 },
+  ],
+  financeiro: [
+    { type: 'rug', x: 5, y: 5 },
+    { type: 'rug', x: 13, y: 9 },
+    { type: 'chartBoard', x: 2, y: 2 },
+    { type: 'chartBoard', x: 8, y: 2 },
+    { type: 'projectorScreen', x: 13, y: 2 },
+    { type: 'serverRack', x: 19, y: 2 },
+    { type: 'plant', x: 0, y: 2 },
+    { type: 'desk', x: 1, y: 4 },
+    { type: 'desk', x: 5, y: 4 },
+    { type: 'monitor', x: 9, y: 4 },
+    { type: 'monitor', x: 14, y: 4 },
+    { type: 'monitor', x: 17, y: 4 },
+    { type: 'meetingTable', x: 7, y: 7 },
+    { type: 'whiteboard', x: 0, y: 7 },
+    { type: 'couch', x: 15, y: 8 },
+    { type: 'coffee', x: 19, y: 5 },
+    { type: 'waterCooler', x: 19, y: 8 },
+    { type: 'bookshelf', x: 0, y: 11 },
+    { type: 'lamp', x: 5, y: 12 },
+    { type: 'printer', x: 14, y: 12 },
+    { type: 'cabinet', x: 19, y: 12 },
+    { type: 'plant', x: 10, y: 13 },
+  ],
+  operacoes: [
+    { type: 'rug', x: 5, y: 5 },
+    { type: 'rug', x: 13, y: 9 },
+    { type: 'serverRack', x: 0, y: 2 },
+    { type: 'projectorScreen', x: 5, y: 2 },
+    { type: 'stickyWall', x: 13, y: 2 },
+    { type: 'monitor', x: 19, y: 2 },
+    { type: 'desk', x: 1, y: 4 },
+    { type: 'desk', x: 5, y: 4 },
+    { type: 'monitor', x: 9, y: 4 },
+    { type: 'monitor', x: 14, y: 4 },
+    { type: 'meetingTable', x: 7, y: 7 },
+    { type: 'whiteboard', x: 0, y: 7 },
+    { type: 'chartBoard', x: 16, y: 3 },
+    { type: 'couch', x: 15, y: 8 },
+    { type: 'coffee', x: 19, y: 5 },
+    { type: 'waterCooler', x: 19, y: 8 },
+    { type: 'bookshelf', x: 0, y: 11 },
+    { type: 'lamp', x: 5, y: 12 },
+    { type: 'printer', x: 14, y: 12 },
+    { type: 'cabinet', x: 19, y: 12 },
+    { type: 'plant', x: 0, y: 13 },
+    { type: 'plant', x: 10, y: 13 },
+  ],
+  atendimento: [
+    { type: 'rug', x: 5, y: 5 },
+    { type: 'rug', x: 13, y: 8 },
+    { type: 'stickyWall', x: 2, y: 2 },
+    { type: 'projectorScreen', x: 9, y: 2 },
+    { type: 'camera', x: 17, y: 2 },
+    { type: 'plant', x: 0, y: 2 },
+    { type: 'desk', x: 1, y: 4 },
+    { type: 'desk', x: 5, y: 4 },
+    { type: 'monitor', x: 9, y: 4 },
+    { type: 'monitor', x: 14, y: 3 },
+    { type: 'whiteboard', x: 0, y: 7 },
+    { type: 'meetingTable', x: 7, y: 7 },
+    { type: 'couch', x: 15, y: 7 },
+    { type: 'couch', x: 0, y: 11 },
+    { type: 'coffee', x: 19, y: 5 },
+    { type: 'waterCooler', x: 19, y: 8 },
+    { type: 'bookshelf', x: 19, y: 11 },
+    { type: 'lamp', x: 6, y: 12 },
+    { type: 'lamp', x: 14, y: 12 },
+    { type: 'plant', x: 10, y: 13 },
+    { type: 'plant', x: 19, y: 2 },
+  ],
+};
+
+// ─── Domain zone backgrounds for world map ──────────────
+export interface DomainZone {
+  domain: DepartmentId;
+  label: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export const DOMAIN_ZONES: DomainZone[] = [
+  { domain: 'vendas', label: 'Vendas', x: -120, y: -20, w: 340, h: 200 },
+  { domain: 'marketing', label: 'Marketing', x: 170, y: -20, w: 280, h: 200 },
+  { domain: 'financeiro', label: 'Financeiro', x: 400, y: -20, w: 280, h: 200 },
+  { domain: 'operacoes', label: 'Operacoes', x: -120, y: 200, w: 340, h: 200 },
+  { domain: 'atendimento', label: 'Atendimento', x: 170, y: 200, w: 280, h: 200 },
+];
+
 // ─── Seed notifications ──────────────────────────────────
 export interface WorldNotification {
   id: string;

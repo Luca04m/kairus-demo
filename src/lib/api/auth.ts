@@ -55,6 +55,11 @@ export function errorResponse(message: string, status: number, code?: string) {
   );
 }
 
+/** Standard cache headers for authenticated GET responses (browser-only, not CDN) */
+export const PRIVATE_CACHE_HEADERS = {
+  'Cache-Control': 'private, max-age=30, stale-while-revalidate=60',
+};
+
 /** Parse pagination params from URL search params */
 export function parsePagination(searchParams: URLSearchParams) {
   const limit = Math.min(Math.max(parseInt(searchParams.get("limit") ?? "20", 10), 1), 100);

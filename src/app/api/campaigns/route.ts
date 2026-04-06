@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuthContext, isAuthError, errorResponse, parsePagination } from "@/lib/api/auth";
+import { getAuthContext, isAuthError, errorResponse, parsePagination, PRIVATE_CACHE_HEADERS } from "@/lib/api/auth";
 
 export async function GET(request: NextRequest) {
   const auth = await getAuthContext();
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     return errorResponse("Failed to fetch campaigns", 500);
   }
 
-  return NextResponse.json({ data, total: count, limit, offset });
+  return NextResponse.json({ data, total: count, limit, offset }, { headers: PRIVATE_CACHE_HEADERS });
 }
 
 export async function POST(request: NextRequest) {

@@ -113,11 +113,12 @@ function SkeletonTable({ rows = 5, cols = 4, className }: SkeletonTableProps) {
 
 interface SkeletonChartProps {
   className?: string
+  height?: number
 }
 
-function SkeletonChart({ className }: SkeletonChartProps) {
+function SkeletonChart({ className, height }: SkeletonChartProps) {
   return (
-    <div className={cn("glass-card rounded-xl p-5 space-y-4", className)}>
+    <div className={cn("glass-card rounded-xl p-5 space-y-4", className)} style={height ? { minHeight: height } : undefined}>
       <div className="flex items-center justify-between">
         <Skeleton className="h-3.5 w-1/4" />
         <Skeleton className="h-3 w-16" />

@@ -60,7 +60,7 @@ export function BeamHomeContent() {
 
       {/* "+ New agent" button — absolute top-right */}
       <div className="absolute right-4 top-4 z-50">
-        <button className="flex items-center gap-1.5 rounded-[10px] border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-sm text-white hover:bg-[rgba(255,255,255,0.08)] transition-colors">
+        <button className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-sm text-white hover:bg-[rgba(255,255,255,0.08)] transition-colors">
           <Plus size={16} />
           Novo agente
         </button>
@@ -86,7 +86,7 @@ export function BeamHomeContent() {
           {/* Chat input box */}
           <div
             className={[
-              "w-full rounded-[14px] border bg-[#080808] transition-all duration-300",
+              "w-full rounded-xl border bg-[#080808] transition-all duration-300",
               focused
                 ? "border-[rgba(255,255,255,0.22)] shadow-[0_0_0_3px_rgba(99,102,241,0.15)]"
                 : "border-[rgba(255,255,255,0.08)]",
@@ -105,7 +105,7 @@ export function BeamHomeContent() {
             {/* Toolbar */}
             <div className="flex items-center justify-between px-3 py-2">
               {/* Left: Perguntar button + chevron */}
-              <div className="flex items-center rounded-[10px] border border-[rgba(255,255,255,0.1)]">
+              <div className="flex items-center rounded-lg border border-[rgba(255,255,255,0.1)]">
                 <button className="flex h-8 items-center gap-1.5 px-3 text-sm text-white hover:bg-[rgba(255,255,255,0.05)] transition-colors rounded-l-[10px]">
                   <Zap size={14} />
                   Perguntar
@@ -117,16 +117,16 @@ export function BeamHomeContent() {
 
               {/* Right: icon buttons + send */}
               <div className="flex items-center gap-0.5">
-                <button className="p-2 text-[rgba(255,255,255,0.35)] hover:text-white transition-colors">
+                <button className="p-2 text-[rgba(255,255,255,0.5)] hover:text-white transition-colors">
                   <Paperclip size={18} />
                 </button>
-                <button className="p-2 text-[rgba(255,255,255,0.35)] hover:text-white transition-colors">
+                <button className="p-2 text-[rgba(255,255,255,0.5)] hover:text-white transition-colors">
                   <Link2 size={18} />
                 </button>
-                <button className="p-2 text-[rgba(255,255,255,0.35)] hover:text-white transition-colors">
+                <button className="p-2 text-[rgba(255,255,255,0.5)] hover:text-white transition-colors">
                   <LayoutGrid size={18} />
                 </button>
-                <button className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[rgba(255,255,255,0.15)] text-white hover:bg-[rgba(255,255,255,0.2)] transition-colors ml-1">
+                <button className="flex h-9 w-9 items-center justify-center rounded-lg bg-[rgba(255,255,255,0.15)] text-white hover:bg-[rgba(255,255,255,0.2)] transition-colors ml-1">
                   <ArrowUp size={16} />
                 </button>
               </div>
@@ -134,8 +134,8 @@ export function BeamHomeContent() {
           </div>
 
           {/* Keyboard shortcut hint */}
-          <p className="mt-2 text-xs text-[rgba(255,255,255,0.25)]">
-            ⌘ + K para atalhos
+          <p className="mt-2 text-xs text-[rgba(255,255,255,0.5)]" suppressHydrationWarning>
+            {typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.userAgent) ? "⌘" : "Ctrl"} + K para atalhos
           </p>
 
           {/* Skills row */}
@@ -147,7 +147,7 @@ export function BeamHomeContent() {
               {SKILLS.map((skill) => (
                 <button
                   key={skill}
-                  className="flex items-center gap-2 rounded-[14px] border border-[rgba(255,255,255,0.08)] bg-transparent px-4 py-2 text-sm text-white hover:border-[rgba(255,255,255,0.2)] hover:bg-[rgba(255,255,255,0.05)] transition-all whitespace-nowrap"
+                  className="flex items-center gap-2 rounded-xl border border-[rgba(255,255,255,0.08)] bg-transparent px-4 py-2 text-sm text-white hover:border-[rgba(255,255,255,0.2)] hover:bg-[rgba(255,255,255,0.05)] transition-all whitespace-nowrap"
                 >
                   <LayoutGrid size={15} className="text-[rgba(255,255,255,0.4)]" />
                   {skill}
@@ -165,7 +165,7 @@ export function BeamHomeContent() {
               {AGENTS.map((agent) => (
                 <button
                   key={agent}
-                  className="flex items-center gap-2.5 rounded-[14px] border border-[rgba(255,255,255,0.08)] bg-transparent px-4 py-2 text-sm text-white hover:border-[rgba(255,255,255,0.2)] hover:bg-[rgba(255,255,255,0.05)] transition-all whitespace-nowrap"
+                  className="flex items-center gap-2.5 rounded-xl border border-[rgba(255,255,255,0.08)] bg-transparent px-4 py-2 text-sm text-white hover:border-[rgba(255,255,255,0.2)] hover:bg-[rgba(255,255,255,0.05)] transition-all whitespace-nowrap"
                 >
                   <Image
                     src="/images/sphere.webp"

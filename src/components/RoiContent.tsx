@@ -71,9 +71,8 @@ export function RoiContent() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Header */}
+      {/* Header context */}
       <div>
-        <h1 className="text-xl font-semibold text-white mb-1">ROI / Impacto</h1>
         <p className="text-sm text-[rgba(255,255,255,0.4)]">
           Investimento vs valor gerado pela sua equipe de IA
         </p>
@@ -97,7 +96,7 @@ export function RoiContent() {
             <p className="text-3xl font-bold text-white tabular-nums">
               R$ {roiDados.investimentoTotal.toLocaleString("pt-BR")}
             </p>
-            <p className="text-xs text-[rgba(255,255,255,0.35)] mt-1.5">6 meses · setup + mensalidade</p>
+            <p className="text-xs text-[rgba(255,255,255,0.5)] mt-1.5">6 meses · setup + mensalidade</p>
           </div>
         </div>
 
@@ -116,13 +115,13 @@ export function RoiContent() {
             <p className="text-3xl font-bold text-green-400 tabular-nums">
               R$ {roiDados.valorGerado.toLocaleString("pt-BR")}
             </p>
-            <p className="text-xs text-[rgba(255,255,255,0.35)] mt-1.5">receita + economia operacional</p>
+            <p className="text-xs text-[rgba(255,255,255,0.5)] mt-1.5">receita + economia operacional</p>
           </div>
         </div>
 
         {/* ROI */}
         <div
-          className="glass-card rounded-xl border border-green-500/30 bg-gradient-to-br from-green-500/15 via-emerald-500/8 to-transparent p-6 relative overflow-hidden"
+          className="glass-card rounded-xl border border-green-500/30 bg-gradient-to-br from-green-500/15 via-emerald-500/[8%] to-transparent p-6 relative overflow-hidden"
           style={{ boxShadow: "var(--shadow-glow-green)" }}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-green-900/15 to-transparent pointer-events-none" />
@@ -282,7 +281,7 @@ export function RoiContent() {
                           style={{ width: `${pct}%` }}
                         />
                       </div>
-                      <span className="text-xs text-[rgba(255,255,255,0.35)] tabular-nums w-8 text-right">{pct}%</span>
+                      <span className="text-xs text-[rgba(255,255,255,0.5)] tabular-nums w-8 text-right">{pct}%</span>
                     </div>
                   </td>
                   <td className="px-3 py-3">
@@ -311,7 +310,7 @@ export function RoiContent() {
               <td className="px-3 py-3 hidden sm:table-cell">
                 <div className="flex items-center gap-2">
                   <div className="flex-1 h-1.5 rounded-full bg-green-500/30 min-w-[60px]" />
-                  <span className="text-xs text-[rgba(255,255,255,0.35)] tabular-nums w-8 text-right">100%</span>
+                  <span className="text-xs text-[rgba(255,255,255,0.5)] tabular-nums w-8 text-right">100%</span>
                 </div>
               </td>
               <td className="px-3 py-3" />

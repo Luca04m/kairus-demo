@@ -72,7 +72,9 @@ export function RoomCard({ room }: RoomCardProps) {
       style={{
         boxShadow: hovered || isSelected
           ? `0 0 24px ${domain?.glowColor ?? "transparent"}, inset 0 0.5px 0 rgba(255,255,255,0.08)`
-          : "inset 0 0.5px 0 rgba(255,255,255,0.04)",
+          : activeCount > 0
+            ? `0 0 12px ${domain?.glowColor ?? "transparent"}, inset 0 0.5px 0 rgba(255,255,255,0.06)`
+            : "inset 0 0.5px 0 rgba(255,255,255,0.04)",
         borderColor: isSelected
           ? `${domain?.tileColor ?? "rgba(255,255,255,0.15)"}88`
           : undefined,
@@ -116,22 +118,30 @@ export function RoomCard({ room }: RoomCardProps) {
 
       {/* Agent sprites row */}
       {agents.length > 0 && (
-        <div className="flex items-center gap-1 mt-0.5">
-          {agents.map((agent) => (
-            <AgentSprite
-              key={`room-${room.id}-agent-${agent.id}`}
-              id={agent.id}
-              nome={agent.nome}
-              iniciais={agent.iniciais}
-              status={agent.status}
-              cor={agent.departamentoCor}
-              size="sm"
-            />
-          ))}
-          {agents.length > 0 && (
-            <span className="text-[9px] text-[rgba(255,255,255,0.3)] ml-1">
-              {activeCount} ativo{activeCount !== 1 ? "s" : ""}
-            </span>
+        <div className="flex flex-col gap-1 mt-0.5">
+          <div className="flex items-center gap-1">
+            {agents.map((agent) => (
+              <AgentSprite
+                key={`room-${room.id}-agent-${agent.id}`}
+                id={agent.id}
+                nome={agent.nome}
+                iniciais={agent.iniciais}
+                status={agent.status}
+                cor={agent.departamentoCor}
+                size="sm"
+              />
+            ))}
+            {agents.length > 0 && (
+              <span className="text-[9px] text-[rgba(255,255,255,0.3)] ml-1">
+                {activeCount} ativo{activeCount !== 1 ? "s" : ""}
+              </span>
+            )}
+          </div>
+          {/* Current activity from live presence */}
+          {hasLivePresence && roomPresences[0]?.current_task && (
+            <div className="text-[9px] text-[rgba(255,255,255,0.35)] truncate leading-tight">
+              {roomPresences[0].current_task}
+            </div>
           )}
         </div>
       )}

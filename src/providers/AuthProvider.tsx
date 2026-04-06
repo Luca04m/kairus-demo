@@ -51,12 +51,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     let cancelled = false;
 
-    // Fallback: if Supabase doesn't respond in 2s (paused project, network issue),
-    // resolve as unauthenticated so the UI doesn't hang forever
+    // Fallback: if Supabase doesn't respond in 500ms (paused project, network issue),
+    // resolve as unauthenticated so the UI doesn't hang forever.
+    // 500ms is enough for a live project; fast enough not to block the demo.
     const timeout = setTimeout(() => {
       if (cancelled) return;
       setLoading(false);
-    }, 2000);
+    }, 500);
 
     // Get initial session
     supabase.auth.getSession().then(({ data: { session: initialSession } }) => {

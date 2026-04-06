@@ -54,7 +54,7 @@ export function RoadmapView() {
   );
 
   return (
-    <div className="flex-1 overflow-auto p-6 space-y-5">
+    <div className="flex-1 overflow-auto p-6 space-y-6">
       {/* Page header */}
       <div className="pb-4 border-b border-[rgba(255,255,255,0.06)]">
         <RoadmapHeader itemCount={items.length} />

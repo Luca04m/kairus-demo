@@ -8,27 +8,10 @@ export function AgentChatContent() {
       className="flex h-full flex-col items-center justify-center px-8 relative"
       style={{ background: "radial-gradient(45% 250px at 50% 0px, rgba(255, 255, 255, 0.04) 18.31%, rgba(0, 0, 0, 0) 92.85%)" }}
     >
-      <style>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(18px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .chat-enter {
-          animation: fadeInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-        @keyframes glowPulse {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.08), 0 0 18px 4px rgba(120,120,255,0.10); }
-          50%       { box-shadow: 0 0 0 4px rgba(255,255,255,0.04), 0 0 28px 8px rgba(120,120,255,0.18); }
-        }
-        .avatar-glow {
-          animation: glowPulse 3s ease-in-out infinite;
-        }
-      `}</style>
-
-      <div className="chat-enter w-full max-w-[620px] flex flex-col items-center gap-6">
+      <div className="animate-fade-in-up w-full max-w-[620px] flex flex-col items-center gap-6">
         {/* Avatar + headline */}
         <div className="text-center flex flex-col items-center gap-3">
-          <div className="avatar-glow rounded-full p-[3px] bg-gradient-to-br from-[rgba(255,255,255,0.12)] to-[rgba(255,255,255,0.03)]">
+          <div className="animate-pulse-soft rounded-full p-[3px] bg-gradient-to-br from-[rgba(255,255,255,0.12)] to-[rgba(255,255,255,0.03)]">
             <Image
               src="/images/sphere.webp"
               alt="Agent avatar"
@@ -55,7 +38,7 @@ export function AgentChatContent() {
 
         {/* Input — glass-card */}
         <div
-          className="w-full rounded-[16px] border border-[rgba(255,255,255,0.10)] backdrop-blur-md"
+          className="w-full rounded-2xl border border-[rgba(255,255,255,0.10)] backdrop-blur-md"
           style={{ background: "rgba(255,255,255,0.04)" }}
         >
           <div className="px-4 pt-3 pb-2">
@@ -67,7 +50,7 @@ export function AgentChatContent() {
           </div>
           <div className="flex items-center justify-between px-3 py-2 border-t border-[rgba(255,255,255,0.06)]">
             {/* Perguntar / mode selector inside input */}
-            <div className="flex items-center rounded-[10px] border border-[rgba(255,255,255,0.1)]">
+            <div className="flex items-center rounded-lg border border-[rgba(255,255,255,0.1)]">
               <button className="flex h-8 items-center gap-1.5 px-3 text-sm text-white hover:bg-[rgba(255,255,255,0.05)] rounded-l-[10px] transition-colors">
                 <Zap size={14} />
                 Perguntar
@@ -77,13 +60,13 @@ export function AgentChatContent() {
               </button>
             </div>
             <div className="flex items-center gap-0.5">
-              <button className="p-2 text-[rgba(255,255,255,0.35)] hover:text-white transition-colors">
+              <button className="p-2 text-[rgba(255,255,255,0.5)] hover:text-white transition-colors">
                 <Paperclip size={16} />
               </button>
-              <button className="p-2 text-[rgba(255,255,255,0.35)] hover:text-white transition-colors">
+              <button className="p-2 text-[rgba(255,255,255,0.5)] hover:text-white transition-colors">
                 <Settings2 size={16} />
               </button>
-              <button className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-[rgba(255,255,255,0.15)] text-white hover:bg-[rgba(255,255,255,0.22)] ml-1 transition-colors">
+              <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-[rgba(255,255,255,0.15)] text-white hover:bg-[rgba(255,255,255,0.22)] ml-1 transition-colors">
                 <ArrowUp size={15} />
               </button>
             </div>

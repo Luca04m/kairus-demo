@@ -60,14 +60,16 @@ export function AppHeader({ title, parent, badge }: AppHeaderProps) {
           <PanelLeft size={20} />
         </button>
 
-        {/* Desktop PanelLeft — decorative, always visible on desktop */}
+        {/* Desktop PanelLeft — toggle sidebar */}
         <button
+          onClick={toggleSidebar}
           className="
             hidden flex-shrink-0 rounded-md p-1
             text-[rgba(255,255,255,0.4)]
             transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white
             md:flex
           "
+          aria-label="Toggle sidebar"
         >
           <PanelLeft size={20} />
         </button>
@@ -83,10 +85,10 @@ export function AppHeader({ title, parent, badge }: AppHeaderProps) {
           </div>
         ) : (
           <div className="flex min-w-0 items-center gap-2">
-            <button className="flex-shrink-0 rounded-md p-1 text-[rgba(255,255,255,0.4)] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white">
+            <button className="flex-shrink-0 rounded-md p-1 text-[rgba(255,255,255,0.4)] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white" aria-label="Conexões">
               <Network size={20} />
             </button>
-            <button className="flex-shrink-0 rounded-md p-1 text-[rgba(255,255,255,0.4)] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white">
+            <button className="flex-shrink-0 rounded-md p-1 text-[rgba(255,255,255,0.4)] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white" aria-label="Histórico">
               <History size={20} />
             </button>
             <span className="truncate text-sm font-medium text-white">{displayTitle}</span>

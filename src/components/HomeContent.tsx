@@ -1,7 +1,9 @@
 "use client";
 import { useCallback } from "react";
-import { Activity, Bell, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { Activity, Bell, TrendingUp, TrendingDown, Minus, Wifi, Bot } from "lucide-react";
+import { DEMO_USER } from "@/lib/constants";
 import { KPIS_VISAO_GERAL, ATIVIDADE_RECENTE, ALERTAS, AGENTES } from "@/data/mrlion";
+import { GREETING_CONTEXT, CONEXOES_ATIVAS, AGENTES_RESUMO } from "@/data/dashboard";
 import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
 import { KpiGridSkeleton, AgentGridSkeleton, SkeletonRow } from "@/components/ui/LoadingSkeleton";
 
@@ -127,14 +129,72 @@ export function HomeContent() {
       {/* Page header */}
       <div className="pb-4 border-b border-[rgba(255,255,255,0.06)]">
         <h1 className="text-xl font-semibold text-white">
-          {greeting}, Luca
+          {greeting}, {DEMO_USER.firstName}
         </h1>
         <p className="text-sm text-[rgba(255,255,255,0.4)] mt-0.5">
-          Quarta-feira, 2 de Abril de 2026
+          {new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
         </p>
-        <p className="text-xs text-[rgba(255,255,255,0.25)] mt-1">
-          Aqui está o resumo da sua operação
+        <p className="text-xs text-[rgba(255,255,255,0.5)] mt-1">
+          Revenue mensal: {GREETING_CONTEXT.receitaMensal} &middot; {GREETING_CONTEXT.pedidosMes} pedidos este mes &middot; {GREETING_CONTEXT.agentesAtivos} agentes ativos
         </p>
+      </div>
+
+      {/* Conexoes ativas + Agentes resumo */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Conexoes ativas */}
+        <div className="glass-card rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-3 pb-2 border-b border-[rgba(255,255,255,0.05)]">
+            <Wifi size={13} className="text-green-400" />
+            <span className="text-xs font-medium text-white">Conexoes ativas</span>
+            <span className="text-[10px] text-[rgba(255,255,255,0.4)]">{CONEXOES_ATIVAS.length} fontes</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {CONEXOES_ATIVAS.map((cx) => (
+              <div
+                key={cx.id}
+                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]"
+              >
+                <span className="text-sm">{cx.icone}</span>
+                <div className="flex flex-col">
+                  <span className="text-[11px] text-white font-medium leading-tight">{cx.nome}</span>
+                  <span className="text-[9px] text-green-400 leading-tight">{cx.detalhe}</span>
+                </div>
+                <span className="h-1.5 w-1.5 rounded-full bg-green-400 flex-shrink-0 ml-1" style={{ animation: "pulseSoft 2s ease-in-out infinite" }} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Agentes resumo */}
+        <div className="glass-card rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-3 pb-2 border-b border-[rgba(255,255,255,0.05)]">
+            <Bot size={13} className="text-[rgba(255,255,255,0.4)]" />
+            <span className="text-xs font-medium text-white">{AGENTES_RESUMO.length} agentes ativos</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {AGENTES_RESUMO.map((ag) => (
+              <div
+                key={ag.nome}
+                className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]"
+              >
+                <span
+                  className="flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-semibold text-white"
+                  style={{ backgroundColor: `${ag.cor}33`, border: `1px solid ${ag.cor}55` }}
+                >
+                  {ag.nome.slice(0, 2).toUpperCase()}
+                </span>
+                <div className="flex flex-col">
+                  <span className="text-[11px] text-white font-medium leading-tight">{ag.nome}</span>
+                  <span className="text-[9px] text-[rgba(255,255,255,0.4)] leading-tight">{ag.area}</span>
+                </div>
+                <span
+                  className="h-1.5 w-1.5 rounded-full bg-green-400 flex-shrink-0"
+                  style={{ animation: "pulseSoft 2s ease-in-out infinite" }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* KPI cards — responsive grid */}
@@ -164,7 +224,7 @@ export function HomeContent() {
                 </div>
               )}
               {kpi.periodo && (
-                <div className="text-[10px] text-[rgba(255,255,255,0.3)] mt-0.5 pl-3">
+                <div className="text-[10px] text-[rgba(255,255,255,0.5)] mt-0.5 pl-3">
                   {kpi.periodo}
                 </div>
               )}
@@ -198,7 +258,7 @@ export function HomeContent() {
                   </span>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-white leading-snug">{item.acao}</p>
-                    <p className="text-xs text-[rgba(255,255,255,0.35)] mt-0.5">{item.tempo}</p>
+                    <p className="text-xs text-[rgba(255,255,255,0.5)] mt-0.5">{item.tempo}</p>
                   </div>
                 </div>
               );
@@ -226,7 +286,7 @@ export function HomeContent() {
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-white leading-snug">{alerta.titulo}</p>
-                    <p className="text-xs text-[rgba(255,255,255,0.35)] mt-0.5">{alerta.tempo}</p>
+                    <p className="text-xs text-[rgba(255,255,255,0.5)] mt-0.5">{alerta.tempo}</p>
                   </div>
                 </div>
               );
@@ -248,7 +308,7 @@ export function HomeContent() {
       <div>
         <div className="flex items-center gap-2 mb-3">
           <span className="text-sm font-medium text-white">Agentes</span>
-          <span className="text-xs text-[rgba(255,255,255,0.35)]">
+          <span className="text-xs text-[rgba(255,255,255,0.5)]">
             {agentes.filter((a: typeof AGENTES[number]) => a.status === "ativo").length} ativos de {agentes.length}
           </span>
         </div>
@@ -282,7 +342,7 @@ export function HomeContent() {
                       }
                     />
                   </div>
-                  <span className="text-[10px] text-[rgba(255,255,255,0.35)]">
+                  <span className="text-[10px] text-[rgba(255,255,255,0.5)]">
                     {agente.departamento.charAt(0).toUpperCase() + agente.departamento.slice(1)}
                   </span>
                 </div>
@@ -291,7 +351,7 @@ export function HomeContent() {
               <p className="text-[11px] text-[rgba(255,255,255,0.5)] leading-snug line-clamp-2">
                 {agente.ultimaAcao}
               </p>
-              <p className="text-[10px] text-[rgba(255,255,255,0.25)] mt-1.5">
+              <p className="text-[10px] text-[rgba(255,255,255,0.5)] mt-1.5">
                 {agente.ultimaAcaoTempo}
               </p>
             </div>

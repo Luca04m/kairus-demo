@@ -1,5 +1,6 @@
 "use client";
 import { Upload, Trash2, Eye, Lock, Check, Globe, AlertTriangle } from "lucide-react";
+import { DEMO_USER } from "@/lib/constants";
 
 export function AccountSettingsContent() {
   return (
@@ -18,10 +19,10 @@ export function AccountSettingsContent() {
             {/* Avatar with gradient */}
             <div className="h-16 w-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0"
               style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.7) 0%, rgba(168,85,247,0.6) 100%)", border: "1px solid rgba(255,255,255,0.12)" }}>
-              <span className="text-xl font-bold text-white">CM</span>
+              <span className="text-xl font-bold text-white">{DEMO_USER.initials}</span>
             </div>
             <div className="flex flex-col gap-1.5">
-              <p className="text-sm text-[rgba(255,255,255,0.55)]">Luca Moreno</p>
+              <p className="text-sm text-[rgba(255,255,255,0.55)]">{DEMO_USER.name}</p>
               <div className="flex items-center gap-2">
                 <button className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-xs text-[rgba(255,255,255,0.55)] hover:bg-[rgba(255,255,255,0.06)] transition-colors">
                   <Upload size={13} />
@@ -42,14 +43,14 @@ export function AccountSettingsContent() {
         <div className="mb-2">
           <label className="block text-sm font-medium text-white mb-1.5">E-mail</label>
           <div className="relative">
-            <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.3)]" />
+            <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.5)]" />
             <input
               readOnly
-              value="carlos.moreno@kairus.ai"
+              value={DEMO_USER.email}
               className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] pl-9 pr-3 py-2 text-sm text-[rgba(255,255,255,0.4)] outline-none cursor-not-allowed"
             />
           </div>
-          <p className="mt-1.5 text-xs text-[rgba(255,255,255,0.3)] flex items-center gap-1">
+          <p className="mt-1.5 text-xs text-[rgba(255,255,255,0.5)] flex items-center gap-1">
             <Lock size={11} />
             Gerenciado pelo provedor de identidade
           </p>
@@ -59,7 +60,7 @@ export function AccountSettingsContent() {
         <div className="mb-2">
           <label className="block text-sm font-medium text-white mb-1.5">Nome completo</label>
           <input
-            defaultValue="Luca Moreno"
+            defaultValue={DEMO_USER.name}
             className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none transition-all focus:border-[rgba(99,102,241,0.6)] focus:bg-[rgba(99,102,241,0.06)] focus:ring-1 focus:ring-[rgba(99,102,241,0.2)]"
           />
         </div>
@@ -79,7 +80,7 @@ export function AccountSettingsContent() {
                   placeholder="Senha"
                   className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 pr-9 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none transition-all focus:border-[rgba(99,102,241,0.6)] focus:ring-1 focus:ring-[rgba(99,102,241,0.2)]"
                 />
-                <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.35)] hover:text-white transition-colors">
+                <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.5)] hover:text-white transition-colors">
                   <Eye size={15} />
                 </button>
               </div>
@@ -90,7 +91,7 @@ export function AccountSettingsContent() {
                 <div className="h-1 flex-1 rounded-full bg-[rgba(245,158,11,0.5)]" />
                 <div className="h-1 flex-1 rounded-full bg-[rgba(255,255,255,0.1)]" />
               </div>
-              <p className="mt-1 text-xs text-[rgba(255,255,255,0.3)]">8 caracteres mínimos</p>
+              <p className="mt-1 text-xs text-[rgba(255,255,255,0.5)]">8 caracteres mínimos</p>
             </div>
             <div>
               <label className="block text-sm text-[rgba(255,255,255,0.7)] mb-1.5">Confirmar senha</label>
@@ -100,7 +101,7 @@ export function AccountSettingsContent() {
                   placeholder="Confirmar senha"
                   className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 pr-9 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none transition-all focus:border-[rgba(99,102,241,0.6)] focus:ring-1 focus:ring-[rgba(99,102,241,0.2)]"
                 />
-                <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.35)] hover:text-white transition-colors">
+                <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.5)] hover:text-white transition-colors">
                   <Eye size={15} />
                 </button>
               </div>
@@ -159,7 +160,7 @@ export function AccountSettingsContent() {
               <option value="en-US">English (US)</option>
               <option value="es">Español</option>
             </select>
-            <Globe size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.3)] pointer-events-none" />
+            <Globe size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.5)] pointer-events-none" />
           </div>
         </div>
 
@@ -172,7 +173,7 @@ export function AccountSettingsContent() {
             <AlertTriangle size={15} className="text-[rgba(239,68,68,0.7)]" />
             <h3 className="text-sm font-semibold text-[rgba(239,68,68,0.85)]">Zona de perigo</h3>
           </div>
-          <p className="text-xs text-[rgba(255,255,255,0.35)] mb-4">Ações irreversíveis. Proceda com cuidado.</p>
+          <p className="text-xs text-[rgba(255,255,255,0.5)] mb-4">Ações irreversíveis. Proceda com cuidado.</p>
           <button className="rounded-lg border border-[rgba(239,68,68,0.3)] px-4 py-2 text-sm text-[rgba(239,68,68,0.75)] hover:bg-[rgba(239,68,68,0.08)] hover:border-[rgba(239,68,68,0.5)] transition-colors">
             Excluir conta
           </button>
@@ -180,8 +181,8 @@ export function AccountSettingsContent() {
 
       </div>
 
-      {/* ── Floating save button ── */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+      {/* ── Save button ── */}
+      <div className="sticky bottom-6 z-50 flex justify-center">
         <button className="flex items-center gap-2 rounded-xl bg-[rgba(255,255,255,0.92)] px-6 py-2.5 text-sm font-semibold text-[#080808] shadow-lg hover:bg-white transition-colors">
           <Check size={15} />
           Salvar alterações

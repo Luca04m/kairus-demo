@@ -56,7 +56,7 @@ function StatusIcon({ status }: { status: Status }) {
     case "em_progresso":
       return <Loader2 size={15} className="text-[#6366f1] shrink-0 animate-spin" />;
     case "pendente":
-      return <Circle size={15} className="text-[rgba(255,255,255,0.3)] shrink-0" />;
+      return <Circle size={15} className="text-[rgba(255,255,255,0.5)] shrink-0" />;
     case "falha":
       return <XCircle size={15} className="text-[#ef4444] shrink-0" />;
   }
@@ -144,7 +144,7 @@ export function TasksContent() {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => setActiveStatus(null)}
-            className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm transition-colors ${
+            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-colors ${
               activeStatus === null
                 ? "border-[rgba(255,255,255,0.2)] bg-[rgba(255,255,255,0.1)] text-white"
                 : "border-[rgba(255,255,255,0.08)] text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.06)]"
@@ -173,6 +173,7 @@ export function TasksContent() {
           <div className="flex items-center gap-2 rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-1.5">
             <Search size={14} className="text-[rgba(255,255,255,0.4)]" />
             <input
+              aria-label="Pesquisar tarefas"
               className="bg-transparent text-sm text-white placeholder-[rgba(255,255,255,0.4)] outline-none w-48"
               placeholder="Pesquisar tarefas por nome..."
               value={search}
@@ -196,13 +197,13 @@ export function TasksContent() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-[rgba(255,255,255,0.06)]">
-              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.3)] w-8"></th>
-              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.3)] w-20">ID</th>
-              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.3)]">Tarefa</th>
-              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.3)] w-32">Agente</th>
-              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.3)] w-32">Departamento</th>
-              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.3)] w-24">Prioridade</th>
-              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.3)] w-28">Criada em</th>
+              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.5)] w-8"></th>
+              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.5)] w-20">ID</th>
+              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.5)]">Tarefa</th>
+              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.5)] w-32">Agente</th>
+              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.5)] w-32">Departamento</th>
+              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.5)] w-24">Prioridade</th>
+              <th className="px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-[rgba(255,255,255,0.5)] w-28">Criada em</th>
             </tr>
           </thead>
           <tbody>
@@ -220,13 +221,13 @@ export function TasksContent() {
 
                 {/* ID */}
                 <td className="px-4 py-3">
-                  <span className="text-[rgba(255,255,255,0.3)] font-mono text-xs">{tarefa.id}</span>
+                  <span className="text-[rgba(255,255,255,0.5)] font-mono text-xs">{tarefa.id}</span>
                 </td>
 
                 {/* Title + description */}
                 <td className="px-4 py-3">
                   <p className="text-white font-medium leading-snug">{tarefa.titulo}</p>
-                  <p className="text-[rgba(255,255,255,0.35)] text-xs mt-0.5">{tarefa.descricao}</p>
+                  <p className="text-[rgba(255,255,255,0.5)] text-xs mt-0.5">{tarefa.descricao}</p>
                 </td>
 
                 {/* Agent */}
@@ -264,14 +265,14 @@ export function TasksContent() {
 
                 {/* Date */}
                 <td className="px-4 py-3">
-                  <span className="text-[rgba(255,255,255,0.35)] text-xs">{tarefa.criadaEm}</span>
+                  <span className="text-[rgba(255,255,255,0.5)] text-xs">{tarefa.criadaEm}</span>
                 </td>
               </tr>
             ))}
 
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-16 text-center text-sm text-[rgba(255,255,255,0.3)]">
+                <td colSpan={7} className="px-4 py-16 text-center text-sm text-[rgba(255,255,255,0.5)]">
                   Nenhuma tarefa encontrada.
                 </td>
               </tr>

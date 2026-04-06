@@ -173,7 +173,7 @@ export function AgentTasksContent() {
       {/* Tasks table */}
       <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] backdrop-blur-sm overflow-hidden">
         {/* Header */}
-        <div className="grid grid-cols-[2rem_1fr_6rem_7rem_1fr_5rem] gap-3 px-4 py-2.5 border-b border-[rgba(255,255,255,0.06)] text-xs text-[rgba(255,255,255,0.35)] font-medium uppercase tracking-wide">
+        <div className="grid grid-cols-[2rem_1fr_6rem_7rem_1fr_5rem] gap-3 px-4 py-2.5 border-b border-[rgba(255,255,255,0.06)] text-xs text-[rgba(255,255,255,0.5)] font-medium uppercase tracking-wide">
           <span>#</span>
           <span>Tarefa</span>
           <span>Status</span>
@@ -197,7 +197,7 @@ export function AgentTasksContent() {
                 className={`grid grid-cols-[2rem_1fr_6rem_7rem_1fr_5rem] gap-3 px-4 py-3 items-center hover:bg-[rgba(255,255,255,0.03)] transition-colors ${!isLast ? "border-b border-[rgba(255,255,255,0.05)]" : ""}`}
               >
                 {/* ID */}
-                <span className="text-xs text-[rgba(255,255,255,0.25)] font-mono">{tarefa.id}</span>
+                <span className="text-xs text-[rgba(255,255,255,0.5)] font-mono">{tarefa.id}</span>
 
                 {/* Title */}
                 <div className="flex items-center gap-2 min-w-0">
@@ -214,11 +214,11 @@ export function AgentTasksContent() {
                 </div>
 
                 {/* Timestamp */}
-                <span className="text-xs text-[rgba(255,255,255,0.35)]">{tarefa.tempo}</span>
+                <span className="text-xs text-[rgba(255,255,255,0.5)]">{tarefa.tempo}</span>
 
                 {/* Result */}
                 <span className="text-xs text-[rgba(255,255,255,0.5)] truncate">
-                  {tarefa.resultado ?? <span className="text-[rgba(255,255,255,0.2)] italic">—</span>}
+                  {tarefa.resultado ?? <span className="text-[rgba(255,255,255,0.5)] italic">—</span>}
                 </span>
 
                 {/* Actions */}
@@ -234,7 +234,7 @@ export function AgentTasksContent() {
       </div>
 
       {/* Footer count */}
-      <p className="mt-3 text-xs text-[rgba(255,255,255,0.3)]">{filtered.length} tarefa{filtered.length !== 1 ? "s" : ""} encontrada{filtered.length !== 1 ? "s" : ""}</p>
+      <p className="mt-3 text-xs text-[rgba(255,255,255,0.5)]">{filtered.length} tarefa{filtered.length !== 1 ? "s" : ""} encontrada{filtered.length !== 1 ? "s" : ""}</p>
     </div>
   );
 }

@@ -1,11 +1,9 @@
-import { AppHeader } from "@/components/AppHeader";
-import { AgentFlowContent } from "@/components/AgentFlowContent";
+"use client";
+
+import { useParams, redirect } from "next/navigation";
 
 export default function AgentFlowPage() {
-  return (
-    <>
-      <AppHeader title="Flow" parent="Agente sem titulo" />
-      <AgentFlowContent />
-    </>
-  );
+  const params = useParams();
+  const id = params?.id as string;
+  redirect(`/agent/${id}`);
 }

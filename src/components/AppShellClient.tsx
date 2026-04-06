@@ -3,8 +3,6 @@ import { useState, useCallback, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { AppSidebar } from "./AppSidebar";
 import { SidebarContext } from "./SidebarContext";
-import { useAuth } from "@/providers/AuthProvider";
-
 /** Routes that should render without the sidebar/shell chrome */
 const SHELL_EXCLUDED_ROUTES = ["/login", "/auth/callback"];
 
@@ -14,7 +12,6 @@ interface AppShellClientProps {
 
 export function AppShellClient({ children }: AppShellClientProps) {
   const pathname = usePathname();
-  const { loading } = useAuth();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const toggleSidebar = useCallback(() => {
@@ -32,14 +29,9 @@ export function AppShellClient({ children }: AppShellClientProps) {
     pathname.startsWith(route),
   );
 
-  // Show a minimal loading state while auth initializes to avoid flicker
-  if (loading && !isExcluded) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-[rgba(255,255,255,0.2)] border-t-white" />
-      </div>
-    );
-  }
+  // DEMO MODE: do not block rendering on auth loading state.
+  // In demo mode Supabase may be paused; the shell renders immediately
+  // and auth state hydrates in the background (sidebar/header update reactively).
 
   // Render without shell for login / auth callback pages
   if (isExcluded) {
@@ -59,7 +51,7 @@ export function AppShellClient({ children }: AppShellClientProps) {
 
         <AppSidebar mobileOpen={mobileSidebarOpen} onClose={handleClose} />
 
-        <div className="flex h-full flex-col overflow-hidden px-4 pt-4 pb-4 md:pl-0">
+        <div className="flex h-full flex-col overflow-hidden px-4 pt-4 pb-4 md:px-4 md:pl-0">
           <main className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)]">
             {children}
           </main>

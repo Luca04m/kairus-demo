@@ -139,30 +139,12 @@ export function InboxContent() {
           </div>
           <div className="flex items-center gap-0.5">
             <button
-              className="rounded p-1 transition-colors"
-              style={{ color: "rgba(255,255,255,0.4)" }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#fff";
-                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.4)";
-                (e.currentTarget as HTMLElement).style.background = "transparent";
-              }}
+              className="rounded p-1 transition-colors text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.08)]"
             >
               <SlidersHorizontal size={14} />
             </button>
             <button
-              className="rounded p-1 transition-colors"
-              style={{ color: "rgba(255,255,255,0.4)" }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#fff";
-                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.4)";
-                (e.currentTarget as HTMLElement).style.background = "transparent";
-              }}
+              className="rounded p-1 transition-colors text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.08)]"
             >
               <MoreHorizontal size={14} />
             </button>
@@ -374,58 +356,21 @@ export function InboxContent() {
             }}
           >
             <button
-              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
-              style={{
-                background: "rgba(59,130,246,0.15)",
-                color: "#60a5fa",
-                border: "1px solid rgba(59,130,246,0.25)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "rgba(59,130,246,0.25)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "rgba(59,130,246,0.15)";
-              }}
+              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all bg-[rgba(59,130,246,0.15)] text-[#60a5fa] border border-[rgba(59,130,246,0.25)] hover:bg-[rgba(59,130,246,0.25)]"
             >
               <Reply size={13} />
               Responder
             </button>
             <button
               onClick={() => toggleLida(mensagemSelecionada.id)}
-              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
-              style={{
-                background: "rgba(255,255,255,0.06)",
-                color: "rgba(255,255,255,0.6)",
-                border: "1px solid rgba(255,255,255,0.1)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)";
-                (e.currentTarget as HTMLElement).style.color = "#fff";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
-                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.6)";
-              }}
+              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.1)] hover:text-white"
             >
               <CheckCheck size={13} />
               {lidas.has(mensagemSelecionada.id) ? "Marcar como não lida" : "Marcar como lida"}
             </button>
             <button
               onClick={() => arquivar(mensagemSelecionada.id)}
-              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
-              style={{
-                background: "rgba(255,255,255,0.06)",
-                color: "rgba(255,255,255,0.6)",
-                border: "1px solid rgba(255,255,255,0.1)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)";
-                (e.currentTarget as HTMLElement).style.color = "#fff";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
-                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.6)";
-              }}
+              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.1)] hover:text-white"
             >
               <Archive size={13} />
               Arquivar

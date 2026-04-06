@@ -178,17 +178,11 @@ export function ViewsContent() {
                     <Initials name={v.criadaPor} />
                     <div className="flex flex-col">
                       <span className="text-xs text-[rgba(255,255,255,0.55)] leading-none">{v.criadaPor}</span>
-                      <span className="text-[10px] text-[rgba(255,255,255,0.3)] leading-none mt-0.5">{v.criadaEm}</span>
+                      <span className="text-[10px] text-[rgba(255,255,255,0.5)] leading-none mt-0.5">{v.criadaEm}</span>
                     </div>
                   </div>
                   <button
-                    className="rounded-lg px-3 py-1 text-xs font-medium transition-colors"
-                    style={{
-                      background: "rgba(255,255,255,0.08)",
-                      color: "rgba(255,255,255,0.7)",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.14)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+                    className="rounded-lg px-3 py-1 text-xs font-medium transition-colors bg-[rgba(255,255,255,0.08)] text-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,0.14)]"
                   >
                     Abrir
                   </button>

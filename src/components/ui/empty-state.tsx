@@ -35,7 +35,7 @@ function EmptyState({
       )}
     >
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.08)]">
-        <Icon size={22} className="text-[rgba(255,255,255,0.35)]" />
+        <Icon size={22} className="text-[rgba(255,255,255,0.5)]" />
       </div>
 
       <div className="space-y-1.5">

@@ -64,12 +64,11 @@ export function RelatoriosContent() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-xl font-semibold text-white mb-1">Relatórios</h1>
           <p className="text-sm text-[rgba(255,255,255,0.4)]">
             Relatórios automáticos gerados pela sua equipe de IA
           </p>
         </div>
-        <button className="flex items-center gap-2 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 px-4 py-2 text-xs font-medium text-white transition-colors">
+        <button className="flex items-center gap-2 rounded-lg bg-[rgba(255,255,255,0.88)] hover:bg-[rgba(255,255,255,0.75)] px-4 py-2 text-xs font-medium text-[#080808] transition-colors">
           + Gerar relatório
         </button>
       </div>
@@ -99,6 +98,7 @@ export function RelatoriosContent() {
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.4)]" />
           <input
             type="text"
+            aria-label="Buscar relatório"
             placeholder="Buscar relatório..."
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
@@ -123,10 +123,10 @@ export function RelatoriosContent() {
       ) : relatoriosFiltrados.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] py-16 text-center">
           <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(255,255,255,0.06)]">
-            <FileText size={22} className="text-[rgba(255,255,255,0.3)]" />
+            <FileText size={22} className="text-[rgba(255,255,255,0.5)]" />
           </div>
           <p className="text-sm font-medium text-[rgba(255,255,255,0.5)]">Nenhum relatório encontrado</p>
-          <p className="mt-1 text-xs text-[rgba(255,255,255,0.25)]">Tente ajustar os filtros ou a busca</p>
+          <p className="mt-1 text-xs text-[rgba(255,255,255,0.5)]">Tente ajustar os filtros ou a busca</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -154,12 +154,12 @@ export function RelatoriosContent() {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-sm font-bold text-white bg-gradient-to-r from-white to-white/70 bg-clip-text leading-snug mb-1">
+                <h3 className="text-sm font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent leading-snug mb-1">
                   {rel.titulo}
                 </h3>
 
                 {/* Period */}
-                <p className="text-xs text-[rgba(255,255,255,0.35)] mb-2">{rel.periodo}</p>
+                <p className="text-xs text-[rgba(255,255,255,0.5)] mb-2">{rel.periodo}</p>
 
                 {/* Summary */}
                 <p className="text-xs text-[rgba(255,255,255,0.55)] line-clamp-3 flex-1 leading-relaxed">
@@ -167,7 +167,7 @@ export function RelatoriosContent() {
                 </p>
 
                 {/* Created date */}
-                <p className="mt-3 text-[10px] text-[rgba(255,255,255,0.25)]">
+                <p className="mt-3 text-[10px] text-[rgba(255,255,255,0.5)]">
                   Gerado em {rel.criadoEm}
                 </p>
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuthContext, isAuthError, errorResponse } from "@/lib/api/auth";
+import { getAuthContext, isAuthError, errorResponse, PRIVATE_CACHE_HEADERS } from "@/lib/api/auth";
 
 export async function GET(_request: NextRequest) {
   const auth = await getAuthContext();
@@ -34,5 +34,5 @@ export async function GET(_request: NextRequest) {
     total_revenue: totalRevenue,
   };
 
-  return NextResponse.json({ data: stats });
+  return NextResponse.json({ data: stats }, { headers: PRIVATE_CACHE_HEADERS });
 }

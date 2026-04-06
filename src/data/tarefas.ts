@@ -1,0 +1,153 @@
+// src/data/tarefas.ts
+
+export interface Tarefa {
+  id: string;
+  titulo: string;
+  agente: string;
+  status: "concluida" | "em_progresso" | "pendente" | "falha";
+  prioridade: "alta" | "media" | "baixa";
+  criadaEm: string;
+  concluidaEm?: string;
+  descricao: string;
+  departamento: string;
+}
+
+export const TAREFAS: Tarefa[] = [
+  {
+    id: "tar-001",
+    titulo: "Analise de margem por SKU — Marco 2026",
+    agente: "Leo",
+    status: "concluida",
+    prioridade: "alta",
+    criadaEm: "01/04/2026",
+    concluidaEm: "01/04/2026",
+    descricao: "Calcular margem liquida de cada SKU ativo, incluindo CMV, frete e comissoes de marketplace.",
+    departamento: "Financeiro",
+  },
+  {
+    id: "tar-002",
+    titulo: "Monitoramento de estoque em tempo real",
+    agente: "Sol",
+    status: "em_progresso",
+    prioridade: "alta",
+    criadaEm: "01/04/2026",
+    descricao: "Acompanhar niveis de estoque de todos os SKUs e disparar alertas quando atingir ponto de reposicao.",
+    departamento: "Operacoes",
+  },
+  {
+    id: "tar-003",
+    titulo: "Otimizacao de campanhas Meta Ads — Abril 2026",
+    agente: "Mia",
+    status: "em_progresso",
+    prioridade: "alta",
+    criadaEm: "01/04/2026",
+    descricao: "Revisar criativos, segmentacao e lances das campanhas ativas no Meta Ads para melhorar CTR e ROAS.",
+    departamento: "Marketing",
+  },
+  {
+    id: "tar-004",
+    titulo: "Envio de lembretes de recompra B2B — Lote 04/2026",
+    agente: "Rex",
+    status: "concluida",
+    prioridade: "media",
+    criadaEm: "02/04/2026",
+    concluidaEm: "02/04/2026",
+    descricao: "Identificar clientes B2B com ultima compra ha mais de 30 dias e enviar mensagem personalizada de recompra.",
+    departamento: "Vendas",
+  },
+  {
+    id: "tar-005",
+    titulo: "Geracao do relatorio semanal — Semana 13/2026",
+    agente: "Leo",
+    status: "concluida",
+    prioridade: "media",
+    criadaEm: "31/03/2026",
+    concluidaEm: "31/03/2026",
+    descricao: "Compilar dados de vendas, financeiro e operacoes da semana 13 e gerar relatorio consolidado para Luca.",
+    departamento: "Financeiro",
+  },
+  {
+    id: "tar-006",
+    titulo: "Atendimento automatico WhatsApp — turno manha",
+    agente: "Iris",
+    status: "concluida",
+    prioridade: "media",
+    criadaEm: "02/04/2026",
+    concluidaEm: "02/04/2026",
+    descricao: "Processar e responder mensagens WhatsApp recebidas entre 08h e 12h, escalando casos criticos.",
+    departamento: "Atendimento",
+  },
+  {
+    id: "tar-007",
+    titulo: "Auditoria de chargebacks — Fevereiro 2026",
+    agente: "Leo",
+    status: "concluida",
+    prioridade: "alta",
+    criadaEm: "28/02/2026",
+    concluidaEm: "01/03/2026",
+    descricao: "Mapear todas as contestacoes do mes, identificar padroes e sugerir medidas preventivas.",
+    departamento: "Financeiro",
+  },
+  {
+    id: "tar-008",
+    titulo: "Publicacao de conteudo Instagram — Semana 13",
+    agente: "Mia",
+    status: "concluida",
+    prioridade: "baixa",
+    criadaEm: "24/03/2026",
+    concluidaEm: "30/03/2026",
+    descricao: "Criar e publicar 3 posts no Instagram conforme calendario editorial: receita, produto destaque e depoimento.",
+    departamento: "Marketing",
+  },
+  {
+    id: "tar-009",
+    titulo: "Reconciliacao de estoque vs pedidos — Marco 2026",
+    agente: "Sol",
+    status: "concluida",
+    prioridade: "media",
+    criadaEm: "31/03/2026",
+    concluidaEm: "01/04/2026",
+    descricao: "Cruzar saida de estoque com pedidos faturados para identificar divergencias e ajustar inventario.",
+    departamento: "Operacoes",
+  },
+  {
+    id: "tar-010",
+    titulo: "Mapeamento de leads B2B inativos",
+    agente: "Rex",
+    status: "pendente",
+    prioridade: "baixa",
+    criadaEm: "02/04/2026",
+    descricao: "Listar empresas que fizeram mais de 3 compras e estao inativas ha mais de 60 dias para campanha de reativacao.",
+    departamento: "Vendas",
+  },
+  {
+    id: "tar-011",
+    titulo: "Integracao Google Ads — configuracao inicial",
+    agente: "Mia",
+    status: "falha",
+    prioridade: "media",
+    criadaEm: "28/03/2026",
+    descricao: "Tentativa de importar dados historicos do Google Ads. Falha por credenciais expiradas. Aguardando renovacao.",
+    departamento: "Marketing",
+  },
+  {
+    id: "tar-012",
+    titulo: "Analise de rentabilidade por canal de venda",
+    agente: "Leo",
+    status: "pendente",
+    prioridade: "media",
+    criadaEm: "02/04/2026",
+    descricao: "Comparar margem entre canal proprio (site) vs marketplaces (Shopee, Mercado Livre) considerando taxas e frete.",
+    departamento: "Financeiro",
+  },
+  {
+    id: "tar-013",
+    titulo: "Pesquisa de satisfacao pos-compra — lote Marco",
+    agente: "Iris",
+    status: "em_progresso",
+    prioridade: "baixa",
+    criadaEm: "01/04/2026",
+    descricao: "Enviar pesquisa de NPS por WhatsApp para clientes com compras realizadas em Marco/2026.",
+    departamento: "Atendimento",
+  },
+];

@@ -41,6 +41,7 @@ export function WorldHeader() {
 
       <div className="flex items-center gap-2">
         <button
+          aria-label="Notificações"
           onClick={() => toggleNotificationPanel()}
           className={`
             relative flex items-center justify-center h-8 w-8 rounded-lg

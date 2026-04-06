@@ -137,7 +137,7 @@ export function AgentAnalyticsContent() {
               {label}
             </button>
           ))}
-          <button className="ml-1 rounded-lg border border-[rgba(255,255,255,0.08)] p-1.5 text-[rgba(255,255,255,0.4)] hover:text-white">
+          <button aria-label="Exportar dados" className="ml-1 rounded-lg border border-[rgba(255,255,255,0.08)] p-1.5 text-[rgba(255,255,255,0.4)] hover:text-white">
             <Download size={15} />
           </button>
         </div>
@@ -305,7 +305,7 @@ export function AgentAnalyticsContent() {
               );
             })}
           </svg>
-          <div className="flex justify-between mt-1 text-[10px] text-[rgba(255,255,255,0.25)]">
+          <div className="flex justify-between mt-1 text-[10px] text-[rgba(255,255,255,0.5)]">
             <span>Mar 2</span>
             <span>Mar 16</span>
             <span>Apr 1</span>

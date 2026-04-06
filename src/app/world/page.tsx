@@ -5,7 +5,9 @@ export default function WorldPage() {
   return (
     <>
       <AppHeader title="Mundo" />
-      <WorldView />
+      <div className="flex-1 overflow-auto">
+        <WorldView />
+      </div>
     </>
   );
 }

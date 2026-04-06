@@ -169,7 +169,7 @@ export function IntegrationsContent() {
                 )}
               </div>
 
-              <div className="flex items-center gap-1.5 text-xs text-[rgba(255,255,255,0.35)]">
+              <div className="flex items-center gap-1.5 text-xs text-[rgba(255,255,255,0.5)]">
                 <Clock size={11} />
                 <span>Última sync: {i.lastSync}</span>
               </div>
@@ -218,6 +218,7 @@ export function IntegrationsContent() {
             <div className="ml-auto flex items-center gap-2 rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-1.5">
               <Search size={14} className="text-[rgba(255,255,255,0.4)]" />
               <input
+                aria-label="Pesquisar integrações"
                 className="bg-transparent text-sm text-white placeholder-[rgba(255,255,255,0.4)] outline-none w-52"
                 placeholder="Pesquisar integrações por nome..."
                 value={search}
@@ -227,7 +228,7 @@ export function IntegrationsContent() {
           </div>
 
           {filteredAvailable.length === 0 ? (
-            <div className="text-center py-16 text-[rgba(255,255,255,0.3)] text-sm">
+            <div className="text-center py-16 text-[rgba(255,255,255,0.5)] text-sm">
               Nenhuma integração encontrada para &ldquo;{search}&rdquo;
             </div>
           ) : (

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Tag, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
 import { SkeletonPulse, ErrorState } from "@/components/ui/LoadingSkeleton";
@@ -122,6 +122,18 @@ export function AgentTemplatesContent() {
   const [activeCategory, setActiveCategory] = useState<string>("Todas");
   const [showCategoryMenu, setShowCategoryMenu] = useState(false);
   const [page, setPage] = useState(1);
+  const categoryMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!showCategoryMenu) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (categoryMenuRef.current && !categoryMenuRef.current.contains(e.target as Node)) {
+        setShowCategoryMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showCategoryMenu]);
 
   const categories = ["Todas", ...Array.from(new Set(templates.map((t: { category: string }) => t.category)))];
 
@@ -191,7 +203,7 @@ export function AgentTemplatesContent() {
 
       {/* Filters */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="relative">
+        <div className="relative" ref={categoryMenuRef}>
           <button
             onClick={() => setShowCategoryMenu((v) => !v)}
             className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-sm text-[rgba(255,255,255,0.6)] hover:bg-[rgba(255,255,255,0.06)] transition-colors"
@@ -222,6 +234,7 @@ export function AgentTemplatesContent() {
           <div className="flex items-center gap-2 rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-1.5">
             <Search size={14} className="text-[rgba(255,255,255,0.4)]" />
             <input
+              aria-label="Pesquisar agentes"
               className="bg-transparent text-sm text-white placeholder-[rgba(255,255,255,0.4)] outline-none w-52"
               placeholder="Pesquisar agentes por nome..."
               value={search}
@@ -234,7 +247,7 @@ export function AgentTemplatesContent() {
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {paginated.length === 0 && (
-          <div className="col-span-full text-center py-16 text-[rgba(255,255,255,0.3)] text-sm">
+          <div className="col-span-full text-center py-16 text-[rgba(255,255,255,0.5)] text-sm">
             Nenhum modelo encontrado.
           </div>
         )}

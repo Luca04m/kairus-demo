@@ -132,9 +132,9 @@ export function AgentSettingsContent() {
                 {/* Preview */}
                 <div className="flex-shrink-0 w-20 h-20 rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06)] flex items-center justify-center overflow-hidden">
                   {avatarMode === "avatar" ? (
-                    <User size={32} className="text-[rgba(255,255,255,0.3)]" />
+                    <User size={32} className="text-[rgba(255,255,255,0.5)]" />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center gap-1 text-[rgba(255,255,255,0.25)]">
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-1 text-[rgba(255,255,255,0.5)]">
                       <span className="text-[10px]">Sem imagem</span>
                     </div>
                   )}

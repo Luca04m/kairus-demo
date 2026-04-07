@@ -1,6 +1,6 @@
-# kairus-demo — Agent Guide
+# Claude Flow V3 - Agent Guide
 
-> **For Next.js, TypeScript** - Agentic AI Foundation standard
+> **For OpenAI Codex CLI** - Agentic AI Foundation standard
 > Skills: `$skill-name` | Config: `.agents/config.toml`
 
 ---

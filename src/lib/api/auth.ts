@@ -7,11 +7,28 @@ export interface AuthContext {
   tenantId: string;
 }
 
+/** Check if the app is running in demo mode (no Supabase configured) */
+export function isDemoMode(): boolean {
+  return !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+}
+
 /**
  * Authenticates the request and returns the Supabase client,
  * user ID, and tenant ID. Returns a NextResponse error if unauthorized.
+ * In demo mode (no Supabase env vars), returns a mock auth context so
+ * API routes can proceed without a real auth backend.
  */
 export async function getAuthContext(): Promise<AuthContext | NextResponse> {
+  // Demo mode: bypass auth when Supabase is not configured
+  if (isDemoMode()) {
+    const supabase = await createClient();
+    return {
+      supabase,
+      userId: "demo-user-id",
+      tenantId: "demo-tenant-id",
+    };
+  }
+
   const supabase = await createClient();
 
   const {

@@ -2,6 +2,7 @@
 
 import type { DepartmentId } from '@/types/departments';
 import { useDomains } from './DomainContext';
+import { IconByName } from '@/lib/icons';
 
 interface RoomEnvironmentProps {
   domain: DepartmentId;
@@ -133,7 +134,7 @@ function DomainPlaque({ domain }: { domain: DepartmentId }) {
       className="flex items-center gap-1.5 px-2 py-1 rounded"
       style={{ background: 'rgba(0,0,0,0.5)', border: `1px solid ${d.tileColor}44` }}
     >
-      <span>{d.emoji}</span>
+      <IconByName name={d.emoji} size={12} />
       <span
         className="text-[8px] font-bold uppercase tracking-wider"
         style={{ color: d.tileColor, fontFamily: 'monospace' }}

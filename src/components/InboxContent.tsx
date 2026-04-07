@@ -53,6 +53,9 @@ export function InboxContent() {
   });
 
   const [selecionadoId, setSelecionadoId] = useState<number | null>(null);
+  const [showReply, setShowReply] = useState(false);
+  const [replyText, setReplyText] = useState("");
+  const [replySent, setReplySent] = useState(false);
   const [filtro, setFiltro] = useState<Filtro>("todas");
   const [busca, setBusca] = useState("");
   const [lidas, setLidas] = useState<Set<number>>(
@@ -111,14 +114,13 @@ export function InboxContent() {
   ];
 
   return (
-    <div className="flex h-full overflow-hidden">
+    <div className="flex h-full overflow-hidden" style={{ background: "#080808" }}>
       {/* Left panel */}
       <div
-        className="flex-shrink-0 flex flex-col border-r"
+        className="flex-shrink-0 flex flex-col border-r w-full sm:w-[280px] md:w-[320px]"
         style={{
-          width: 280,
-          borderColor: "rgba(255,255,255,0.08)",
-          background: "rgba(255,255,255,0.02)",
+          borderColor: "rgba(255,255,255,0.06)",
+          background: "#080808",
         }}
       >
         {/* Header */}
@@ -127,7 +129,7 @@ export function InboxContent() {
           style={{ borderColor: "rgba(255,255,255,0.08)" }}
         >
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold text-white">Caixa de entrada</h2>
+            <h1 className="text-sm font-semibold text-white">Caixa de entrada</h1>
             {naoLidasCount > 0 && (
               <span
                 className="text-[10px] font-bold px-1.5 py-0.5 rounded-full"
@@ -139,12 +141,18 @@ export function InboxContent() {
           </div>
           <div className="flex items-center gap-0.5">
             <button
-              className="rounded p-1 transition-colors text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.08)]"
+              disabled
+              title="Filtros avançados em breve"
+              aria-label="Filtros avançados"
+              className="rounded p-1 transition-colors text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.08)] opacity-50 cursor-not-allowed"
             >
               <SlidersHorizontal size={14} />
             </button>
             <button
-              className="rounded p-1 transition-colors text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.08)]"
+              disabled
+              title="Mais opções em breve"
+              aria-label="Mais opções"
+              className="rounded p-1 transition-colors text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.08)] opacity-50 cursor-not-allowed"
             >
               <MoreHorizontal size={14} />
             </button>
@@ -356,6 +364,7 @@ export function InboxContent() {
             }}
           >
             <button
+              onClick={() => { setShowReply(!showReply); setReplySent(false); }}
               className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all bg-[rgba(59,130,246,0.15)] text-[#60a5fa] border border-[rgba(59,130,246,0.25)] hover:bg-[rgba(59,130,246,0.25)]"
             >
               <Reply size={13} />
@@ -376,6 +385,47 @@ export function InboxContent() {
               Arquivar
             </button>
           </div>
+
+          {/* Reply area */}
+          {showReply && (
+            <div className="px-6 py-4 border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+              {replySent ? (
+                <div className="flex items-center gap-2 text-emerald-400 text-sm py-2">
+                  <CheckCheck size={15} />
+                  <span>Resposta enviada com sucesso</span>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  <textarea
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    rows={3}
+                    placeholder="Escreva sua resposta..."
+                    className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none resize-none focus:border-blue-400/40 transition-colors"
+                  />
+                  <div className="flex justify-end gap-2">
+                    <button
+                      onClick={() => { setShowReply(false); setReplyText(""); }}
+                      className="text-xs px-3 py-1.5 rounded-lg text-[rgba(255,255,255,0.5)] hover:bg-[rgba(255,255,255,0.06)] transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      disabled={!replyText.trim()}
+                      onClick={() => {
+                        setReplySent(true);
+                        setReplyText("");
+                        setTimeout(() => { setShowReply(false); setReplySent(false); }, 2000);
+                      }}
+                      className="text-xs font-medium px-3 py-1.5 rounded-lg bg-blue-500 text-white hover:bg-blue-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      Enviar
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       ) : (
         /* Empty state */

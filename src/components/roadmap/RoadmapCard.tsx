@@ -89,13 +89,13 @@ export function RoadmapCard({ item, onClick }: RoadmapCardProps) {
         </span>
 
         {/* Impact */}
-        <span className="flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]">
+        <span className="flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]">
           <span className="text-[rgba(255,255,255,0.35)]">Impacto</span>
           <span style={{ color: impact.color }}>{impact.label}</span>
         </span>
 
         {/* Effort */}
-        <span className="flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]">
+        <span className="flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]">
           <span className="text-[rgba(255,255,255,0.35)]">Esforço</span>
           <span style={{ color: effort.color }}>{effort.label}</span>
         </span>

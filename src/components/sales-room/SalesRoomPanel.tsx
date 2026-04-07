@@ -1,14 +1,61 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useSalesRoomPanel } from '@/hooks/useSalesRoomPanel';
 import { KpiBar } from './KpiBar';
 import { WhatsAppBadge } from './WhatsAppBadge';
 import { AgentRow } from './AgentRow';
 import { ConversationView } from './ConversationView';
 import { ActivityFeed } from './ActivityFeed';
-import { Activity } from 'lucide-react';
+import { Activity, Headphones } from 'lucide-react';
+
+function SalesRoomSkeleton() {
+  return (
+    <div className="flex flex-col h-full bg-[#0a0a0a] text-white overflow-hidden">
+      <header className="flex items-center justify-between px-4 py-2.5 border-b border-[rgba(255,255,255,0.06)] flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <h1 className="text-sm font-semibold text-[rgba(255,255,255,0.85)]">Sales Room</h1>
+        </div>
+        <div className="flex items-center gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-4 w-16 animate-pulse rounded bg-[rgba(255,255,255,0.06)]" />
+          ))}
+        </div>
+      </header>
+      <div className="flex flex-1 min-h-0">
+        <aside className="w-60 flex-shrink-0 border-r border-[rgba(255,255,255,0.06)] flex flex-col max-md:hidden">
+          <div className="px-3 py-2 border-b border-[rgba(255,255,255,0.04)]">
+            <span className="text-[10px] text-[rgba(255,255,255,0.3)] uppercase tracking-wider">Agentes</span>
+          </div>
+          <div className="flex-1 p-3 space-y-2">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-10 animate-pulse rounded-lg bg-[rgba(255,255,255,0.02)]" />
+            ))}
+          </div>
+        </aside>
+        <main className="flex-1 flex flex-col items-center justify-center min-w-0">
+          <Headphones size={32} className="text-[rgba(255,255,255,0.1)] mb-3" />
+          <p className="text-sm text-[rgba(255,255,255,0.3)]">Carregando Sales Room...</p>
+        </main>
+        <aside className="w-64 flex-shrink-0 border-l border-[rgba(255,255,255,0.06)] flex flex-col max-lg:hidden">
+          <div className="px-3 py-2 border-b border-[rgba(255,255,255,0.04)]">
+            <span className="text-[10px] text-[rgba(255,255,255,0.3)] uppercase tracking-wider">Atividade</span>
+          </div>
+          <div className="flex-1 p-3 space-y-2">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-8 animate-pulse rounded bg-[rgba(255,255,255,0.02)]" />
+            ))}
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}
 
 export function SalesRoomPanel() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
   const {
     agents,
     activities,
@@ -24,6 +71,8 @@ export function SalesRoomPanel() {
   const vendasAgents = agents.filter((a) => a.role === 'vendas');
   const suporteAgents = agents.filter((a) => a.role === 'suporte');
   const activeCount = agents.filter((a) => a.status !== 'offline').length;
+
+  if (!mounted) return <SalesRoomSkeleton />;
 
   return (
     <div className="flex flex-col h-full bg-[#0a0a0a] text-white overflow-hidden">

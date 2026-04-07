@@ -53,7 +53,7 @@ function ErrorState({
             variant="outline"
             size="sm"
             onClick={onRetry}
-            className="border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] text-white/70 hover:bg-[rgba(255,255,255,0.08)] hover:text-white gap-1.5"
+            className="border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] text-white/70 hover:bg-[rgba(255,255,255,0.08)] hover:text-white gap-1.5"
           >
             <RefreshCw size={13} />
             {retryLabel}

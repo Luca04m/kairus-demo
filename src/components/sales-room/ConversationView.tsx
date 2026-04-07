@@ -262,7 +262,7 @@ export function ConversationView({ agent }: ConversationViewProps) {
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Digite uma mensagem..."
             className="
-              flex-1 bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)]
+              flex-1 bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)]
               rounded-lg px-3 py-2 text-[12px] text-[rgba(255,255,255,0.7)]
               placeholder:text-[rgba(255,255,255,0.2)]
               focus:outline-none focus:border-[rgba(255,255,255,0.15)]

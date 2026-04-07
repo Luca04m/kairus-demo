@@ -5,6 +5,7 @@ import { ROOMS, DOMAINS, WORKFLOW_LINKS, type RoomConfig } from "@/data/world-la
 import { RoomCard } from "./RoomCard";
 import { useWorldUiStore } from "@/stores/worldUiStore";
 import type { DepartmentId } from "@/types/departments";
+import { IconByName } from "@/lib/icons";
 
 // ─── Grid constants ──────────────────────────────────────
 const CELL_W = 200;
@@ -168,7 +169,7 @@ export function WorldCanvas({ activeDomains }: WorldCanvasProps) {
                 className="text-[10px] font-semibold uppercase tracking-wider opacity-40"
                 style={{ color: domain.tileColor }}
               >
-                {domain.emoji} {domain.label}
+                <IconByName name={domain.emoji} size={10} className="inline-block" /> {domain.label}
               </span>
             </div>
           );

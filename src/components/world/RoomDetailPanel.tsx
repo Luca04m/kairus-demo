@@ -1,6 +1,7 @@
 "use client";
 
 import { X, ArrowLeft, Users, Zap, Clock } from "lucide-react";
+import { IconByName } from "@/lib/icons";
 import { ROOMS, DOMAINS, WORKFLOW_LINKS } from "@/data/world-layout";
 import { AGENTES } from "@/data/mrlion";
 import { AgentSprite } from "./AgentSprite";
@@ -74,14 +75,14 @@ export function RoomDetailPanel() {
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-sm">{room.emoji}</span>
+            <IconByName name={room.emoji} size={14} />
             <h2 className="text-sm font-semibold text-white truncate">{room.nome}</h2>
           </div>
           <span
             className="inline-flex items-center gap-1 text-[10px] font-medium mt-0.5"
             style={{ color: domain?.tileColor }}
           >
-            {domain?.emoji} {domain?.label}
+            {domain && <IconByName name={domain.emoji} size={10} className="inline-block" />} {domain?.label}
           </span>
         </div>
         <button
@@ -134,7 +135,7 @@ export function RoomDetailPanel() {
                     transition-all duration-150 cursor-pointer text-left
                     ${selectedAgentId === agent.id
                       ? "bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.12)]"
-                      : "hover:bg-[rgba(255,255,255,0.04)] border border-transparent"
+                      : "hover:bg-[rgba(255,255,255,0.02)] border border-transparent"
                     }
                   `}
                 >
@@ -179,7 +180,7 @@ export function RoomDetailPanel() {
                     className="flex items-center gap-2 text-[10px] text-[rgba(255,255,255,0.4)]"
                   >
                     <span className="text-[rgba(255,255,255,0.25)]">←</span>
-                    <span>{fromRoom?.emoji} {fromRoom?.nome}</span>
+                    <span className="inline-flex items-center gap-1">{fromRoom && <IconByName name={fromRoom.emoji} size={10} />} {fromRoom?.nome}</span>
                     {link.label && (
                       <span className="text-[rgba(255,255,255,0.2)]">({link.label})</span>
                     )}
@@ -194,7 +195,7 @@ export function RoomDetailPanel() {
                     className="flex items-center gap-2 text-[10px] text-[rgba(255,255,255,0.4)]"
                   >
                     <span className="text-[rgba(255,255,255,0.25)]">→</span>
-                    <span>{toRoom?.emoji} {toRoom?.nome}</span>
+                    <span className="inline-flex items-center gap-1">{toRoom && <IconByName name={toRoom.emoji} size={10} />} {toRoom?.nome}</span>
                     {link.label && (
                       <span className="text-[rgba(255,255,255,0.2)]">({link.label})</span>
                     )}

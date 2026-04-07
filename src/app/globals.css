@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./components.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -66,6 +67,38 @@
 }
 
 :root {
+  /* ═══ Tier 1: Core palette ═══ */
+  --dt-base: 0 0% 3%;
+  --dt-surface: 0 0% 5%;
+  --dt-elevated: 0 0% 8%;
+  --dt-overlay: 0 0% 100%;
+
+  /* ═══ Tier 2: Semantic tokens ═══ */
+  --dt-primary: 239 84% 67%;
+  --dt-success: 142 71% 45%;
+  --dt-warning: 38 92% 50%;
+  --dt-danger: 0 84% 60%;
+  --dt-info: 199 89% 48%;
+
+  /* ═══ Tier 3: Component tokens ═══ */
+  --dt-border-default: hsl(var(--dt-overlay) / 0.08);
+  --dt-border-hover: hsl(var(--dt-overlay) / 0.15);
+  --dt-border-active: hsl(var(--dt-primary) / 0.6);
+  --dt-bg-card: hsl(var(--dt-overlay) / 0.02);
+  --dt-bg-card-hover: hsl(var(--dt-overlay) / 0.04);
+  --dt-text-primary: hsl(var(--dt-overlay) / 1);
+  --dt-text-secondary: hsl(var(--dt-overlay) / 0.7);
+  --dt-text-tertiary: hsl(var(--dt-overlay) / 0.4);
+
+  /* ═══ Tier 4: Effect tokens ═══ */
+  --dt-glass-blur: 12px;
+  --dt-glass-bg: hsl(var(--dt-overlay) / 0.04);
+  --dt-shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+  --dt-radius-sm: 0.5rem;
+  --dt-radius-md: 0.75rem;
+  --dt-radius-lg: 1rem;
+  --dt-radius-xl: 1.25rem;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -224,207 +257,4 @@
   }
 }
 
-/* Kairus DS: Gradient text utility */
-.gradient-text {
-  background: linear-gradient(to right bottom, rgb(255, 255, 255) 30%, rgba(255, 255, 255, 0.5));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  padding-bottom: 0.05em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-
-/* Kairus DS: Glass surfaces — premium multi-layer glassmorphism */
-.glass {
-  --glass-bg: rgba(12, 12, 14, 0.65);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-shine: rgba(255, 255, 255, 0.04);
-  background:
-    linear-gradient(180deg, var(--glass-shine) 0%, transparent 40%),
-    var(--glass-bg);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
-    inset 0 -1px 0 0 rgba(0, 0, 0, 0.1),
-    0 4px 24px -4px rgba(0, 0, 0, 0.5),
-    0 0 0 0.5px rgba(255, 255, 255, 0.04);
-}
-
-.glass-nav {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: rgba(0, 0, 0, 0.8) 0px 0px 0px 1px;
-}
-
-.glass-light {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%),
-    rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow:
-    inset 0 0.5px 0 0 rgba(255, 255, 255, 0.06),
-    0 2px 8px -2px rgba(0, 0, 0, 0.3);
-}
-
-.glass-surface {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow:
-    inset 0 0.5px 0 0 rgba(255, 255, 255, 0.04),
-    0 1px 3px -1px rgba(0, 0, 0, 0.2);
-}
-
-.glass-card {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 50%, transparent 100%),
-    rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow:
-    inset 0 0.5px 0 0 rgba(255, 255, 255, 0.06),
-    inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.05),
-    0 4px 16px -4px rgba(0, 0, 0, 0.4);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow:
-    inset 0 0.5px 0 0 rgba(255, 255, 255, 0.08),
-    inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.05),
-    0 8px 32px -8px rgba(0, 0, 0, 0.5),
-    0 0 0 0.5px rgba(255, 255, 255, 0.04);
-}
-
-/* Kairus DS: Dot grid pattern */
-.dot-grid {
-  background-image: radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-/* Kairus DS: Accent gradient — uses brand colors from research */
-.kairus-gradient {
-  background: linear-gradient(90deg, #ff3b30 0%, #ff9500 15%, #ffcc00 30%, #34c759 45%, #00c7be 55%, #007aff 70%, #5856d6 85%, #af52de 100%);
-}
-
-/* Keyframes */
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse-ring {
-  0% { box-shadow: 0 0 0 0 rgba(74, 158, 255, 0.3); }
-  70% { box-shadow: 0 0 0 10px rgba(74, 158, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(74, 158, 255, 0); }
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-@keyframes pulseSoft {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.9); }
-}
-
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 8px rgba(74,158,255,0.4); }
-  50% { box-shadow: 0 0 24px rgba(74,158,255,0.7); }
-}
-
-/* Kairus DS: Reduced motion — WCAG 2.3.3 compliance (granular) */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-  }
-
-  .glass-card,
-  button,
-  a,
-  input,
-  select {
-    transition-duration: 0.1s !important;
-  }
-}
-
-/* Kairus DS: Toggle switch */
-.toggle-switch {
-  position: relative;
-  width: 44px;
-  height: 24px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-.toggle-switch.active {
-  background: oklch(0.69 0.155 168 / 0.3);
-  border-color: oklch(0.69 0.155 168 / 0.5);
-}
-.toggle-switch::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.6);
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-.toggle-switch.active::after {
-  transform: translateX(20px);
-  background: oklch(0.90 0.155 172);
-}
-
-/* Kairus DS: Focus ring utility */
-.focus-ring:focus-within {
-  border-color: oklch(0.58 0.16 255 / 0.5);
-  box-shadow: 0 0 0 3px oklch(0.58 0.16 255 / 0.15);
-}
-
-/* Kairus DS: Animation utilities */
-.animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out both;
-}
-
-.animate-pulse-soft {
-  animation: pulseSoft 2s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmer 2s ease-in-out infinite;
-}
-
-/* Kairus DS: Stagger delay utilities */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
-
-/* Kairus DS: Loading skeleton */
-.skeleton {
-  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: 4px;
-}
+/* Component styles are in ./components.css (imported above) */

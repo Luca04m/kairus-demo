@@ -7,13 +7,13 @@ import {
   BarChart2, Bot, ChevronDown, ChevronRight, ChevronsUpDown,
   DollarSign, Globe, Headphones, Inbox, LayoutDashboard,
   Link2, ListTodo, LogOut, Map, Megaphone, MessageCircle, MessageSquare,
-  Settings, ShoppingBag, Users, Workflow, User,
+  Settings, Users, Workflow, User,
 } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { DEMO_USER } from "@/lib/constants";
 
 const AGENT_ID = "demo-agent";
-const UNREAD_COUNT = 3;
+const UNREAD_COUNT = 2;
 
 interface AppSidebarProps {
   mobileOpen?: boolean;
@@ -143,7 +143,7 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
   );
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col" role="navigation">
       {/* Top — User dropdown */}
       <div className="pl-7 pt-5 relative" ref={userMenuRef}>
         <div className="flex items-center gap-2">
@@ -168,12 +168,6 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
               Minha conta
             </Link>
             <button
-              className="flex w-full items-center gap-2 px-3 py-2 text-sm text-[rgba(255,255,255,0.4)] cursor-default"
-            >
-              <ShoppingBag size={14} />
-              Plano
-            </button>
-            <button
               onClick={() => { setUserMenuOpen(false); signOut(); }}
               className="flex w-full items-center gap-2 px-3 py-2 text-sm text-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,0.06)] hover:text-red-400 rounded-b-lg transition-colors"
             >
@@ -185,6 +179,7 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
       </div>
 
       {/* Kairus AI + Caixa de entrada */}
+      <nav aria-label="Navegação principal">
       <div className="flex flex-col gap-1 px-3 py-2">
         {navItem("/", <><Image src="/images/sphere.webp" alt="" width={16} height={16} className="rounded-full" />Kairus AI</>)}
         {navItem("/inbox", <><Inbox size={16} />Caixa de entrada</>, UNREAD_COUNT)}
@@ -203,10 +198,10 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
             hover:bg-[rgba(255,255,255,0.07)] hover:border-[rgba(255,255,255,0.10)]
           "
         >
-          <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(255,255,255,0.08)] text-[10px] font-medium text-[rgba(255,255,255,0.5)]">
-            UA
+          <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(34,197,94,0.2)] text-[10px] font-medium text-emerald-400">
+            LE
           </span>
-          <span className="flex-1 text-sm text-white">Agente sem título</span>
+          <span className="flex-1 text-sm text-white">Leo — Agente Financeiro</span>
           {isAgentRoute
             ? <ChevronDown size={14} color="rgba(255,255,255,0.4)" />
             : <ChevronRight size={14} color="rgba(255,255,255,0.4)" />
@@ -257,6 +252,7 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
           {navItem("/configuracoes", <><Settings size={16} />Configurações</>)}
         </div>
       </div>
+      </nav>
 
       <div className="flex-1" />
 
@@ -270,12 +266,14 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
 
       {/* Bottom — Support + Profile */}
       <div className="flex flex-col gap-1 border-t border-[rgba(255,255,255,0.08)] px-3 py-2">
-        <button
+        <Link
+          href="/"
+          onClick={onClose}
           className="flex items-center gap-2 rounded-[10px] px-4 py-2 text-sm text-[rgba(255,255,255,0.4)] transition-all duration-150 hover:bg-[rgba(255,255,255,0.06)] hover:text-[rgba(255,255,255,0.7)]"
         >
           <MessageCircle size={16} />
           Chat e suporte
-        </button>
+        </Link>
         <Link
           href="/settings"
           onClick={onClose}

@@ -7,18 +7,20 @@ export const EMPRESA = {
   fundacao: "2024",
 };
 
+import { DEMO_USER } from "@/lib/constants";
+
 export const USUARIO = {
-  nome: "Luca",
-  nomeCompleto: "Luca Moreno",
-  email: "luca@mrlion.com.br",
-  iniciais: "LM",
+  nome: DEMO_USER.firstName,
+  nomeCompleto: DEMO_USER.name,
+  email: DEMO_USER.email,
+  iniciais: DEMO_USER.initials,
 };
 
 // Real data from Casa Mr. Lion (2024-2026)
 export const KPIS_VISAO_GERAL = [
   {
     departamento: "Financeiro",
-    emoji: "💰",
+    emoji: "dollar-sign",
     label: "Receita Total",
     valor: "R$ 2.756.310",
     variacao: "+161% YoY",
@@ -27,7 +29,7 @@ export const KPIS_VISAO_GERAL = [
   },
   {
     departamento: "Financeiro",
-    emoji: "📈",
+    emoji: "trending-up",
     label: "Receita 2025",
     valor: "R$ 1.839.359",
     variacao: "+161%",
@@ -36,7 +38,7 @@ export const KPIS_VISAO_GERAL = [
   },
   {
     departamento: "Vendas",
-    emoji: "🛒",
+    emoji: "shopping-cart",
     label: "Pedidos",
     valor: "10.337",
     variacao: "B2C 10.185 + B2B 152",
@@ -45,7 +47,7 @@ export const KPIS_VISAO_GERAL = [
   },
   {
     departamento: "Operacoes",
-    emoji: "🎯",
+    emoji: "target",
     label: "Ticket Medio",
     valor: "R$ 210,45",
     variacao: "",
@@ -54,7 +56,7 @@ export const KPIS_VISAO_GERAL = [
   },
   {
     departamento: "Marketing",
-    emoji: "👥",
+    emoji: "users",
     label: "Clientes",
     valor: "8.809",
     variacao: "Repeat: 11,1% (976)",
@@ -80,11 +82,11 @@ export interface ConexaoAtiva {
 }
 
 export const CONEXOES_ATIVAS: ConexaoAtiva[] = [
-  { id: "woo", nome: "WooCommerce", icone: "🛍️", status: "conectado", detalhe: "10.337 pedidos" },
-  { id: "meta", nome: "Meta Ads", icone: "📣", status: "conectado", detalhe: "R$ 42.550 spend" },
-  { id: "ig", nome: "Instagram", icone: "📸", status: "conectado", detalhe: "86.423 followers" },
-  { id: "ga", nome: "Google Analytics", icone: "📊", status: "conectado", detalhe: "428.287 sessions" },
-  { id: "bling", nome: "Bling ERP", icone: "📦", status: "conectado", detalhe: "Sincronizado" },
+  { id: "woo", nome: "WooCommerce", icone: "shopping-bag", status: "conectado", detalhe: "10.337 pedidos" },
+  { id: "meta", nome: "Meta Ads", icone: "megaphone", status: "conectado", detalhe: "R$ 42.550 spend" },
+  { id: "ig", nome: "Instagram", icone: "camera", status: "conectado", detalhe: "86.423 followers" },
+  { id: "ga", nome: "Google Analytics", icone: "bar-chart", status: "conectado", detalhe: "428.287 sessions" },
+  { id: "bling", nome: "Bling ERP", icone: "package", status: "conectado", detalhe: "Sincronizado" },
 ];
 
 // Agent activity summary for the dashboard header

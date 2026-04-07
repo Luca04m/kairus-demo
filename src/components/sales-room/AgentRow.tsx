@@ -29,7 +29,7 @@ export function AgentRow({ agent, isSelected, onSelect }: AgentRowProps) {
         ${
           isSelected
             ? 'bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.12)]'
-            : 'hover:bg-[rgba(255,255,255,0.04)] border border-transparent'
+            : 'hover:bg-[rgba(255,255,255,0.02)] border border-transparent'
         }
       `}
     >

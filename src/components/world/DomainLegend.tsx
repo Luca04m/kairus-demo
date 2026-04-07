@@ -1,6 +1,7 @@
 "use client";
 
 import { DOMAINS, type DomainVisual } from "@/data/world-layout";
+import { IconByName } from "@/lib/icons";
 import type { DepartmentId } from "@/types/departments";
 
 interface DomainLegendProps {
@@ -27,7 +28,7 @@ export function DomainLegend({ activeDomains, onToggleDomain }: DomainLegendProp
               border
               ${isActive
                 ? "text-white border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.08)]"
-                : "text-[rgba(255,255,255,0.3)] border-transparent bg-transparent hover:bg-[rgba(255,255,255,0.04)]"
+                : "text-[rgba(255,255,255,0.3)] border-transparent bg-transparent hover:bg-[rgba(255,255,255,0.02)]"
               }
             `}
           >
@@ -38,7 +39,7 @@ export function DomainLegend({ activeDomains, onToggleDomain }: DomainLegendProp
                 opacity: isActive ? 1 : 0.4,
               }}
             />
-            <span>{d.emoji}</span>
+            <IconByName name={d.emoji} size={12} />
             <span>{d.label}</span>
           </button>
         );

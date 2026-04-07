@@ -1,10 +1,10 @@
 "use client";
-import { useCallback } from "react";
+import { useCallback, useState, useMemo } from "react";
 import { DollarSign, TrendingUp, Target, CheckCircle2, BarChart2 } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend, ReferenceLine, ReferenceDot,
-} from "recharts";
+} from "@/components/charts";
 import { ROI_DADOS, ROI_TIMELINE, ROI_CATEGORIAS } from "@/data/mrlion";
 import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
 import { KpiGridSkeleton, SkeletonChart, SkeletonTable } from "@/components/ui/LoadingSkeleton";
@@ -69,6 +69,24 @@ export function RoiContent() {
     return sum + (isNaN(n) ? 0 : n);
   }, 0);
 
+  // ─── ROI Calculator inputs ──────────────────────────────────────────────────
+  const [investMensal, setInvestMensal] = useState(7500);
+  const [setupInicial, setSetupInicial] = useState(15000);
+  const [meses, setMeses] = useState(6);
+  const [receitaExtra, setReceitaExtra] = useState(25000);
+  const [economiaOp, setEconomiaOp] = useState(12000);
+
+  const calc = useMemo(() => {
+    const totalInvest = setupInicial + investMensal * meses;
+    const totalValor = (receitaExtra + economiaOp) * meses;
+    const roi = totalInvest > 0 ? ((totalValor - totalInvest) / totalInvest) * 100 : 0;
+    const breakEvenMes =
+      receitaExtra + economiaOp - investMensal > 0
+        ? Math.ceil(setupInicial / (receitaExtra + economiaOp - investMensal))
+        : null;
+    return { totalInvest, totalValor, roi, breakEvenMes };
+  }, [investMensal, setupInicial, meses, receitaExtra, economiaOp]);
+
   return (
     <div className="p-6 space-y-6">
       {/* Header context */}
@@ -76,6 +94,51 @@ export function RoiContent() {
         <p className="text-sm text-[rgba(255,255,255,0.4)]">
           Investimento vs valor gerado pela sua equipe de IA
         </p>
+      </div>
+
+      {/* ROI Calculator */}
+      <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] p-5">
+        <h3 className="text-sm font-semibold text-white mb-4">Calculadora de ROI</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
+          <div>
+            <label htmlFor="roi-setup" className="block text-xs text-[rgba(255,255,255,0.45)] mb-1">Setup inicial (R$)</label>
+            <input id="roi-setup" type="number" min={0} step={500} value={setupInicial} onChange={(e) => setSetupInicial(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(99,102,241,0.5)] transition-colors" />
+          </div>
+          <div>
+            <label htmlFor="roi-mensal" className="block text-xs text-[rgba(255,255,255,0.45)] mb-1">Investimento mensal (R$)</label>
+            <input id="roi-mensal" type="number" min={0} step={500} value={investMensal} onChange={(e) => setInvestMensal(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(99,102,241,0.5)] transition-colors" />
+          </div>
+          <div>
+            <label htmlFor="roi-meses" className="block text-xs text-[rgba(255,255,255,0.45)] mb-1">Periodo (meses)</label>
+            <input id="roi-meses" type="number" min={1} max={36} value={meses} onChange={(e) => setMeses(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(99,102,241,0.5)] transition-colors" />
+          </div>
+          <div>
+            <label htmlFor="roi-receita" className="block text-xs text-[rgba(255,255,255,0.45)] mb-1">Receita extra mensal (R$)</label>
+            <input id="roi-receita" type="number" min={0} step={1000} value={receitaExtra} onChange={(e) => setReceitaExtra(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(99,102,241,0.5)] transition-colors" />
+          </div>
+          <div>
+            <label htmlFor="roi-economia" className="block text-xs text-[rgba(255,255,255,0.45)] mb-1">Economia operacional mensal (R$)</label>
+            <input id="roi-economia" type="number" min={0} step={1000} value={economiaOp} onChange={(e) => setEconomiaOp(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(99,102,241,0.5)] transition-colors" />
+          </div>
+        </div>
+        {/* Computed results */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="rounded-lg border border-red-500/15 bg-red-500/5 p-3">
+            <p className="text-xs text-[rgba(255,255,255,0.45)] mb-0.5">Investimento total</p>
+            <p className="text-lg font-bold text-white tabular-nums">R$ {calc.totalInvest.toLocaleString("pt-BR")}</p>
+          </div>
+          <div className="rounded-lg border border-green-500/15 bg-green-500/5 p-3">
+            <p className="text-xs text-[rgba(255,255,255,0.45)] mb-0.5">Valor gerado</p>
+            <p className="text-lg font-bold text-green-400 tabular-nums">R$ {calc.totalValor.toLocaleString("pt-BR")}</p>
+          </div>
+          <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-3">
+            <p className="text-xs text-[rgba(255,255,255,0.45)] mb-0.5">ROI projetado</p>
+            <p className={`text-lg font-bold tabular-nums ${calc.roi >= 0 ? "text-green-300" : "text-red-400"}`}>{calc.roi.toFixed(0)}%</p>
+            {calc.breakEvenMes && calc.breakEvenMes > 0 && (
+              <p className="text-xs text-[rgba(255,255,255,0.4)] mt-0.5">Break-even: mes {calc.breakEvenMes}</p>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Hero KPI cards */}
@@ -269,7 +332,7 @@ export function RoiContent() {
               return (
                 <tr
                   key={cat.categoria}
-                  className="border-b border-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.04)] transition-colors"
+                  className="border-b border-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.02)] transition-colors"
                 >
                   <td className="px-3 py-3 text-sm text-white">{cat.categoria}</td>
                   <td className="px-3 py-3 text-sm font-medium text-white tabular-nums">{cat.valor}</td>

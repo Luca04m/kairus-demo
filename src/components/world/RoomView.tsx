@@ -13,6 +13,7 @@ import { useAgentMovement } from './useAgentMovement';
 import { useDayNightCycle } from './useDayNightCycle';
 import { ROOMS, furnitureTemplates, ROOM_COLS, ROOM_ROWS } from '@/data/world-layout';
 import { DOMAINS } from '@/data/world-layout';
+import { IconByName } from '@/lib/icons';
 import { AGENTES } from '@/data/mrlion';
 import { useWorldStore } from '@/stores/worldStore';
 import type { DepartmentId } from '@/types/departments';
@@ -106,7 +107,7 @@ export function RoomView({ roomId, onBack, zoom, onZoomChange }: RoomViewProps) 
         </motion.button>
 
         <div className="flex items-center gap-2">
-          <span className="text-lg">{roomConfig?.emoji}</span>
+          {roomConfig && <IconByName name={roomConfig.emoji} size={18} />}
           <div>
             <h2 className="text-sm font-semibold text-white">
               {roomConfig?.nome || roomId}

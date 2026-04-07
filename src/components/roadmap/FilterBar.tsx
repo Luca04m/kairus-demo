@@ -66,7 +66,7 @@ export function FilterBar() {
         <select
           value={filters.status}
           onChange={(e) => setFilter('status', e.target.value as RoadmapStatus | 'all')}
-          className="rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-xs text-[rgba(255,255,255,0.5)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
+          className="rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-xs text-[rgba(255,255,255,0.5)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
         >
           {STATUSES.map((s) => (
             <option key={s.value} value={s.value} className="bg-[#111]">
@@ -79,7 +79,7 @@ export function FilterBar() {
         <select
           value={filters.department}
           onChange={(e) => setFilter('department', e.target.value)}
-          className="rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-xs text-[rgba(255,255,255,0.5)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
+          className="rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-xs text-[rgba(255,255,255,0.5)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
         >
           {DEPARTMENTS.map((d) => (
             <option key={d} value={d} className="bg-[#111]">
@@ -99,7 +99,7 @@ export function FilterBar() {
             placeholder="Buscar..."
             value={filters.search}
             onChange={(e) => setFilter('search', e.target.value)}
-            className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-[rgba(255,255,255,0.25)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
+            className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] pl-8 pr-3 py-1.5 text-xs text-white placeholder:text-[rgba(255,255,255,0.25)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
           />
         </div>
 

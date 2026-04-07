@@ -1,4 +1,5 @@
 'use client'
+import { AlertTriangle } from 'lucide-react'
 
 export default function Error({
   error,
@@ -10,7 +11,7 @@ export default function Error({
   return (
     <div className="flex min-h-[50vh] items-center justify-center p-8">
       <div className="text-center space-y-4">
-        <div className="text-4xl">⚠️</div>
+        <AlertTriangle size={40} className="text-amber-400 mx-auto" aria-hidden="true" />
         <h2 className="text-xl font-semibold text-white">Algo deu errado</h2>
         <p className="text-sm text-white/60 max-w-md">
           Ocorreu um erro inesperado. Tente novamente ou volte para o inicio.

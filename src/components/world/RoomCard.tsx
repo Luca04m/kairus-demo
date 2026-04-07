@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { type RoomConfig, DOMAINS } from "@/data/world-layout";
+import { IconByName } from "@/lib/icons";
 import { AGENTES } from "@/data/mrlion";
 import { AgentSprite } from "./AgentSprite";
 import { useWorldStore } from "@/stores/worldStore";
@@ -89,7 +90,7 @@ export function RoomCard({ room }: RoomCardProps) {
 
       {/* Header row */}
       <div className="flex items-center gap-2">
-        <span className="text-sm">{room.emoji}</span>
+        <IconByName name={room.emoji} size={14} />
         <span className="text-xs font-medium text-white truncate flex-1">
           {room.nome}
         </span>
@@ -113,7 +114,7 @@ export function RoomCard({ room }: RoomCardProps) {
           border: `1px solid ${domain?.tileColor ?? "#fff"}25`,
         }}
       >
-        {domain?.emoji} {domain?.label}
+        {domain && <IconByName name={domain.emoji} size={10} className="inline-block" />} {domain?.label}
       </span>
 
       {/* Agent sprites row */}

@@ -1,6 +1,8 @@
 "use client";
 import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { Activity, Bell, TrendingUp, TrendingDown, Minus, Wifi, Bot } from "lucide-react";
+import { IconByName } from "@/lib/icons";
 import { DEMO_USER } from "@/lib/constants";
 import { KPIS_VISAO_GERAL, ATIVIDADE_RECENTE, ALERTAS, AGENTES } from "@/data/mrlion";
 import { GREETING_CONTEXT, CONEXOES_ATIVAS, AGENTES_RESUMO } from "@/data/dashboard";
@@ -64,6 +66,7 @@ function VariacaoIcon({ direcao }: { direcao: "up" | "down" | "neutral" }) {
 }
 
 export function HomeContent() {
+  const router = useRouter();
   const skip = !isSupabaseConfigured();
 
   const fetchKpis = useCallback(async () => {
@@ -152,9 +155,9 @@ export function HomeContent() {
             {CONEXOES_ATIVAS.map((cx) => (
               <div
                 key={cx.id}
-                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]"
+                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]"
               >
-                <span className="text-sm">{cx.icone}</span>
+                <IconByName name={cx.icone} size={14} />
                 <div className="flex flex-col">
                   <span className="text-[11px] text-white font-medium leading-tight">{cx.nome}</span>
                   <span className="text-[9px] text-green-400 leading-tight">{cx.detalhe}</span>
@@ -175,7 +178,7 @@ export function HomeContent() {
             {AGENTES_RESUMO.map((ag) => (
               <div
                 key={ag.nome}
-                className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]"
+                className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]"
               >
                 <span
                   className="flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-semibold text-white"
@@ -213,7 +216,7 @@ export function HomeContent() {
                 style={{ backgroundColor: accent }}
               />
               <div className="flex items-center gap-1.5 mb-2 pl-3">
-                <span className="text-sm">{kpi.emoji}</span>
+                <IconByName name={kpi.emoji} size={14} />
                 <span className="text-xs text-[rgba(255,255,255,0.4)]">{kpi.label}</span>
               </div>
               <div className="text-2xl font-semibold text-white pl-3">{kpi.valor}</div>
@@ -248,7 +251,7 @@ export function HomeContent() {
               return (
                 <div
                   key={item.acao ? `${item.agente}-${item.tempo}-${i}` : `activity-${i}`}
-                  className="flex items-start gap-3 rounded-lg p-2 -mx-2 transition-colors duration-150 hover:bg-[rgba(255,255,255,0.04)] cursor-default"
+                  className="flex items-start gap-3 rounded-lg p-2 -mx-2 transition-colors duration-150 hover:bg-[rgba(255,255,255,0.02)] cursor-default"
                 >
                   <span
                     className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-white"
@@ -294,7 +297,10 @@ export function HomeContent() {
           </div>
           {/* Ver todos link */}
           <div className="mt-4 pt-3 border-t border-[rgba(255,255,255,0.05)]">
-            <button className="text-xs text-[rgba(255,255,255,0.4)] hover:text-white transition-colors duration-150">
+            <button
+              onClick={() => router.push("/inbox")}
+              className="text-xs text-[rgba(255,255,255,0.4)] hover:text-white transition-colors duration-150"
+            >
               Ver todos os alertas →
             </button>
           </div>

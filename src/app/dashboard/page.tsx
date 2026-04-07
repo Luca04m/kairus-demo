@@ -1,6 +1,8 @@
 import { AppHeader } from "@/components/AppHeader";
 import { HomeContent } from "@/components/HomeContent";
 
+export const metadata = { title: "Dashboard" };
+
 export default function DashboardPage() {
   return (
     <>

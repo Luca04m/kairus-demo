@@ -1,6 +1,8 @@
 import { AppHeader } from "@/components/AppHeader";
 import { InboxContent } from "@/components/InboxContent";
 
+export const metadata = { title: "Caixa de Entrada" };
+
 export default function InboxPage() {
   return (
     <>

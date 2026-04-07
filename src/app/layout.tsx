@@ -1,20 +1,42 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
+
+const geistSans = localFont({
+  src: "../../node_modules/geist/dist/fonts/geist-sans/Geist-Regular.woff2",
+  variable: "--font-geist-sans",
+  display: "swap",
+});
 import { AppShellClient } from "@/components/AppShellClient";
 import { Providers } from "@/providers/Providers";
 
 export const metadata: Metadata = {
-  title: "Kairus OS",
-  description: "Plataforma de gestao inteligente",
+  title: { default: "Kairus OS", template: "%s | Kairus OS" },
+  description: "Painel inteligente para PMEs — gestao, financeiro, marketing e vendas em um lugar",
+  manifest: "/manifest.json",
+  themeColor: "#6366f1",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Kairus OS",
+  },
+  openGraph: {
+    title: "Kairus OS",
+    description: "Painel inteligente para PMEs",
+    type: "website",
+    locale: "pt_BR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kairus OS",
+    description: "Painel inteligente para PMEs",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className="h-full antialiased dark">
-      <head>
-        <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
-        <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" />
-      </head>
+    <html lang="pt-BR" className={`h-full antialiased dark ${geistSans.variable}`}>
+      <head />
       <body className="h-full bg-background text-foreground">
         <Providers>
           <div

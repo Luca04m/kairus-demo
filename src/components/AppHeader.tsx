@@ -1,5 +1,5 @@
 "use client";
-import { History, LogOut, Network, PanelLeft, Search, ChevronRight } from "lucide-react";
+import { LogOut, PanelLeft, Search, ChevronRight } from "lucide-react";
 import { useSidebar } from "./SidebarContext";
 import { useAuth } from "@/providers/AuthProvider";
 
@@ -40,7 +40,7 @@ export function AppHeader({ title, parent, badge }: AppHeaderProps) {
       className="
         relative flex max-h-16 min-h-14 items-center gap-4 pl-4
         border-b border-[rgba(255,255,255,0.08)]
-        backdrop-blur-md bg-[rgba(255,255,255,0.02)]
+        backdrop-blur-md bg-[#080808]
         after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px
         after:bg-gradient-to-r after:from-transparent after:via-[rgba(255,255,255,0.15)] after:to-transparent
       "
@@ -76,21 +76,12 @@ export function AppHeader({ title, parent, badge }: AppHeaderProps) {
 
         {parent ? (
           <div className="flex min-w-0 items-center gap-2">
-            <button className="flex-shrink-0 rounded-md p-1 text-[rgba(255,255,255,0.4)] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white">
-              <History size={20} />
-            </button>
             <span className="hidden truncate text-sm text-[rgba(255,255,255,0.4)] sm:block">{parent}</span>
             <ChevronRight size={14} className="hidden flex-shrink-0 text-[rgba(255,255,255,0.4)] sm:block" />
             <span className="truncate text-sm font-medium text-white">{displayTitle}</span>
           </div>
         ) : (
           <div className="flex min-w-0 items-center gap-2">
-            <button className="flex-shrink-0 rounded-md p-1 text-[rgba(255,255,255,0.4)] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white" aria-label="Conexões">
-              <Network size={20} />
-            </button>
-            <button className="flex-shrink-0 rounded-md p-1 text-[rgba(255,255,255,0.4)] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white" aria-label="Histórico">
-              <History size={20} />
-            </button>
             <span className="truncate text-sm font-medium text-white">{displayTitle}</span>
           </div>
         )}
@@ -100,7 +91,11 @@ export function AppHeader({ title, parent, badge }: AppHeaderProps) {
         {badge && (
           <span className="hidden text-xs text-[rgba(255,255,255,0.4)] sm:block">{badge}</span>
         )}
-        <button className="rounded-md p-1.5 text-[rgba(255,255,255,0.4)] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white">
+        <button
+          aria-label="Buscar"
+          onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }))}
+          className="rounded-md p-1.5 text-[rgba(255,255,255,0.4)] transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-white"
+        >
           <Search size={20} />
         </button>
         {user && (
@@ -115,15 +110,4 @@ export function AppHeader({ title, parent, badge }: AppHeaderProps) {
       </div>
     </header>
   );
-}
-
-/** Utility: resolve a pathname to a display title using the ROUTE_TITLES map. */
-export function getRouteTitle(pathname: string): string {
-  // Exact match first
-  if (ROUTE_TITLES[pathname]) return ROUTE_TITLES[pathname];
-  // Prefix match (e.g. /agent/xxx/tasks)
-  for (const [prefix, label] of Object.entries(ROUTE_TITLES)) {
-    if (pathname.startsWith(prefix)) return label;
-  }
-  return "Início";
 }

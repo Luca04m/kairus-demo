@@ -1,9 +1,5 @@
-"use client";
-
-import { useParams, redirect } from "next/navigation";
+import { AgentFlowContent } from "@/components/AgentFlowContent";
 
 export default function AgentFlowPage() {
-  const params = useParams();
-  const id = params?.id as string;
-  redirect(`/agent/${id}`);
+  return <AgentFlowContent />;
 }

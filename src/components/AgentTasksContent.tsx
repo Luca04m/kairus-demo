@@ -48,7 +48,7 @@ const STATUS_CONFIG: Record<TarefaStatus, {
     label: "Pendente",
     icon: Circle,
     dot: "bg-[rgba(255,255,255,0.3)]",
-    badge: "bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.08)]",
+    badge: "bg-[rgba(255,255,255,0.02)] border-[rgba(255,255,255,0.08)]",
     text: "text-[rgba(255,255,255,0.4)]",
   },
   falha: {
@@ -80,6 +80,11 @@ export function AgentTasksContent() {
 
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<TarefaStatus | null>(null);
+  const [showDialog, setShowDialog] = useState(false);
+  const [extraTasks, setExtraTasks] = useState<Tarefa[]>([]);
+  const [newTitle, setNewTitle] = useState("");
+  const [newDesc, setNewDesc] = useState("");
+  const [newStatus, setNewStatus] = useState<TarefaStatus>("pendente");
 
   if (loading) {
     return (
@@ -101,7 +106,9 @@ export function AgentTasksContent() {
     );
   }
 
-  const filtered = AGENT_TAREFAS.filter((t) => {
+  const allTasks = [...AGENT_TAREFAS, ...extraTasks];
+
+  const filtered = allTasks.filter((t) => {
     const matchSearch = t.titulo.toLowerCase().includes(search.toLowerCase());
     const matchStatus = filterStatus === null || t.status === filterStatus;
     return matchSearch && matchStatus;
@@ -114,10 +121,78 @@ export function AgentTasksContent() {
           <h1 className="text-xl font-semibold text-white mb-1">Tarefas</h1>
           <p className="text-sm text-[rgba(255,255,255,0.4)]">Esta é uma visão geral de todas as tarefas deste agente</p>
         </div>
-        <button className="rounded-lg bg-[rgba(255,255,255,0.88)] px-3 py-1.5 text-sm font-medium text-[#080808] hover:bg-[rgba(255,255,255,0.75)] transition-colors">
+        <button
+          onClick={() => setShowDialog(true)}
+          className="rounded-lg bg-[rgba(255,255,255,0.88)] px-3 py-1.5 text-sm font-medium text-[#080808] hover:bg-[rgba(255,255,255,0.75)] transition-colors"
+        >
           Criar tarefa
         </button>
       </div>
+
+      {/* Create task dialog */}
+      {showDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(12,12,20,0.95)] backdrop-blur-md p-6 w-full max-w-md shadow-2xl">
+            <h2 className="text-lg font-semibold text-white mb-4">Nova tarefa do agente</h2>
+            <div className="flex flex-col gap-3">
+              <div>
+                <label className="block text-xs font-medium text-[rgba(255,255,255,0.5)] mb-1">Titulo*</label>
+                <input
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  placeholder="Ex: Analisar metricas de vendas"
+                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none focus:border-indigo-400/60"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-[rgba(255,255,255,0.5)] mb-1">Descricao</label>
+                <textarea
+                  value={newDesc}
+                  onChange={(e) => setNewDesc(e.target.value)}
+                  rows={3}
+                  placeholder="Descreva a tarefa..."
+                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none resize-none focus:border-indigo-400/60"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-[rgba(255,255,255,0.5)] mb-1">Status</label>
+                <select
+                  value={newStatus}
+                  onChange={(e) => setNewStatus(e.target.value as TarefaStatus)}
+                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none appearance-none focus:border-indigo-400/60"
+                >
+                  <option value="pendente">Pendente</option>
+                  <option value="em_progresso">Em progresso</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-5">
+              <button
+                onClick={() => { setShowDialog(false); setNewTitle(""); setNewDesc(""); setNewStatus("pendente"); }}
+                className="rounded-lg border border-[rgba(255,255,255,0.1)] px-4 py-2 text-sm text-[rgba(255,255,255,0.5)] hover:bg-[rgba(255,255,255,0.06)] transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                disabled={!newTitle.trim()}
+                onClick={() => {
+                  const id = `AT-${String(allTasks.length + 1).padStart(3, "0")}`;
+                  const now = new Date();
+                  const tempo = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+                  setExtraTasks((prev) => [...prev, {
+                    id, titulo: newTitle.trim(), status: newStatus, tempo,
+                    resultado: newDesc.trim() || null,
+                  }]);
+                  setShowDialog(false); setNewTitle(""); setNewDesc(""); setNewStatus("pendente");
+                }}
+                className="rounded-lg bg-[rgba(255,255,255,0.88)] px-4 py-2 text-sm font-medium text-[#080808] hover:bg-[rgba(255,255,255,0.75)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Criar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Filter bar */}
       <div className="flex items-center gap-2 mb-5 flex-wrap">
@@ -128,7 +203,7 @@ export function AgentTasksContent() {
             className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs transition-colors ${
               filterStatus === null
                 ? "border-[rgba(255,255,255,0.2)] bg-[rgba(255,255,255,0.08)] text-white"
-                : "border-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.04)]"
+                : "border-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.02)]"
             }`}
           >
             <Settings2 size={12} />
@@ -143,7 +218,7 @@ export function AgentTasksContent() {
                 className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs transition-colors ${
                   filterStatus === s
                     ? `${cfg.badge} ${cfg.text}`
-                    : "border-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.04)]"
+                    : "border-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.02)]"
                 }`}
               >
                 <span className={`h-1.5 w-1.5 rounded-full ${cfg.dot}`} />
@@ -163,7 +238,7 @@ export function AgentTasksContent() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <button className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-sm text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.06)]">
+          <button disabled title="Alternar visualização em breve" className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-sm text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.06)] opacity-50 cursor-not-allowed">
             <SlidersHorizontal size={14} />
             Visualizar
           </button>
@@ -171,7 +246,7 @@ export function AgentTasksContent() {
       </div>
 
       {/* Tasks table */}
-      <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] backdrop-blur-sm overflow-hidden">
+      <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] backdrop-blur-sm overflow-hidden">
         {/* Header */}
         <div className="grid grid-cols-[2rem_1fr_6rem_7rem_1fr_5rem] gap-3 px-4 py-2.5 border-b border-[rgba(255,255,255,0.06)] text-xs text-[rgba(255,255,255,0.5)] font-medium uppercase tracking-wide">
           <span>#</span>

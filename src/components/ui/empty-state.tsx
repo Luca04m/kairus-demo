@@ -50,7 +50,7 @@ function EmptyState({
           variant="outline"
           size="sm"
           onClick={onAction}
-          className="mt-1 border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] text-white/70 hover:bg-[rgba(255,255,255,0.08)] hover:text-white"
+          className="mt-1 border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] text-white/70 hover:bg-[rgba(255,255,255,0.08)] hover:text-white"
         >
           {actionLabel}
         </Button>

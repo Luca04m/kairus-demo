@@ -59,7 +59,8 @@ export function useSupabaseQuery<TMock, TApi = TMock>({
       }
     } catch {
       if (!mountedRef.current) return;
-      // Graceful fallback to mock data
+      // Graceful fallback to mock data — error is NOT surfaced to avoid
+      // showing error states when mock data is perfectly usable
       setData(mockData);
       setIsUsingMock(true);
     } finally {

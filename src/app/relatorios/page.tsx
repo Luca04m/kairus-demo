@@ -1,5 +1,7 @@
-import { redirect } from "next/navigation";
+import { RelatoriosContent } from "@/components/RelatoriosContent";
+
+export const metadata = { title: "Relatorios" };
 
 export default function RelatoriosPage() {
-  redirect("/financeiro");
+  return <RelatoriosContent />;
 }

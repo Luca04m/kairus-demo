@@ -1,6 +1,8 @@
 import { AppHeader } from "@/components/AppHeader";
 import { IntegrationsContent } from "@/components/IntegrationsContent";
 
+export const metadata = { title: "Integrações" };
+
 export default function IntegrationsPage() {
   return (
     <>

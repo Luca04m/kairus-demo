@@ -97,7 +97,7 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
               placeholder="Ex: Integração com Shopify"
-              className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white placeholder:text-[rgba(255,255,255,0.2)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
+              className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white placeholder:text-[rgba(255,255,255,0.2)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
             />
           </div>
 
@@ -111,7 +111,7 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
               onChange={(e) => setDescricao(e.target.value)}
               rows={3}
               placeholder="Descreva o escopo e objetivo..."
-              className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white placeholder:text-[rgba(255,255,255,0.2)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors resize-none"
+              className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white placeholder:text-[rgba(255,255,255,0.2)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors resize-none"
             />
           </div>
 
@@ -124,7 +124,7 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
               <select
                 value={prioridade}
                 onChange={(e) => setPrioridade(e.target.value as MoscowPriority)}
-                className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
+                className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
               >
                 <option value="must" className="bg-[#111]">Must Have</option>
                 <option value="should" className="bg-[#111]">Should Have</option>
@@ -139,7 +139,7 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as RoadmapStatus)}
-                className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
+                className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
               >
                 <option value="planned" className="bg-[#111]">Planejado</option>
                 <option value="in_progress" className="bg-[#111]">Em Progresso</option>
@@ -157,7 +157,7 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
               <select
                 value={impacto}
                 onChange={(e) => setImpacto(e.target.value as ImpactLevel)}
-                className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
+                className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
               >
                 <option value="high" className="bg-[#111]">Alto</option>
                 <option value="medium" className="bg-[#111]">Médio</option>
@@ -171,7 +171,7 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
               <select
                 value={esforco}
                 onChange={(e) => setEsforco(e.target.value as EffortLevel)}
-                className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
+                className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
               >
                 <option value="high" className="bg-[#111]">Alto</option>
                 <option value="medium" className="bg-[#111]">Médio</option>
@@ -189,7 +189,7 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
               <select
                 value={departamento}
                 onChange={(e) => setDepartamento(e.target.value)}
-                className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
+                className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
               >
                 {DEPARTMENTS.map((d) => (
                   <option key={d} value={d} className="bg-[#111]">{d}</option>
@@ -205,7 +205,7 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
                 value={squad}
                 onChange={(e) => setSquad(e.target.value)}
                 placeholder="Ex: Growth"
-                className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white placeholder:text-[rgba(255,255,255,0.2)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
+                className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white placeholder:text-[rgba(255,255,255,0.2)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
               />
             </div>
           </div>
@@ -220,7 +220,7 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
                 type="date"
                 value={dataInicio}
                 onChange={(e) => setDataInicio(e.target.value)}
-                className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors [color-scheme:dark]"
+                className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors [color-scheme:dark]"
               />
             </div>
             <div>
@@ -231,7 +231,7 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
                 type="date"
                 value={dataFim}
                 onChange={(e) => setDataFim(e.target.value)}
-                className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors [color-scheme:dark]"
+                className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors [color-scheme:dark]"
               />
             </div>
           </div>
@@ -246,7 +246,7 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
               value={tagsInput}
               onChange={(e) => setTagsInput(e.target.value)}
               placeholder="Ex: integracao, api, v2"
-              className="w-full rounded-lg bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white placeholder:text-[rgba(255,255,255,0.2)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
+              className="w-full rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-white placeholder:text-[rgba(255,255,255,0.2)] focus:border-[rgba(255,255,255,0.2)] focus:outline-none transition-colors"
             />
           </div>
         </div>

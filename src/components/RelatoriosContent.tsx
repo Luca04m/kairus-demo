@@ -64,8 +64,9 @@ export function RelatoriosContent() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
+          <h1 className="text-xl font-semibold text-white mb-1">Relatorios</h1>
           <p className="text-sm text-[rgba(255,255,255,0.4)]">
-            Relatórios automáticos gerados pela sua equipe de IA
+            Relatorios automaticos gerados pela sua equipe de IA
           </p>
         </div>
         <button className="flex items-center gap-2 rounded-lg bg-[rgba(255,255,255,0.88)] hover:bg-[rgba(255,255,255,0.75)] px-4 py-2 text-xs font-medium text-[#080808] transition-colors">
@@ -89,11 +90,6 @@ export function RelatoriosContent() {
           </button>
         ))}
 
-        <button className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-1.5 text-xs text-[rgba(255,255,255,0.5)] hover:text-white/70 hover:border-white/15 transition-colors">
-          <Calendar size={12} />
-          Último trimestre
-        </button>
-
         <div className="ml-auto relative">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.4)]" />
           <input
@@ -102,7 +98,7 @@ export function RelatoriosContent() {
             placeholder="Buscar relatório..."
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
-            className="rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] pl-9 pr-3 py-1.5 text-xs text-white placeholder:text-[rgba(255,255,255,0.3)] outline-none focus:border-[rgba(255,255,255,0.16)] transition-colors"
+            className="rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] pl-9 pr-3 py-1.5 text-xs text-white placeholder:text-[rgba(255,255,255,0.3)] outline-none focus:border-[rgba(255,255,255,0.16)] transition-colors"
           />
         </div>
       </div>
@@ -111,7 +107,7 @@ export function RelatoriosContent() {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5 flex flex-col gap-3">
+            <div key={i} className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5 flex flex-col gap-3">
               <SkeletonPulse className="h-5 w-16 rounded-full" />
               <SkeletonPulse className="h-4 w-3/4" />
               <SkeletonPulse className="h-3 w-24" />
@@ -135,7 +131,7 @@ export function RelatoriosContent() {
             return (
               <div
                 key={rel.id}
-                className="glass-card group relative flex flex-col rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5 transition-all duration-200 hover:border-[rgba(255,255,255,0.16)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.4)] hover:bg-[rgba(255,255,255,0.06)]"
+                className="glass-card group relative flex flex-col rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5 transition-all duration-200 hover:border-[rgba(255,255,255,0.16)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.4)] hover:bg-[rgba(255,255,255,0.06)]"
               >
                 {/* Status dot */}
                 {rel.status === "pronto" && (

@@ -8,6 +8,7 @@ import {
   WORKFLOW_LINKS, DOMAIN_ZONES,
 } from '@/data/world-layout';
 import type { DepartmentId } from '@/types/departments';
+import { IconByName } from '@/lib/icons';
 import { useWorldStore } from '@/stores/worldStore';
 
 interface WorldMapProps {
@@ -204,7 +205,7 @@ export function WorldMap({
                     offsetX={bounds.offsetX}
                     offsetY={bounds.offsetY}
                   >
-                    <span className="text-base">{room.emoji}</span>
+                    <IconByName name={room.emoji} size={16} />
                     {isActive && (
                       <div className="flex gap-0.5 mt-0.5">
                         {Array.from({ length: Math.min(agentCount || room.seedAgentIds.length, 5) }).map((_, di) => (
@@ -271,7 +272,7 @@ export function WorldMap({
                           }}
                         >
                           <div className="flex items-center justify-center gap-1.5 mb-1">
-                            <span>{room.emoji}</span>
+                            <IconByName name={room.emoji} size={12} />
                             <span className="text-[10px] font-semibold text-white">{room.nome}</span>
                           </div>
                           <div className="text-[8px] font-medium" style={{ color: domainCfg.tileColor }}>
@@ -321,7 +322,7 @@ function DomainLabels({ offsetX, offsetY }: { offsetX: number; offsetY: number }
               className="text-[9px] font-bold uppercase tracking-widest opacity-30"
               style={{ color: d.tileColor }}
             >
-              {d.emoji} {d.label}
+              <IconByName name={d.emoji} size={10} className="inline-block" /> {d.label}
             </span>
           </div>
         );

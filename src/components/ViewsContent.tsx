@@ -81,9 +81,6 @@ export function ViewsContent() {
             Crie visualizações para facilitar a busca nas tabelas de dados de entrada/saída dos seus nós.
           </p>
         </div>
-        <button className="rounded-lg bg-[rgba(255,255,255,0.88)] px-3 py-1.5 text-sm font-medium text-[#080808] hover:bg-[rgba(255,255,255,0.75)] transition-colors shrink-0">
-          Criar visualização
-        </button>
       </div>
 
       {/* Search + filter row */}
@@ -122,9 +119,6 @@ export function ViewsContent() {
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <p className="text-sm text-[rgba(255,255,255,0.4)] mb-4">Nenhuma visualização encontrada.</p>
-          <button className="rounded-lg bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.08)] px-4 py-2 text-sm text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.12)] transition-colors">
-            Criar visualização
-          </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

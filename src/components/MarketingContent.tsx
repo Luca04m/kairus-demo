@@ -8,7 +8,7 @@ import {
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend, PieChart, Pie, Cell,
-} from "recharts";
+} from "@/components/charts";
 import {
   CAMPANHAS_KPIS, CAMPANHAS_TABLE,
   SPEND_VS_REVENUE, CTR_POR_CAMPANHA,
@@ -109,7 +109,7 @@ function TabCampanhas() {
           return (
             <div
               key={kpi.label}
-              className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-4"
+              className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-4"
             >
               <div className="flex items-center gap-1.5 mb-2">
                 <Icon size={14} className="text-[rgba(255,255,255,0.4)]" />
@@ -131,7 +131,7 @@ function TabCampanhas() {
       </div>
 
       {/* Campaigns table */}
-      <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-5">
+      <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-5">
         <div className="flex items-center gap-2 mb-4">
           <Megaphone size={14} className="text-[rgba(255,255,255,0.4)]" />
           <span className="text-sm font-medium text-white">Campanhas Meta Ads</span>
@@ -182,17 +182,17 @@ function TabPerformance() {
     <div className="space-y-6">
       {/* KPI highlights */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-4">
+        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-4">
           <span className="text-xs text-[rgba(255,255,255,0.4)]">Melhor Campanha</span>
           <div className="text-lg font-semibold text-emerald-400 mt-1">Vendas R$100/dia</div>
           <div className="text-xs text-[rgba(255,255,255,0.4)] mt-1">ROAS 6,6x</div>
         </div>
-        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-4">
+        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-4">
           <span className="text-xs text-[rgba(255,255,255,0.4)]">Total Clicks</span>
           <div className="text-lg font-semibold text-white mt-1">275.475+</div>
           <div className="text-xs text-[rgba(255,255,255,0.4)] mt-1">6 campanhas ativas</div>
         </div>
-        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-4">
+        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-4">
           <span className="text-xs text-[rgba(255,255,255,0.4)]">Revenue Rastreado</span>
           <div className="text-lg font-semibold text-white mt-1">R$ 45.173</div>
           <div className="text-xs text-amber-400/70 mt-1">Somente Set/25 (pixel ativo)</div>
@@ -201,7 +201,7 @@ function TabPerformance() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Spend vs Revenue */}
-        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-5">
+        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-5">
           <span className="text-sm font-medium text-white mb-4 block">Spend vs Revenue por Mes</span>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={SPEND_VS_REVENUE}>
@@ -217,7 +217,7 @@ function TabPerformance() {
         </div>
 
         {/* CTR por campanha */}
-        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-5">
+        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-5">
           <span className="text-sm font-medium text-white mb-4 block">CTR por Campanha (%)</span>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={CTR_POR_CAMPANHA} layout="vertical">
@@ -243,7 +243,7 @@ function TabCanais() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Revenue por canal - donut */}
-        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-5">
+        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-5">
           <span className="text-sm font-medium text-white mb-4 block">Revenue por Canal</span>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -264,7 +264,7 @@ function TabCanais() {
                 ))}
               </Pie>
               <Tooltip
-                content={({ active, payload }) => {
+                content={({ active, payload }: { active?: boolean; payload?: Array<{ name?: string; value?: number }> }) => {
                   if (!active || !payload?.length) return null;
                   const d = payload[0];
                   const pct = ((Number(d.value) / totalRevenue) * 100).toFixed(1);
@@ -293,7 +293,7 @@ function TabCanais() {
         {/* Mix de Pagamento + Top Cupons */}
         <div className="space-y-6">
           {/* Payment mix */}
-          <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-5">
+          <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-5">
             <span className="text-sm font-medium text-white mb-4 block">Mix de Pagamento</span>
             <div className="flex items-center gap-4">
               <div className="w-full h-6 rounded-full overflow-hidden bg-[rgba(255,255,255,0.08)] flex">
@@ -318,7 +318,7 @@ function TabCanais() {
           </div>
 
           {/* Top Cupons */}
-          <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-5">
+          <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-5">
             <span className="text-sm font-medium text-white mb-4 block">Top Cupons</span>
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -354,7 +354,7 @@ function TabAudiencia() {
     <div className="space-y-6">
       {/* Top stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-4">
+        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-4">
           <div className="flex items-center gap-1.5 mb-2">
             <Users size={14} className="text-pink-400/70" />
             <span className="text-xs text-[rgba(255,255,255,0.4)]">Seguidores</span>
@@ -363,7 +363,7 @@ function TabAudiencia() {
           <div className="text-xs text-[rgba(255,255,255,0.4)] mt-1">{AUDIENCIA_STATS.brasilPct} Brasil</div>
         </div>
         {AUDIENCIA_STATS.genero.map((g) => (
-          <div key={g.label} className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-4">
+          <div key={g.label} className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-4">
             <span className="text-xs text-[rgba(255,255,255,0.4)]">{g.label}</span>
             <div className="text-2xl font-semibold text-white mt-1">{g.pct}</div>
           </div>
@@ -372,15 +372,15 @@ function TabAudiencia() {
 
       {/* Engagement comparison */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-4">
+        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-4">
           <span className="text-xs text-[rgba(255,255,255,0.4)]">Engagement Medio - Reels</span>
           <div className="text-xl font-semibold text-emerald-400 mt-1">{ENGAGEMENT_STATS.reelsAvg.toLocaleString("pt-BR")}</div>
         </div>
-        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-4">
+        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-4">
           <span className="text-xs text-[rgba(255,255,255,0.4)]">Engagement Medio - Imagens</span>
           <div className="text-xl font-semibold text-white mt-1">{ENGAGEMENT_STATS.imageAvg.toLocaleString("pt-BR")}</div>
         </div>
-        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-4">
+        <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-4">
           <span className="text-xs text-[rgba(255,255,255,0.4)]">Total Posts</span>
           <div className="text-xl font-semibold text-white mt-1">{ENGAGEMENT_STATS.totalPosts}</div>
           <div className="text-xs text-[rgba(255,255,255,0.4)] mt-1">{ENGAGEMENT_STATS.periodo}</div>
@@ -388,7 +388,7 @@ function TabAudiencia() {
       </div>
 
       {/* Age distribution chart */}
-      <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-5">
+      <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-5">
         <span className="text-sm font-medium text-white mb-4 block">Distribuicao por Idade e Genero</span>
         <ResponsiveContainer width="100%" height={280}>
           <BarChart data={IDADE_CHART_DATA}>
@@ -404,7 +404,7 @@ function TabAudiencia() {
       </div>
 
       {/* Top 10 posts */}
-      <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.04)] p-5">
+      <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.02)] p-5">
         <span className="text-sm font-medium text-white mb-4 block">Top 10 Posts</span>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -462,6 +462,7 @@ export function MarketingContent() {
   return (
     <div className="p-6 space-y-6">
       <div>
+        <h1 className="text-xl font-semibold text-white mb-1">Marketing</h1>
         <p className="text-sm text-[rgba(255,255,255,0.4)]">
           Campanhas, performance, canais e audiencia — dados reais Casa Mr. Lion
         </p>

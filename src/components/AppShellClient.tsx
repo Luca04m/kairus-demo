@@ -3,6 +3,7 @@ import { useState, useCallback, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { AppSidebar } from "./AppSidebar";
 import { SidebarContext } from "./SidebarContext";
+import { PageTransition } from "./PageTransition";
 /** Routes that should render without the sidebar/shell chrome */
 const SHELL_EXCLUDED_ROUTES = ["/login", "/auth/callback"];
 
@@ -52,8 +53,10 @@ export function AppShellClient({ children }: AppShellClientProps) {
         <AppSidebar mobileOpen={mobileSidebarOpen} onClose={handleClose} />
 
         <div className="flex h-full flex-col overflow-hidden px-4 pt-4 pb-4 md:px-4 md:pl-0">
-          <main className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)]">
-            {children}
+          <main className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#080808]">
+            <PageTransition key={pathname}>
+              {children}
+            </PageTransition>
           </main>
         </div>
       </div>

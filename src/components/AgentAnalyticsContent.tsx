@@ -124,7 +124,7 @@ export function AgentAnalyticsContent() {
 
       {/* Date range + quick filters */}
       <div className="flex items-center gap-3 mb-6">
-        <button className="flex items-center gap-2 rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-sm text-white hover:bg-[rgba(255,255,255,0.06)]">
+        <button disabled title="Filtro de data em breve" className="flex items-center gap-2 rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-sm text-white hover:bg-[rgba(255,255,255,0.06)] opacity-50 cursor-not-allowed">
           <Calendar size={14} className="text-[rgba(255,255,255,0.4)]" />
           March 2nd, 2026 - April 1st, 2026
         </button>
@@ -132,12 +132,14 @@ export function AgentAnalyticsContent() {
           {["Últimos 3 meses", "Últimos 30 dias", "Últimos 7 dias"].map((label, i) => (
             <button
               key={label}
-              className={`rounded-lg px-3 py-1.5 text-sm transition-colors ${i === 1 ? "bg-[rgba(255,255,255,0.08)] text-white" : "text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.06)]"}`}
+              disabled
+              title="Filtro de período em breve"
+              className={`rounded-lg px-3 py-1.5 text-sm transition-colors opacity-50 cursor-not-allowed ${i === 1 ? "bg-[rgba(255,255,255,0.08)] text-white" : "text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.06)]"}`}
             >
               {label}
             </button>
           ))}
-          <button aria-label="Exportar dados" className="ml-1 rounded-lg border border-[rgba(255,255,255,0.08)] p-1.5 text-[rgba(255,255,255,0.4)] hover:text-white">
+          <button disabled title="Exportar dados em breve" aria-label="Exportar dados" className="ml-1 rounded-lg border border-[rgba(255,255,255,0.08)] p-1.5 text-[rgba(255,255,255,0.4)] hover:text-white opacity-50 cursor-not-allowed">
             <Download size={15} />
           </button>
         </div>
@@ -150,7 +152,7 @@ export function AgentAnalyticsContent() {
           return (
             <div
               key={label}
-              className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] backdrop-blur-sm p-4"
+              className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] backdrop-blur-sm p-4"
             >
               <div className="flex items-center gap-1.5 mb-2">
                 <Icon size={13} className="text-[rgba(255,255,255,0.4)]" />
@@ -173,7 +175,7 @@ export function AgentAnalyticsContent() {
       {/* Charts 2x2 */}
       <div className="grid grid-cols-2 gap-4">
         {/* Completion rate gauge */}
-        <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] backdrop-blur-sm p-5">
+        <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] backdrop-blur-sm p-5">
           <div className="flex items-center gap-2 mb-4">
             <CheckCircle2 size={14} className="text-[rgba(255,255,255,0.4)]" />
             <span className="text-sm font-medium text-white">Taxa de conclusão</span>
@@ -200,7 +202,7 @@ export function AgentAnalyticsContent() {
         </div>
 
         {/* Feedback score */}
-        <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] backdrop-blur-sm p-5">
+        <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] backdrop-blur-sm p-5">
           <div className="flex items-center gap-2 mb-4">
             <BarChart2 size={14} className="text-[rgba(255,255,255,0.4)]" />
             <span className="text-sm font-medium text-white">Pontuação de avaliação</span>
@@ -232,7 +234,7 @@ export function AgentAnalyticsContent() {
         </div>
 
         {/* Avg evaluation score gauge */}
-        <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] backdrop-blur-sm p-5">
+        <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] backdrop-blur-sm p-5">
           <div className="flex items-center gap-2 mb-4">
             <BarChart2 size={14} className="text-[rgba(255,255,255,0.4)]" />
             <span className="text-sm font-medium text-white">Pontuação média de avaliação</span>
@@ -257,7 +259,7 @@ export function AgentAnalyticsContent() {
         </div>
 
         {/* Tasks bar chart */}
-        <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] backdrop-blur-sm p-5">
+        <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] backdrop-blur-sm p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <CheckSquare size={14} className="text-[rgba(255,255,255,0.4)]" />

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback, useEffect } from "react";
+import { useTabState } from "@/hooks/useTabState";
 import {
   Bell,
   Brain,
@@ -10,30 +10,7 @@ import {
   CheckCircle2,
   Clock,
 } from "lucide-react";
-import { isSupabaseConfigured } from "@/lib/useSupabaseQuery";
-
-// Settings are saved to API when Supabase is configured, otherwise local-only
-function usePersistSetting(key: string, defaultValue: unknown) {
-  const configured = isSupabaseConfigured();
-
-  const save = useCallback(
-    async (value: unknown) => {
-      if (!configured) return;
-      try {
-        await fetch("/api/settings", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ key, value }),
-        });
-      } catch {
-        // Silent fail -- local state remains
-      }
-    },
-    [key, configured],
-  );
-
-  return { save };
-}
+import { useSettingsStore } from "@/stores/useSettingsStore";
 
 // ─── Toggle Component ───────────────────────────────────────────────────────
 
@@ -41,6 +18,7 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: () => void 
   return (
     <button
       onClick={onChange}
+      data-state={checked ? "checked" : "unchecked"}
       className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${
         checked ? "bg-[#22c55e]" : "bg-[rgba(255,255,255,0.12)]"
       }`}
@@ -141,7 +119,7 @@ function SectionCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5">
+    <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5">
       <h3 className="mb-5 text-sm font-semibold text-white">{title}</h3>
       <div className="flex flex-col gap-5">{children}</div>
     </div>
@@ -167,95 +145,78 @@ type TabId = (typeof TABS)[number]["id"];
 // ─── Panels ──────────────────────────────────────────────────────────────────
 
 function NotificacoesPanel() {
-  const [state, setState] = useState({
-    email: true,
-    push: true,
-    alertasCriticos: true,
-    resumoDiario: false,
-    relatoriosSemanais: true,
-  });
-
-  const toggle = (key: keyof typeof state) =>
-    setState((s) => ({ ...s, [key]: !s[key] }));
+  const s = useSettingsStore();
 
   return (
     <SectionCard title="Preferências de notificação">
       <ToggleRow
         label="Notificações por email"
         description="Receba atualizações e alertas no seu e-mail"
-        checked={state.email}
-        onChange={() => toggle("email")}
+        checked={s.notificacoesEmail}
+        onChange={() => s.setSetting("notificacoesEmail", !s.notificacoesEmail)}
       />
       <Divider />
       <ToggleRow
         label="Notificações push"
         description="Notificações em tempo real no navegador"
-        checked={state.push}
-        onChange={() => toggle("push")}
+        checked={s.notificacoesPush}
+        onChange={() => s.setSetting("notificacoesPush", !s.notificacoesPush)}
       />
       <Divider />
       <ToggleRow
         label="Alertas críticos"
         description="Avisos imediatos sobre falhas ou anomalias"
-        checked={state.alertasCriticos}
-        onChange={() => toggle("alertasCriticos")}
+        checked={s.alertasCriticos}
+        onChange={() => s.setSetting("alertasCriticos", !s.alertasCriticos)}
       />
       <Divider />
       <ToggleRow
         label="Resumo diário"
         description="Resumo das atividades do dia às 18h"
-        checked={state.resumoDiario}
-        onChange={() => toggle("resumoDiario")}
+        checked={s.resumoDiario}
+        onChange={() => s.setSetting("resumoDiario", !s.resumoDiario)}
       />
       <Divider />
       <ToggleRow
         label="Relatórios semanais"
         description="Relatório consolidado toda segunda-feira"
-        checked={state.relatoriosSemanais}
-        onChange={() => toggle("relatoriosSemanais")}
+        checked={s.relatoriosSemanais}
+        onChange={() => s.setSetting("relatoriosSemanais", !s.relatoriosSemanais)}
       />
     </SectionCard>
   );
 }
 
 function InteligenciaPanel() {
-  const [autonomia, setAutonomia] = useState("Moderado");
-  const [idioma, setIdioma] = useState("Português (BR)");
-  const [state, setState] = useState({
-    aprovacaoManual: true,
-    aprendizadoContinuo: true,
-  });
-
-  const toggle = (key: keyof typeof state) =>
-    setState((s) => ({ ...s, [key]: !s[key] }));
+  const s = useSettingsStore();
 
   return (
     <SectionCard title="Comportamento dos agentes">
       <SelectRow
         label="Nível de autonomia"
-        value={autonomia}
-        onChange={setAutonomia}
+        value={s.autonomiaAgente}
+        onChange={(v) => s.setSetting("autonomiaAgente", v)}
         options={["Conservador", "Moderado", "Agressivo"]}
       />
       <Divider />
       <ToggleRow
         label="Aprovação manual para ações críticas"
         description="Requer confirmação antes de executar ações irreversíveis"
-        checked={state.aprovacaoManual}
-        onChange={() => toggle("aprovacaoManual")}
+        checked={s.aprovacaoManual}
+        onChange={() => s.setSetting("aprovacaoManual", !s.aprovacaoManual)}
       />
       <Divider />
       <ToggleRow
         label="Aprendizado contínuo"
         description="Agentes aprendem com feedback e histórico de decisões"
-        checked={state.aprendizadoContinuo}
-        onChange={() => toggle("aprendizadoContinuo")}
+        checked={s.aprendizadoContinuo}
+        onChange={() => s.setSetting("aprendizadoContinuo", !s.aprendizadoContinuo)}
       />
       <Divider />
       <SelectRow
         label="Idioma de comunicação"
-        value={idioma}
-        onChange={setIdioma}
+        value={s.idioma}
+        onChange={(v) => s.setSetting("idioma", v)}
         options={["Português (BR)", "English", "Español"]}
       />
     </SectionCard>
@@ -263,13 +224,7 @@ function InteligenciaPanel() {
 }
 
 function SegurancaPanel() {
-  const [state, setState] = useState({
-    doisFatores: false,
-    logAuditoria: true,
-  });
-
-  const toggle = (key: keyof typeof state) =>
-    setState((s) => ({ ...s, [key]: !s[key] }));
+  const s = useSettingsStore();
 
   return (
     <div className="flex flex-col gap-5">
@@ -277,19 +232,19 @@ function SegurancaPanel() {
         <ToggleRow
           label="Autenticação de dois fatores"
           description="Adicione uma camada extra de segurança à sua conta"
-          checked={state.doisFatores}
-          onChange={() => toggle("doisFatores")}
+          checked={s.doisFatores}
+          onChange={() => s.setSetting("doisFatores", !s.doisFatores)}
         />
         <Divider />
         <ToggleRow
           label="Log de auditoria"
           description="Registre todas as ações realizadas na plataforma"
-          checked={state.logAuditoria}
-          onChange={() => toggle("logAuditoria")}
+          checked={s.logAuditoria}
+          onChange={() => s.setSetting("logAuditoria", !s.logAuditoria)}
         />
       </SectionCard>
 
-      <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5">
+      <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium text-white">Gerenciar acessos</p>
@@ -358,7 +313,7 @@ function IntegracoesPanel() {
 function PlanoPanel() {
   return (
     <div className="flex flex-col gap-5">
-      <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5">
+      <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5">
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-sm font-semibold text-white">Plano atual</h3>
           <span className="inline-flex items-center rounded-full bg-[rgba(99,102,241,0.15)] px-3 py-1 text-xs font-semibold text-[#818cf8]">
@@ -409,7 +364,7 @@ function PlanoPanel() {
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function ConfiguracoesContent() {
-  const [activeTab, setActiveTab] = useState<TabId>("notificacoes");
+  const [activeTab, setActiveTab] = useTabState<TabId>("kairus-config-tab", "notificacoes");
 
   const panelMap: Record<TabId, React.ReactNode> = {
     notificacoes: <NotificacoesPanel />,
@@ -430,12 +385,15 @@ export function ConfiguracoesContent() {
 
       <div className="flex gap-8">
         {/* Sidebar tabs */}
-        <nav className="flex w-44 flex-shrink-0 flex-col gap-1">
+        <nav className="flex w-44 flex-shrink-0 flex-col gap-1" role="tablist" aria-label="Configuracoes">
           {TABS.map(({ id, label, icon: Icon }) => {
             const active = activeTab === id;
             return (
               <button
                 key={id}
+                role="tab"
+                aria-selected={active}
+                aria-controls={`panel-${id}`}
                 onClick={() => setActiveTab(id)}
                 className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
                   active
@@ -451,7 +409,7 @@ export function ConfiguracoesContent() {
         </nav>
 
         {/* Content area */}
-        <div className="flex-1 min-w-0">{panelMap[activeTab]}</div>
+        <div className="flex-1 min-w-0" role="tabpanel" id={`panel-${activeTab}`} aria-label={activeTab}>{panelMap[activeTab]}</div>
       </div>
     </div>
   );

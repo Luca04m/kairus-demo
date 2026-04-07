@@ -1,5 +1,5 @@
 "use client";
-import { useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Plus, MessageSquare, Minus, Maximize, Keyboard, Webhook, CalendarClock, Brain, Zap } from "lucide-react";
 import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
 import { SkeletonPulse, ErrorState } from "@/components/ui/LoadingSkeleton";
@@ -20,6 +20,8 @@ const MOCK_FLOW_NODES: FlowNode[] = [
 ];
 
 export function AgentFlowContent() {
+  const [isActive, setIsActive] = useState(true);
+  const [zoom, setZoom] = useState(100);
   const skip = !isSupabaseConfigured();
 
   const fetchFlow = useCallback(async () => {
@@ -73,9 +75,12 @@ export function AgentFlowContent() {
           <p className="text-sm text-[rgba(255,255,255,0.4)]">Crie seus fluxos de trabalho personalizados que são executados via chat ou gatilhos</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-1.5 text-sm text-white hover:bg-[rgba(255,255,255,0.10)] transition-colors backdrop-blur-md">
-            <span className="animate-pulse-soft h-2 w-2 rounded-full bg-[#22c55e]" />
-            Ativo
+          <button
+            onClick={() => setIsActive((v) => !v)}
+            className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-1.5 text-sm text-white hover:bg-[rgba(255,255,255,0.10)] transition-colors backdrop-blur-md"
+          >
+            <span className={`h-2 w-2 rounded-full ${isActive ? "bg-[#22c55e] animate-pulse-soft" : "bg-[rgba(255,255,255,0.3)]"}`} />
+            {isActive ? "Ativo" : "Inativo"}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[rgba(255,255,255,0.4)]"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <button className="rounded-lg bg-[rgba(255,255,255,0.88)] px-3 py-1.5 text-sm font-medium text-[#080808] hover:bg-[rgba(255,255,255,0.75)] transition-colors">
@@ -85,7 +90,10 @@ export function AgentFlowContent() {
       </div>
 
       {/* Flow canvas — centered column */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[58%] flex flex-col items-center">
+      <div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[58%] flex flex-col items-center transition-transform duration-200 origin-center"
+        style={{ transform: `translate(-50%, -58%) scale(${zoom / 100})` }}
+      >
 
         {/* Trigger node */}
         <div className="backdrop-blur-[12px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.12)] rounded-xl hover:bg-[rgba(255,255,255,0.08)] hover:border-[rgba(255,255,255,0.18)] p-4 min-w-[240px] transition-all">
@@ -93,27 +101,27 @@ export function AgentFlowContent() {
           <div className="flex items-center gap-2">
             {/* Chat */}
             <div className="relative group">
-              <button className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border border-[rgba(255,255,255,0.10)] bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] hover:text-white hover:bg-[rgba(255,255,255,0.12)] transition-all">
+              <button disabled title="Trigger de chat em breve" className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border border-[rgba(255,255,255,0.10)] bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] hover:text-white hover:bg-[rgba(255,255,255,0.12)] transition-all opacity-50 cursor-not-allowed">
                 <MessageSquare size={14} />
               </button>
               <span className="mt-1 block text-center text-[10px] text-[rgba(255,255,255,0.5)]">Chat</span>
             </div>
             {/* Webhook */}
             <div className="relative group">
-              <button className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border border-[rgba(255,255,255,0.10)] bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] hover:text-white hover:bg-[rgba(255,255,255,0.12)] transition-all">
+              <button disabled title="Webhook trigger em breve" className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border border-[rgba(255,255,255,0.10)] bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] hover:text-white hover:bg-[rgba(255,255,255,0.12)] transition-all opacity-50 cursor-not-allowed">
                 <Webhook size={14} />
               </button>
               <span className="mt-1 block text-center text-[10px] text-[rgba(255,255,255,0.5)]">Webhook</span>
             </div>
             {/* Agenda */}
             <div className="relative group">
-              <button className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border border-[rgba(255,255,255,0.10)] bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] hover:text-white hover:bg-[rgba(255,255,255,0.12)] transition-all">
+              <button disabled title="Agenda trigger em breve" className="flex h-9 w-9 flex-col items-center justify-center rounded-lg border border-[rgba(255,255,255,0.10)] bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] hover:text-white hover:bg-[rgba(255,255,255,0.12)] transition-all opacity-50 cursor-not-allowed">
                 <CalendarClock size={14} />
               </button>
               <span className="mt-1 block text-center text-[10px] text-[rgba(255,255,255,0.5)]">Agenda</span>
             </div>
             {/* Add */}
-            <button className="flex h-9 w-9 items-center justify-center rounded-lg border border-dashed border-[rgba(255,255,255,0.12)] text-[rgba(255,255,255,0.5)] hover:text-white hover:border-[rgba(255,255,255,0.25)] transition-all">
+            <button disabled title="Adicionar trigger em breve" className="flex h-9 w-9 items-center justify-center rounded-lg border border-dashed border-[rgba(255,255,255,0.12)] text-[rgba(255,255,255,0.5)] hover:text-white hover:border-[rgba(255,255,255,0.25)] transition-all opacity-50 cursor-not-allowed">
               <Plus size={14} />
             </button>
           </div>
@@ -137,7 +145,7 @@ export function AgentFlowContent() {
 
         {/* Add step at bottom */}
         <div className="mt-3">
-          <button className="flex h-8 w-8 items-center justify-center rounded-full border border-dashed border-[rgba(255,255,255,0.14)] text-[rgba(255,255,255,0.5)] hover:text-white hover:border-[rgba(255,255,255,0.28)] hover:bg-[rgba(255,255,255,0.04)] transition-all">
+          <button disabled title="Adicionar passo em breve" className="flex h-8 w-8 items-center justify-center rounded-full border border-dashed border-[rgba(255,255,255,0.14)] text-[rgba(255,255,255,0.5)] hover:text-white hover:border-[rgba(255,255,255,0.28)] hover:bg-[rgba(255,255,255,0.02)] transition-all opacity-50 cursor-not-allowed">
             <Plus size={16} />
           </button>
         </div>
@@ -145,15 +153,22 @@ export function AgentFlowContent() {
 
       {/* Zoom controls — glass surface */}
       <div className="absolute bottom-6 left-6 flex flex-col gap-1">
+        <span className="text-[10px] text-center text-[rgba(255,255,255,0.35)] tabular-nums mb-0.5">{zoom}%</span>
         {([
-          { id: "zoom-in", icon: <Plus size={15} /> },
-          { id: "zoom-out", icon: <Minus size={15} /> },
-          { id: "maximize", icon: <Maximize size={15} /> },
-          { id: "keyboard", icon: <Keyboard size={15} /> },
-        ] as { id: string; icon: React.ReactNode }[]).map((item) => (
+          { id: "zoom-in", icon: <Plus size={15} />, label: "Aumentar zoom", action: () => setZoom((z) => Math.min(150, z + 10)) },
+          { id: "zoom-out", icon: <Minus size={15} />, label: "Diminuir zoom", action: () => setZoom((z) => Math.max(50, z - 10)) },
+          { id: "maximize", icon: <Maximize size={15} />, label: "Maximizar", action: () => setZoom(100) },
+          { id: "keyboard", icon: <Keyboard size={15} />, label: "Atalhos de teclado", action: () => {} },
+        ] as { id: string; icon: React.ReactNode; label: string; action: () => void }[]).map((item) => (
           <button
             key={item.id}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[rgba(255,255,255,0.10)] bg-[rgba(255,255,255,0.05)] text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.10)] hover:border-[rgba(255,255,255,0.18)] backdrop-blur-md transition-all"
+            aria-label={item.label}
+            onClick={item.action}
+            className={`flex h-8 w-8 items-center justify-center rounded-lg border bg-[rgba(255,255,255,0.05)] text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.10)] backdrop-blur-md transition-all cursor-pointer ${
+              item.id === "maximize" && zoom === 100
+                ? "border-[rgba(255,255,255,0.18)] text-white"
+                : "border-[rgba(255,255,255,0.10)] hover:border-[rgba(255,255,255,0.18)]"
+            }`}
           >
             {item.icon}
           </button>

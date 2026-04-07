@@ -1,6 +1,8 @@
 import { AppHeader } from "@/components/AppHeader";
 import { EquipeContent } from "@/components/EquipeContent";
 
+export const metadata = { title: "Equipe" };
+
 export default function EquipePage() {
   return (
     <>

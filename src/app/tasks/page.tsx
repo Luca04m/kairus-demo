@@ -1,6 +1,8 @@
 import { AppHeader } from "@/components/AppHeader";
 import { TasksContent } from "@/components/TasksContent";
 
+export const metadata = { title: "Tarefas" };
+
 export default function TasksPage() {
   return (
     <>

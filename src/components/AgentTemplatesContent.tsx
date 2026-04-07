@@ -165,7 +165,7 @@ export function AgentTemplatesContent() {
         <SkeletonPulse className="h-4 w-80 mb-6" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5">
+            <div key={i} className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5">
               <SkeletonPulse className="h-4 w-24 mb-3" />
               <SkeletonPulse className="h-5 w-40 mb-2" />
               <SkeletonPulse className="h-3 w-full mb-1" />
@@ -254,7 +254,7 @@ export function AgentTemplatesContent() {
         {paginated.map((t) => (
           <div
             key={t.name}
-            className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5 flex flex-col gap-3 transition-all duration-200 hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.07)] hover:shadow-lg hover:-translate-y-0.5"
+            className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5 flex flex-col gap-3 transition-all duration-200 hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.07)] hover:shadow-lg hover:-translate-y-0.5"
           >
             {/* Category badge */}
             <div>

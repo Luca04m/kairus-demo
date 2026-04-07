@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, isClientConfigured } from "@/lib/supabase/client";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -15,20 +15,31 @@ export default function LoginPage() {
     setStatus("loading");
     setErrorMessage("");
 
-    const supabase = createClient();
-
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
-
-    if (error) {
+    if (!isClientConfigured()) {
       setStatus("error");
-      setErrorMessage(error.message);
-    } else {
-      setStatus("success");
+      setErrorMessage("Supabase nao configurado. Execute em modo demo via /dashboard.");
+      return;
+    }
+
+    try {
+      const supabase = createClient();
+
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        setStatus("error");
+        setErrorMessage(error.message);
+      } else {
+        setStatus("success");
+      }
+    } catch (err) {
+      setStatus("error");
+      setErrorMessage(err instanceof Error ? err.message : "Erro ao conectar com autenticacao.");
     }
   }
 

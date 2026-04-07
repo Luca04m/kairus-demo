@@ -1,6 +1,7 @@
 "use client";
 import { useState, useCallback } from "react";
-import { Tag, List, Search, Settings, Unplug, CheckCircle, Clock } from "lucide-react";
+import { useTabState } from "@/hooks/useTabState";
+import { Search, Settings, CheckCircle, Clock, X } from "lucide-react";
 import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
 import { SkeletonPulse } from "@/components/ui/LoadingSkeleton";
 
@@ -40,9 +41,11 @@ function InitialCircle({ name, color }: { name: string; color: string }) {
 }
 
 export function IntegrationsContent() {
-  const [activeTab, setActiveTab] = useState<"conexoes" | "disponiveis">("conexoes");
+  const [activeTab, setActiveTab] = useTabState<"conexoes" | "disponiveis">("kairus-integrations-tab", "conexoes");
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [configDialog, setConfigDialog] = useState<string | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
   const skip = !isSupabaseConfigured();
 
   const fetchConnected = useCallback(async () => {
@@ -88,14 +91,17 @@ export function IntegrationsContent() {
             Conecte integrações para potencializar as capacidades e o desempenho do seu agente
           </p>
         </div>
-        <button className="rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-sm text-white hover:bg-[rgba(255,255,255,0.06)] transition-colors">
+        <button disabled title="Criar integração em breve" className="rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-sm text-white hover:bg-[rgba(255,255,255,0.06)] transition-colors opacity-50 cursor-not-allowed">
           Criar integração personalizada
         </button>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 mb-5 border-b border-[rgba(255,255,255,0.08)]">
+      <div className="flex items-center gap-1 mb-5 border-b border-[rgba(255,255,255,0.08)]" role="tablist" aria-label="Integracoes">
         <button
+          role="tab"
+          aria-selected={activeTab === "conexoes"}
+          aria-controls="panel-conexoes"
           onClick={() => setActiveTab("conexoes")}
           className={`px-4 py-2 text-sm transition-colors border-b-2 ${
             activeTab === "conexoes"
@@ -106,6 +112,9 @@ export function IntegrationsContent() {
           Conexões
         </button>
         <button
+          role="tab"
+          aria-selected={activeTab === "disponiveis"}
+          aria-controls="panel-disponiveis"
           onClick={() => setActiveTab("disponiveis")}
           className={`px-4 py-2 text-sm transition-colors border-b-2 ${
             activeTab === "disponiveis"
@@ -121,7 +130,7 @@ export function IntegrationsContent() {
       {activeTab === "conexoes" && loadingConnected && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Array.from({ length: 4 }).map((_, idx) => (
-            <div key={idx} className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5 flex flex-col gap-4">
+            <div key={idx} className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5 flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <SkeletonPulse className="h-8 w-8 rounded-full" />
@@ -146,7 +155,7 @@ export function IntegrationsContent() {
           {connectedIntegrations.map((i: typeof connectedIntegrationsMock[number]) => (
             <div
               key={i.name}
-              className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-5 flex flex-col gap-4 hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.07)] hover:shadow-lg transition-all duration-200"
+              className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5 flex flex-col gap-4 hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.07)] hover:shadow-lg transition-all duration-200"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -175,13 +184,12 @@ export function IntegrationsContent() {
               </div>
 
               <div className="flex items-center gap-2 mt-auto">
-                <button className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.1)] px-3 py-1.5 text-sm text-white hover:bg-[rgba(255,255,255,0.13)] transition-colors">
+                <button
+                  onClick={() => setConfigDialog(i.name)}
+                  className="w-full flex items-center justify-center gap-1.5 rounded-lg bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.1)] px-3 py-1.5 text-sm text-white hover:bg-[rgba(255,255,255,0.13)] transition-colors cursor-pointer"
+                >
                   <Settings size={13} />
                   Configurar
-                </button>
-                <button className="flex items-center justify-center gap-1.5 rounded-lg border border-[rgba(239,68,68,0.25)] px-3 py-1.5 text-sm text-[rgba(239,68,68,0.7)] hover:bg-[rgba(239,68,68,0.1)] hover:text-[#f87171] transition-colors">
-                  <Unplug size={13} />
-                  Desconectar
                 </button>
               </div>
             </div>
@@ -194,14 +202,6 @@ export function IntegrationsContent() {
         <>
           {/* Sub-filters */}
           <div className="flex flex-wrap items-center gap-2 mb-5">
-            <button className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-sm text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.06)] transition-colors">
-              <Tag size={13} />
-              Categorias
-            </button>
-            <button className="flex items-center gap-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] px-3 py-1.5 text-sm text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.06)] transition-colors">
-              <List size={13} />
-              Listagem
-            </button>
             {allCategories.map((cat) => (
               <button
                 key={cat}
@@ -236,7 +236,7 @@ export function IntegrationsContent() {
               {filteredAvailable.map((i) => (
                 <div
                   key={i.name}
-                  className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-4 flex flex-col gap-3 hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.07)] hover:shadow-lg transition-all duration-200"
+                  className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-4 flex flex-col gap-3 hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.07)] hover:shadow-lg transition-all duration-200"
                 >
                   <div className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: i.color }} />
@@ -249,7 +249,13 @@ export function IntegrationsContent() {
                     </div>
                     <p className="text-xs text-[rgba(255,255,255,0.4)] leading-relaxed">{i.desc}</p>
                   </div>
-                  <button className="mt-auto rounded-lg border border-[rgba(255,255,255,0.1)] px-3 py-1.5 text-sm text-[rgba(255,255,255,0.5)] hover:bg-[rgba(255,255,255,0.07)] hover:text-white transition-colors">
+                  <button
+                    onClick={() => {
+                      setToast(`Conexao "${i.name}" adicionada`);
+                      setTimeout(() => setToast(null), 2500);
+                    }}
+                    className="mt-auto rounded-lg border border-[rgba(255,255,255,0.1)] px-3 py-1.5 text-sm text-[rgba(255,255,255,0.5)] hover:bg-[rgba(255,255,255,0.07)] hover:text-white transition-colors cursor-pointer"
+                  >
                     Adicionar conexão
                   </button>
                 </div>
@@ -257,6 +263,48 @@ export function IntegrationsContent() {
             </div>
           )}
         </>
+      )}
+      {/* Config dialog */}
+      {configDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setConfigDialog(null)}>
+          <div
+            className="glass-card w-full max-w-md rounded-2xl border border-[rgba(255,255,255,0.12)] bg-[#111] p-6 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-lg font-semibold text-white">Configurar {configDialog}</h2>
+              <button onClick={() => setConfigDialog(null)} className="text-[rgba(255,255,255,0.4)] hover:text-white transition-colors cursor-pointer">
+                <X size={18} />
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs text-[rgba(255,255,255,0.5)] block mb-1.5">API Key</label>
+                <input className="w-full rounded-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none focus:border-[rgba(99,102,241,0.5)]" placeholder="sk-..." readOnly defaultValue="***-demo-key-***" />
+              </div>
+              <div>
+                <label className="text-xs text-[rgba(255,255,255,0.5)] block mb-1.5">Webhook URL</label>
+                <input className="w-full rounded-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none focus:border-[rgba(99,102,241,0.5)]" placeholder="https://..." readOnly defaultValue="https://kairus.app/webhook/..." />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-[rgba(255,255,255,0.6)]">Sincronizacao automatica</span>
+                <div className="toggle-switch active" />
+              </div>
+            </div>
+            <div className="flex gap-2 mt-6">
+              <button onClick={() => setConfigDialog(null)} className="flex-1 rounded-lg border border-[rgba(255,255,255,0.1)] px-3 py-2 text-sm text-[rgba(255,255,255,0.5)] hover:bg-[rgba(255,255,255,0.06)] transition-colors cursor-pointer">Cancelar</button>
+              <button onClick={() => setConfigDialog(null)} className="flex-1 rounded-lg bg-[rgba(255,255,255,0.88)] px-3 py-2 text-sm font-medium text-[#080808] hover:bg-[rgba(255,255,255,0.75)] transition-colors cursor-pointer">Salvar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast */}
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl border border-[rgba(34,197,94,0.3)] bg-[#111] px-4 py-3 shadow-xl animate-fade-in-up">
+          <CheckCircle size={15} className="text-green-400" />
+          <span className="text-sm text-white">{toast}</span>
+        </div>
       )}
     </div>
   );

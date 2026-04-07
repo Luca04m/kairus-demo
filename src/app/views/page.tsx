@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import { ViewsContent } from "@/components/ViewsContent";
 
 export default function ViewsPage() {
-  redirect("/dashboard");
+  return <ViewsContent />;
 }

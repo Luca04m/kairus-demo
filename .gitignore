@@ -38,12 +38,33 @@ next-env.d.ts
 # Vercel
 .vercel
 
-# Local settings (not project config)
+# ─── Ruflo / Claude-Flow (NUNCA subir ao GitHub) ───
 .claude/settings.local.json
-
-# User-specific skills (not part of the template)
 .claude/skills/customize/
 .claude/skills/release/
+.claude-flow/
+.swarm/
+.claude/helpers/statusline.cjs
+.claude/helpers/hook-handler.cjs
+.claude/helpers/intelligence.cjs
+.claude/helpers/context-persistence-hook.mjs
+.claude/helpers/metrics-db.mjs
+.claude/helpers/learning-service.mjs
 
 # Local temp files
 temp/
+
+# Local Claude config (nao commitar)
+CLAUDE.local.md
+
+# Codex local configuration
+.codex/
+
+# Claude Flow runtime data
+.claude-flow/data/
+.claude-flow/logs/
+
+# Environment variables
+.env
+.env.local
+.env.*.local

@@ -40,7 +40,7 @@ export function WhatsAppBadge({ status }: WhatsAppBadgeProps) {
   const config = STATUS_CONFIG[status];
 
   return (
-    <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]">
+    <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]">
       <span
         className={`h-1.5 w-1.5 rounded-full ${config.dotClass}`}
         style={config.animate ? { animation: 'pulseSoft 1.6s ease-in-out infinite' } : undefined}

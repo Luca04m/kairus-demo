@@ -35,6 +35,7 @@ export function AgentSettingsContent() {
   });
 
   const [showBanner, setShowBanner] = useState(true);
+  const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState("Configurações");
   const [avatarMode, setAvatarMode] = useState<"avatar" | "imagem">("imagem");
   const [agentName, setAgentName] = useState(agentConfig?.name || "Agente sem título");
@@ -59,7 +60,7 @@ export function AgentSettingsContent() {
             <SkeletonPulse key={i} className="h-8 w-24" />
           ))}
         </div>
-        <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] p-6">
+        <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-6">
           <SkeletonPulse className="h-5 w-20 mb-4" />
           <SkeletonPulse className="h-20 w-20 rounded-xl mb-4" />
           <SkeletonPulse className="h-10 w-full mb-3" />
@@ -94,7 +95,7 @@ export function AgentSettingsContent() {
             className={`relative px-4 py-2 text-sm transition-colors ${
               activeTab === tab
                 ? "text-white"
-                : "text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.04)]"
+                : "text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.02)]"
             } rounded-t-lg`}
           >
             {tab}
@@ -106,7 +107,7 @@ export function AgentSettingsContent() {
       </div>
 
       {/* Form container with glass-card */}
-      <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] backdrop-blur-sm p-6">
+      <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] backdrop-blur-sm p-6">
         {/* Basic section */}
         <div>
           <h2 className="text-base font-semibold text-white mb-1">Básico</h2>
@@ -164,7 +165,7 @@ export function AgentSettingsContent() {
                     </button>
                   </div>
                   {avatarMode === "imagem" && (
-                    <button className="rounded-lg border border-dashed border-[rgba(255,255,255,0.15)] px-4 py-1.5 text-xs text-[rgba(255,255,255,0.4)] hover:border-indigo-400/40 hover:text-indigo-300 transition-colors">
+                    <button disabled title="Upload de imagem em breve" className="rounded-lg border border-dashed border-[rgba(255,255,255,0.15)] px-4 py-1.5 text-xs text-[rgba(255,255,255,0.4)] hover:border-indigo-400/40 hover:text-indigo-300 transition-colors opacity-50 cursor-not-allowed">
                       + Fazer upload
                     </button>
                   )}
@@ -206,8 +207,15 @@ export function AgentSettingsContent() {
 
             {/* Save button */}
             <div className="flex justify-end pt-2">
-              <button className="rounded-lg bg-indigo-500 hover:bg-indigo-400 transition-colors px-5 py-2 text-sm font-medium text-white shadow-md shadow-indigo-500/20">
-                Salvar
+              <button
+                onClick={() => {
+                  setSaved(true);
+                  setTimeout(() => setSaved(false), 2000);
+                }}
+                disabled={saved}
+                className={`rounded-lg transition-colors px-5 py-2 text-sm font-medium text-white shadow-md ${saved ? "bg-emerald-600 shadow-emerald-500/20" : "bg-indigo-500 hover:bg-indigo-400 shadow-indigo-500/20"}`}
+              >
+                {saved ? "✓ Salvo" : "Salvar"}
               </button>
             </div>
           </div>

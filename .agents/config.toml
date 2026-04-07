@@ -96,6 +96,426 @@ enabled = true
 path = ".agents/skills/security-audit"
 enabled = true
 
+[[skills.config]]
+path = ".agents/skills/performance-analysis"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/github-automation"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-coordination"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agentdb-advanced"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agentdb-learning"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agentdb-memory-patterns"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agentdb-optimization"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agentdb-vector-search"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agentic-jujutsu"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/claims"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/embeddings"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/flow-nexus-neural"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/flow-nexus-platform"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/flow-nexus-swarm"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/github-code-review"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/github-multi-repo"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/github-project-management"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/github-release-management"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/github-workflow-automation"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/hive-mind"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/hive-mind-advanced"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/hooks-automation"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/neural-training"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/pair-programming"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/reasoningbank-agentdb"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/reasoningbank-intelligence"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/skill-builder"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/stream-chain"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/swarm-advanced"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/v3-cli-modernization"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/v3-core-implementation"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/v3-ddd-architecture"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/v3-integration-deep"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/v3-mcp-optimization"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/v3-memory-unification"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/v3-performance-optimization"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/v3-security-overhaul"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/v3-swarm-coordination"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/verification-quality"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/worker-benchmarks"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/worker-integration"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/workflow-automation"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-payments"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-challenges"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-sandbox"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-app-store"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-user-tools"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-neural-network"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-swarm"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-workflow"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-authentication"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-docs-api-openapi"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-spec-mobile-react-native"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-v3-security-architect"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-v3-memory-specialist"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-v3-queen-coordinator"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-v3-integration-architect"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-v3-performance-engineer"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-coordinator-swarm-init"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-memory-coordinator"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-automation-smart-agent"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-github-pr-manager"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-implementer-sparc-coder"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-sparc-coordinator"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-migration-plan"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-performance-analyzer"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-orchestrator-task"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-arch-system-design"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-crdt-synchronizer"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-quorum-manager"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-performance-benchmarker"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-security-manager"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-raft-manager"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-gossip-coordinator"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-byzantine-coordinator"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-test-long-runner"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-queen-coordinator"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-swarm-memory-manager"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-worker-specialist"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-collective-intelligence-coordinator"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-scout-explorer"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-code-analyzer"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-analyze-code-quality"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-dev-backend-api"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-base-template-generator"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-agentic-payments"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-pseudocode"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-refinement"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-specification"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-architecture"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-pagerank-analyzer"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-consensus-coordinator"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-trading-predictor"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-performance-optimizer"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-matrix-optimizer"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-code-goal-planner"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-goal-planner"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-sublinear-goal-planner"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-sona-learning-optimizer"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-ml-developer"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-tester"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-coder"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-reviewer"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-researcher"
+enabled = true
+
+[[skills.config]]
+path = ".agents/skills/agent-planner"
+enabled = true
+
 # =============================================================================
 # Profiles
 # =============================================================================

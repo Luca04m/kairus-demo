@@ -21,22 +21,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# IDE / AI Agents / Code Assistants
+# IDE
 .idea/
 .vscode/
 *.swp
 *.swo
-.cursor/
-.continue/
-.windsurf/
-.amazonq/
-.augment/
-.gemini/
-.opencode/
-.firecrawl/
-.aider.conf.yml
-.clinerules
-.windsurfrules
 
 # OS
 .DS_Store
@@ -49,29 +38,13 @@ next-env.d.ts
 # Vercel
 .vercel
 
-# ─── Claude Code (shareable: commands/, skills/, agents/ — local: the rest) ───
-.claude/settings.json
-.claude/settings.local.json
-.claude/helpers/
-.claude/memory.db
-.claude/worktrees/
-.claude-flow/
-.swarm/
-.mcp.json
-claude-flow.config.json
-
-# ─── Agent runtime databases ───
-*.db
-*.rvf
-*.rvf.lock
-
-# ─── Codex local config (NOT .agents/ — shipped with repo for Codex CLI) ───
-.codex/
-
-# Local temp files
-temp/
+# Testing
 test-results/
 playwright-report/
 
-# Local Claude config (nao commitar)
-CLAUDE.local.md
+# Local config (AI tools, editors)
+.claude/
+.cursor/
+
+# Local temp files
+temp/

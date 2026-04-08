@@ -1,8 +1,6 @@
 # Dependencies (reinstalled inside Docker)
 node_modules
-pnpm-debug.log*
 npm-debug.log*
-yarn-debug.log*
 
 # Build output
 .next
@@ -27,28 +25,10 @@ Thumbs.db
 *.swp
 *.swo
 
-# Agent / AI tool configs (not needed at runtime)
-.claude
-.codex
-.cursor
-.windsurf
-.gemini
-.continue
-.amazonq
-.augment
-.opencode
-.aider.conf.yml
-.clinerules
-.windsurfrules
-AGENTS.md
-CLAUDE.md
-GEMINI.md
-
-# Docs / research (large, not needed at runtime)
+# Docs (not needed at runtime)
 docs
-scripts
 
-# Docker files themselves (no need to copy into image)
+# Docker files themselves
 Dockerfile
 docker-compose.yml
 .dockerignore
@@ -56,5 +36,4 @@ docker-compose.yml
 # Misc
 *.tsbuildinfo
 README.md
-CHANGELOG.md
 LICENSE

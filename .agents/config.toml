@@ -13,7 +13,7 @@
 # =============================================================================
 
 # Model selection - the AI model to use for code generation
-# Options: gpt-5.3-codex, gpt-4o, claude-sonnet, claude-opus
+# Options: gpt-5.3-codex, gpt-4o, o4-mini
 model = "gpt-5.3-codex"
 
 # Approval policy determines when human approval is required
@@ -71,8 +71,8 @@ remote_compaction = true
 # =============================================================================
 
 [mcp_servers.claude-flow]
-command = "npx"
-args = ["-y", "@claude-flow/cli@latest"]
+command = "node"
+args = ["./node_modules/ruflo/bin/ruflo.js", "mcp", "start"]
 enabled = true
 tool_timeout_sec = 120
 

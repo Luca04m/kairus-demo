@@ -21,11 +21,22 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# IDE
+# IDE / AI Agents / Code Assistants
 .idea/
 .vscode/
 *.swp
 *.swo
+.cursor/
+.continue/
+.windsurf/
+.amazonq/
+.augment/
+.gemini/
+.opencode/
+.firecrawl/
+.aider.conf.yml
+.clinerules
+.windsurfrules
 
 # OS
 .DS_Store
@@ -38,33 +49,29 @@ next-env.d.ts
 # Vercel
 .vercel
 
-# ─── Ruflo / Claude-Flow (NUNCA subir ao GitHub) ───
+# ─── Claude Code (shareable: commands/, skills/, agents/ — local: the rest) ───
+.claude/settings.json
 .claude/settings.local.json
-.claude/skills/customize/
-.claude/skills/release/
+.claude/helpers/
+.claude/memory.db
+.claude/worktrees/
 .claude-flow/
 .swarm/
-.claude/helpers/statusline.cjs
-.claude/helpers/hook-handler.cjs
-.claude/helpers/intelligence.cjs
-.claude/helpers/context-persistence-hook.mjs
-.claude/helpers/metrics-db.mjs
-.claude/helpers/learning-service.mjs
+.mcp.json
+claude-flow.config.json
+
+# ─── Agent runtime databases ───
+*.db
+*.rvf
+*.rvf.lock
+
+# ─── Codex local config (NOT .agents/ — shipped with repo for Codex CLI) ───
+.codex/
 
 # Local temp files
 temp/
+test-results/
+playwright-report/
 
 # Local Claude config (nao commitar)
 CLAUDE.local.md
-
-# Codex local configuration
-.codex/
-
-# Claude Flow runtime data
-.claude-flow/data/
-.claude-flow/logs/
-
-# Environment variables
-.env
-.env.local
-.env.*.local

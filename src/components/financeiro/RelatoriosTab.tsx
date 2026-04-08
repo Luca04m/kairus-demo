@@ -12,8 +12,8 @@ import { RELATORIOS, AGENTES } from "@/data/mrlion";
 import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
 
 const tipoBadge: Record<string, string> = {
-  Semanal: "bg-blue-500/20 text-blue-400 border border-blue-500/20",
-  Mensal: "bg-purple-500/20 text-purple-400 border border-purple-500/20",
+  Semanal: "bg-[rgba(1,196,97,0.2)] text-[#01C461] border border-[rgba(1,196,97,0.2)]",
+  Mensal: "bg-[rgba(1,196,97,0.1)] text-[rgba(1,196,97,0.7)] border border-[rgba(1,196,97,0.15)]",
 };
 
 const tipoIcon: Record<string, React.ReactNode> = {
@@ -61,8 +61,8 @@ export function RelatoriosTab() {
   const M = METRICAS_ECOMMERCE;
 
   const paymentPie = [
-    { name: "Pix", value: 63.6, fill: "#6366f1" },
-    { name: "Cartao", value: 36.4, fill: "#ec4899" },
+    { name: "Pix", value: 63.6, fill: "#01C461" },
+    { name: "Cartao", value: 36.4, fill: "rgba(1,196,97,0.45)" },
   ];
 
   return (
@@ -71,13 +71,13 @@ export function RelatoriosTab() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {[
           { label: "Conversion Rate", valor: M.conversionRate, icon: Target, accent: "text-emerald-400" },
-          { label: "Revenue/Session", valor: M.revenuePerSession, icon: DollarSign, accent: "text-sky-400" },
-          { label: "Revenue/Visitor", valor: M.revenuePerVisitor, icon: Users, accent: "text-violet-400" },
+          { label: "Revenue/Session", valor: M.revenuePerSession, icon: DollarSign, accent: "text-[#01C461]" },
+          { label: "Revenue/Visitor", valor: M.revenuePerVisitor, icon: Users, accent: "text-[#01C461]" },
           { label: "Repeat Rate", valor: M.repeatRate, icon: Repeat2, accent: "text-amber-400" },
           { label: "LTV Medio", valor: M.ltvMedio, icon: TrendingUp, accent: "text-emerald-400" },
           { label: "LTV Repeat", valor: M.ltvRepeat, icon: TrendingUp, accent: "text-green-300" },
-          { label: "Pix", valor: `${M.pixTotal} (${M.pixPercent})`, icon: CreditCard, accent: "text-indigo-400" },
-          { label: "Cartao", valor: `${M.cartaoTotal} (${M.cartaoPercent})`, icon: CreditCard, accent: "text-pink-400" },
+          { label: "Pix", valor: `${M.pixTotal} (${M.pixPercent})`, icon: CreditCard, accent: "text-[#01C461]" },
+          { label: "Cartao", valor: `${M.cartaoTotal} (${M.cartaoPercent})`, icon: CreditCard, accent: "text-[rgba(1,196,97,0.7)]" },
         ].map((m) => (
           <div key={m.label} className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-4">
             <div className="flex items-center gap-1.5 mb-2">
@@ -93,7 +93,7 @@ export function RelatoriosTab() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
           <div className="flex items-center gap-2 mb-4">
-            <CreditCard size={14} className="text-violet-400" />
+            <CreditCard size={14} className="text-[#01C461]" />
             <span className="text-sm font-medium text-white">Pix vs Cartao</span>
           </div>
           <ResponsiveContainer width="100%" height={180}>
@@ -104,7 +104,7 @@ export function RelatoriosTab() {
                 ))}
               </Pie>
               <Legend wrapperStyle={{ fontSize: "12px" }} iconType="circle" />
-              <Tooltip contentStyle={{ backgroundColor: "#0d0d14", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 12, color: "white", fontSize: 12 }} formatter={(v: number) => [`${v}%`, ""]} />
+              <Tooltip contentStyle={{ backgroundColor: "#0d0d14", border: "1px solid rgba(1,196,97,0.25)", borderRadius: 12, color: "white", fontSize: 12 }} formatter={(v: number) => [`${v}%`, ""]} />
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -137,7 +137,7 @@ export function RelatoriosTab() {
                     <div className="flex flex-col gap-3">
                       <div>
                         <label className="block text-xs font-medium text-[rgba(255,255,255,0.5)] mb-1">Tipo</label>
-                        <select value={gerarTipo} onChange={(e) => setGerarTipo(e.target.value)} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none appearance-none focus:border-indigo-400/60">
+                        <select value={gerarTipo} onChange={(e) => setGerarTipo(e.target.value)} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none appearance-none focus:border-[rgba(1,196,97,0.6)]">
                           <option>Semanal</option>
                           <option>Mensal</option>
                           <option>Trimestral</option>
@@ -147,11 +147,11 @@ export function RelatoriosTab() {
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <label className="block text-xs font-medium text-[rgba(255,255,255,0.5)] mb-1">De</label>
-                          <input type="date" value={gerarDe} onChange={(e) => setGerarDe(e.target.value)} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none focus:border-indigo-400/60" />
+                          <input type="date" value={gerarDe} onChange={(e) => setGerarDe(e.target.value)} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none focus:border-[rgba(1,196,97,0.6)]" />
                         </div>
                         <div>
                           <label className="block text-xs font-medium text-[rgba(255,255,255,0.5)] mb-1">Ate</label>
-                          <input type="date" value={gerarAte} onChange={(e) => setGerarAte(e.target.value)} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none focus:border-indigo-400/60" />
+                          <input type="date" value={gerarAte} onChange={(e) => setGerarAte(e.target.value)} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none focus:border-[rgba(1,196,97,0.6)]" />
                         </div>
                       </div>
                     </div>

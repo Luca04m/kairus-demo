@@ -44,10 +44,10 @@ export interface SpriteColors {
 // Domain base colors for the body — Kairus domains
 export const domainSpriteColors: Record<DepartmentId, SpriteColors> = {
   vendas:      { head: '#86efac', body: '#22c55e', legs: '#16a34a', accent: '#bbf7d0' },
-  marketing:   { head: '#c4b5fd', body: '#6366f1', legs: '#4f46e5', accent: '#ddd6fe' },
-  financeiro:  { head: '#93c5fd', body: '#3b82f6', legs: '#2563eb', accent: '#bfdbfe' },
+  marketing:   { head: '#d4d4d8', body: '#a1a1aa', legs: '#71717a', accent: '#e4e4e7' },
+  financeiro:  { head: 'rgba(1,196,97,0.5)', body: '#01C461', legs: 'rgba(1,196,97,0.7)', accent: '#a7f3d0' },
   operacoes:   { head: '#fde68a', body: '#f59e0b', legs: '#d97706', accent: '#fef3c7' },
-  atendimento: { head: '#67e8f9', body: '#06b6d4', legs: '#0891b2', accent: '#cffafe' },
+  atendimento: { head: '#d4d4d8', body: '#a1a1aa', legs: '#71717a', accent: '#e4e4e7' },
 };
 
 // Status colors

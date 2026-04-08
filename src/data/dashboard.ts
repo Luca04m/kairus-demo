@@ -91,11 +91,11 @@ export const CONEXOES_ATIVAS: ConexaoAtiva[] = [
 
 // Agent activity summary for the dashboard header
 export const AGENTES_RESUMO = [
-  { nome: "Leo", area: "vendas", cor: "#22c55e" },
-  { nome: "Mia", area: "marketing", cor: "#6366f1" },
-  { nome: "Rex", area: "financeiro", cor: "#ec4899" },
-  { nome: "Sol", area: "suporte", cor: "#f59e0b" },
-  { nome: "Iris", area: "dados", cor: "#06b6d4" },
+  { nome: "Leo", area: "Vendas", cor: "rgba(255,255,255,0.15)" },
+  { nome: "Mia", area: "Marketing", cor: "rgba(255,255,255,0.15)" },
+  { nome: "Rex", area: "Financeiro", cor: "rgba(255,255,255,0.15)" },
+  { nome: "Sol", area: "Suporte", cor: "rgba(255,255,255,0.15)" },
+  { nome: "Iris", area: "Dados", cor: "rgba(255,255,255,0.15)" },
 ];
 
 export const ALERTAS = [

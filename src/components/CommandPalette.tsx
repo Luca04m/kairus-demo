@@ -181,12 +181,12 @@ export function CommandPalette() {
                     className={`
                       w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors
                       ${isSelected
-                        ? 'bg-[rgba(99,102,241,0.15)] text-white'
+                        ? 'bg-[rgba(255,255,255,0.1)] text-white'
                         : 'text-[rgba(255,255,255,0.65)] hover:bg-[rgba(255,255,255,0.06)]'
                       }
                     `}
                   >
-                    <span className={`flex-shrink-0 ${isSelected ? 'text-indigo-400' : 'text-[rgba(255,255,255,0.4)]'}`}>
+                    <span className={`flex-shrink-0 ${isSelected ? 'text-[#01C461]' : 'text-[rgba(255,255,255,0.4)]'}`}>
                       {cmd.icon}
                     </span>
                     <span className="flex-1 text-sm">{cmd.label}</span>

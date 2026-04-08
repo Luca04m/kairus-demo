@@ -33,23 +33,23 @@ interface Tarefa {
 
 const TAREFAS_MOCK: Tarefa[] = [
   { id: "T-001", titulo: "Monitorar margem por produto", agente: "Leo", iniciais: "LE", cor: "#22c55e", status: "em_progresso", prioridade: "alta", departamento: "Financeiro", criadaEm: "28/03/2026", descricao: "Análise contínua de margens" },
-  { id: "T-002", titulo: "Otimizar campanha Meta 'Verão 2026'", agente: "Mia", iniciais: "MI", cor: "#6366f1", status: "concluida", prioridade: "alta", departamento: "Marketing", criadaEm: "25/03/2026", descricao: "CPC reduzido em 18%" },
+  { id: "T-002", titulo: "Otimizar campanha Meta 'Verão 2026'", agente: "Mia", iniciais: "MI", cor: "#a1a1aa", status: "concluida", prioridade: "alta", departamento: "Marketing", criadaEm: "25/03/2026", descricao: "CPC reduzido em 18%" },
   { id: "T-003", titulo: "Reposição estoque Honey Garrafa", agente: "Sol", iniciais: "SO", cor: "#f59e0b", status: "pendente", prioridade: "alta", departamento: "Operações", criadaEm: "30/03/2026", descricao: "Estoque crítico <50 un" },
-  { id: "T-004", titulo: "Enviar lembretes recompra B2B", agente: "Rex", iniciais: "RE", cor: "#ec4899", status: "concluida", prioridade: "media", departamento: "Vendas", criadaEm: "29/03/2026", descricao: "12 clientes notificados" },
-  { id: "T-005", titulo: "Responder WhatsApp automático", agente: "Iris", iniciais: "IR", cor: "#06b6d4", status: "em_progresso", prioridade: "media", departamento: "Atendimento", criadaEm: "01/04/2026", descricao: "23 mensagens respondidas" },
+  { id: "T-004", titulo: "Enviar lembretes recompra B2B", agente: "Rex", iniciais: "RE", cor: "#71717a", status: "concluida", prioridade: "media", departamento: "Vendas", criadaEm: "29/03/2026", descricao: "12 clientes notificados" },
+  { id: "T-005", titulo: "Responder WhatsApp automático", agente: "Iris", iniciais: "IR", cor: "#a1a1aa", status: "em_progresso", prioridade: "media", departamento: "Atendimento", criadaEm: "01/04/2026", descricao: "23 mensagens respondidas" },
   { id: "T-006", titulo: "Gerar relatório semanal S13", agente: "Leo", iniciais: "LE", cor: "#22c55e", status: "concluida", prioridade: "media", departamento: "Financeiro", criadaEm: "31/03/2026", descricao: "Relatório entregue" },
-  { id: "T-007", titulo: "Publicar conteúdo Instagram", agente: "Mia", iniciais: "MI", cor: "#6366f1", status: "concluida", prioridade: "baixa", departamento: "Marketing", criadaEm: "30/03/2026", descricao: "3 posts, alcance 12.4k" },
+  { id: "T-007", titulo: "Publicar conteúdo Instagram", agente: "Mia", iniciais: "MI", cor: "#a1a1aa", status: "concluida", prioridade: "baixa", departamento: "Marketing", criadaEm: "30/03/2026", descricao: "3 posts, alcance 12.4k" },
   { id: "T-008", titulo: "Detectar chargebacks suspeitos", agente: "Leo", iniciais: "LE", cor: "#22c55e", status: "em_progresso", prioridade: "alta", departamento: "Financeiro", criadaEm: "01/04/2026", descricao: "Monitoramento ativo" },
   { id: "T-009", titulo: "Processar reenvios pendentes", agente: "Sol", iniciais: "SO", cor: "#f59e0b", status: "concluida", prioridade: "media", departamento: "Operações", criadaEm: "29/03/2026", descricao: "5 reenvios processados" },
-  { id: "T-010", titulo: "Análise de ROAS mensal", agente: "Mia", iniciais: "MI", cor: "#6366f1", status: "falha", prioridade: "alta", departamento: "Marketing", criadaEm: "01/04/2026", descricao: "Sem dados purchase Mar/26" },
+  { id: "T-010", titulo: "Análise de ROAS mensal", agente: "Mia", iniciais: "MI", cor: "#a1a1aa", status: "falha", prioridade: "alta", departamento: "Marketing", criadaEm: "01/04/2026", descricao: "Sem dados purchase Mar/26" },
 ];
 
 const DEPT_COLORS: Record<string, string> = {
   Financeiro: "#22c55e",
-  Marketing: "#6366f1",
+  Marketing: "#01C461",
   Operações: "#f59e0b",
-  Vendas: "#ec4899",
-  Atendimento: "#06b6d4",
+  Vendas: "rgba(1,196,97,0.7)",
+  Atendimento: "#a1a1aa",
 };
 
 function StatusIcon({ status }: { status: Status }) {
@@ -57,7 +57,7 @@ function StatusIcon({ status }: { status: Status }) {
     case "concluida":
       return <CheckCircle2 size={15} className="text-[#22c55e] shrink-0" />;
     case "em_progresso":
-      return <Loader2 size={15} className="text-[#6366f1] shrink-0 animate-spin" />;
+      return <Loader2 size={15} className="text-[#01C461] shrink-0 animate-spin" />;
     case "pendente":
       return <Circle size={15} className="text-[rgba(255,255,255,0.5)] shrink-0" />;
     case "falha":
@@ -118,7 +118,7 @@ export function TasksContent() {
 
   const KANBAN_COLUMNS: { key: Status; label: string; color: string }[] = [
     { key: 'pendente', label: 'Pendente', color: 'rgba(255,255,255,0.3)' },
-    { key: 'em_progresso', label: 'Em Progresso', color: '#3b82f6' },
+    { key: 'em_progresso', label: 'Em Progresso', color: '#01C461' },
     { key: 'concluida', label: 'Concluida', color: '#22c55e' },
     { key: 'falha', label: 'Falha', color: '#ef4444' },
   ];
@@ -139,7 +139,7 @@ export function TasksContent() {
   });
 
   const pillStyles: Record<Status, string> = {
-    em_progresso: "bg-[rgba(99,102,241,0.15)] text-[#818cf8] border border-[rgba(99,102,241,0.25)]",
+    em_progresso: "bg-[rgba(1,196,97,0.15)] text-[#5eead4] border border-[rgba(1,196,97,0.25)]",
     concluida: "bg-[rgba(34,197,94,0.15)] text-[#4ade80] border border-[rgba(34,197,94,0.25)]",
     pendente: "bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.4)] border border-[rgba(255,255,255,0.1)]",
     falha: "bg-[rgba(239,68,68,0.15)] text-[#f87171] border border-[rgba(239,68,68,0.25)]",
@@ -243,7 +243,7 @@ export function TasksContent() {
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="Ex: Analisar metricas de vendas"
-                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none focus:border-indigo-400/60"
+                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none focus:border-[rgba(1,196,97,0.6)]"
                 />
               </div>
               <div>
@@ -253,7 +253,7 @@ export function TasksContent() {
                   onChange={(e) => setNewDesc(e.target.value)}
                   rows={3}
                   placeholder="Descreva a tarefa..."
-                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none resize-none focus:border-indigo-400/60"
+                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none resize-none focus:border-[rgba(1,196,97,0.6)]"
                 />
               </div>
               <div>
@@ -261,7 +261,7 @@ export function TasksContent() {
                 <select
                   value={newStatus}
                   onChange={(e) => setNewStatus(e.target.value as Status)}
-                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none appearance-none focus:border-indigo-400/60"
+                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none appearance-none focus:border-[rgba(1,196,97,0.6)]"
                 >
                   <option value="pendente">Pendente</option>
                   <option value="em_progresso">Em progresso</option>
@@ -281,7 +281,7 @@ export function TasksContent() {
                   const id = `T-${String(allTasks.length + 1).padStart(3, "0")}`;
                   const today = new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
                   setExtraTasks((prev) => [...prev, {
-                    id, titulo: newTitle.trim(), agente: "Kairus", iniciais: "KA", cor: "#6366f1",
+                    id, titulo: newTitle.trim(), agente: "Kairus", iniciais: "KA", cor: "#a1a1aa",
                     status: newStatus, prioridade: "media" as Prioridade, departamento: "Geral",
                     criadaEm: today, descricao: newDesc.trim() || "Tarefa criada manualmente",
                   }]);
@@ -310,7 +310,7 @@ export function TasksContent() {
                 key={col.key}
                 className={`rounded-xl border bg-[rgba(255,255,255,0.02)] p-3 min-h-[300px] transition-colors ${
                   dragOverCol === col.key
-                    ? 'border-indigo-400/50 bg-[rgba(99,102,241,0.06)]'
+                    ? 'border-teal-400/50 bg-[rgba(1,196,97,0.06)]'
                     : 'border-[rgba(255,255,255,0.08)]'
                 }`}
                 onDragOver={(e) => { e.preventDefault(); setDragOverCol(col.key); }}

@@ -4,106 +4,116 @@ Painel de gestao inteligente para PMEs.
 
 ## Sobre
 
-Kairus OS e um painel completo de gestao empresarial com 20+ telas funcionais. Desenvolvido para a Casa Mr. Lion (e-commerce de bebidas), serve como solucao all-in-one para gestao de pequenas e medias empresas -- reunindo financeiro, marketing, vendas, equipe e operacoes em uma unica interface.
+Kairus OS e um painel completo de gestao empresarial com 20+ telas funcionais, reunindo financeiro, marketing, vendas, equipe e operacoes em uma unica interface. Dark theme com glass morphism.
 
 ## Stack
 
-| Tecnologia | Versao / Detalhes |
-|---|---|
-| Next.js | 16 (App Router) |
-| React | 19 |
-| TypeScript | 5 |
-| Tailwind CSS | 4 |
-| shadcn/ui | Radix primitives |
-| Framer Motion | Animacoes |
-| Recharts | Graficos e visualizacoes |
-| Zustand | Gerenciamento de estado |
-| Supabase | Auth e banco de dados (preparado) |
+- **Framework:** Next.js 16 (App Router)
+- **UI:** React 19, Tailwind CSS 4, shadcn/ui, Framer Motion
+- **Charts:** Recharts
+- **State:** Zustand
+- **Icons:** Lucide React
+- **Auth (preparado):** Supabase
+- **AI Chat:** AI SDK + Claude CLI (opcional)
 
 ## Pre-requisitos
 
-- Node.js 20+
-- npm 9+
+- Node.js >= 20
+- npm
 
 ## Instalacao
 
 ```bash
-git clone https://github.com/seu-usuario/kairus-demo.git
+git clone <repo-url>
 cd kairus-demo
+cp .env.example .env   # preencher variaveis quando necessario
 npm install
 ```
 
 ## Variaveis de ambiente
 
-Crie um arquivo `.env.local` na raiz (opcional para o modo demo):
+Veja `.env.example`. Todas sao opcionais para rodar o app em modo demo (dados mockados).
 
-```bash
-NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-anon
-```
-
-O app funciona sem Supabase configurado -- usa dados mockados como fallback.
+| Variavel | Descricao |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL do projeto Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave anonima do Supabase |
+| `OPENROUTER_API_KEY` | API key do OpenRouter (AI chat) |
+| `BLING_API_KEY` | API key do Bling ERP (estoque) |
+| `MRLION_VAULT_PATH` | Caminho local para vault de dados |
 
 ## Comandos
 
-| Comando | Descricao |
-|---|---|
-| `npm run dev` | Servidor de desenvolvimento (http://localhost:3000) |
-| `npm run build` | Build de producao |
-| `npm start` | Servidor de producao |
-| `npm run lint` | Linting com ESLint |
-| `npm run typecheck` | Verificacao de tipos TypeScript |
-| `npm test` | Testes unitarios (Vitest) |
-| `npm run test:e2e` | Testes end-to-end (Playwright) |
-| `npm run check` | Lint + typecheck + build |
+```bash
+npm run dev        # Servidor de desenvolvimento (http://localhost:3000)
+npm run build      # Build de producao
+npm run start      # Servidor de producao
+npm run lint       # Linting
+npm run typecheck  # Verificacao de tipos
+npm run test       # Testes unitarios
+npm run test:e2e   # Testes end-to-end
+npm run check      # Lint + typecheck + build
+```
+
+## Estrutura do projeto
+
+```
+src/
+  app/            # Paginas (App Router)
+  components/     # Componentes React
+  data/           # Dados mockados
+  hooks/          # Custom hooks
+  lib/            # Utilitarios e helpers
+  stores/         # Estado (Zustand)
+  types/          # TypeScript types
+  providers/      # React providers
+public/           # Assets estaticos
+e2e/              # Testes end-to-end
+supabase/         # Configuracao Supabase
+docs/
+  screenshots/    # Screenshots do app
+  research/       # Pesquisas de mercado
+  specs/          # Especificacoes tecnicas
+```
 
 ## Modulos
 
 | Modulo | Descricao |
 |---|---|
-| Dashboard | Visao geral de KPIs e metricas do negocio |
-| Financeiro | Controle financeiro com receitas, despesas e fluxo de caixa |
-| Marketing | Gestao de campanhas e analytics de performance |
-| Sales Room | Pipeline de vendas com suporte a AI agents |
-| ROI | Calculadora de retorno sobre investimento |
-| Equipe | Gestao de equipe, membros e permissoes |
-| Relatorios | Relatorios gerenciais com exportacao |
-| Inbox | Central de mensagens e notificacoes |
-| Agent | Interface de interacao com AI agents |
-| Integracoes | Conexoes com plataformas externas |
-| Configuracoes | Ajustes gerais do aplicativo |
-| Tasks | Gestao de tarefas e acompanhamento |
-| Views | Views customizadas de dados |
-| World | Visao global com mapa interativo |
-| Roadmap | Roadmap do produto e planejamento |
+| Dashboard | KPIs e metricas do negocio |
+| Financeiro | Receitas, despesas, fluxo de caixa |
+| Marketing | Campanhas e analytics |
+| Sales Room | Pipeline de vendas com AI agents |
+| ROI | Calculadora de retorno |
+| Equipe | Gestao de equipe e permissoes |
+| Relatorios | Relatorios gerenciais |
+| Inbox | Mensagens e notificacoes |
+| Agent | Interface de AI agents |
+| Integracoes | Conexoes externas |
+| Tasks | Gestao de tarefas |
+| Views | Views customizadas |
+| World | Visao global interativa |
+| Roadmap | Planejamento do produto |
 
-## Estrutura do Projeto
+## AI Chat (opcional)
 
-```
-src/
-├── app/          # Paginas (App Router)
-├── components/   # Componentes compartilhados
-├── data/         # Dados mockados
-├── hooks/        # Custom hooks
-├── lib/          # Utilitarios
-├── stores/       # Estado (Zustand)
-├── types/        # TypeScript types
-└── providers/    # React providers
-e2e/              # Testes end-to-end
-public/           # Assets estaticos
-supabase/         # Configuracao Supabase
-```
+O modulo de AI agents usa Claude CLI (`claude --print`) como backend. Funciona com Claude Code instalado e logado. Sem ele, o app roda normalmente — apenas o chat nao responde.
 
-## Docker
-
-```bash
-docker compose up
-```
+Para habilitar:
+1. Instale o [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code)
+2. Execute `claude login`
+3. O chat dos agentes funcionara automaticamente
 
 ## Deploy
 
-O projeto esta configurado para deploy na Vercel. Para outras plataformas, faca o build com `npm run build` e sirva a pasta `.next/`.
+O projeto e compativel com Vercel, Docker e qualquer plataforma que suporte Next.js.
+
+```bash
+# Docker
+docker build -t kairus-os .
+docker run -p 3000:3000 kairus-os
+```
 
 ## Licenca
 
-MIT -- veja [LICENSE](LICENSE) para detalhes.
+MIT — veja [LICENSE](LICENSE) para detalhes.

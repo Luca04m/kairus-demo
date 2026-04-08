@@ -265,8 +265,8 @@ export function AddItemForm({ onClose }: AddItemFormProps) {
             disabled={!titulo.trim() || submitting}
             className="rounded-lg px-4 py-2 text-xs font-medium text-white transition-all duration-150 disabled:opacity-40"
             style={{
-              background: 'linear-gradient(135deg, rgba(59,130,246,0.3) 0%, rgba(99,102,241,0.3) 100%)',
-              border: '1px solid rgba(59,130,246,0.4)',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 100%)',
+              border: '1px solid rgba(255,255,255,0.2)',
             }}
           >
             {submitting ? 'Salvando...' : 'Salvar'}

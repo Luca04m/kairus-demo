@@ -28,19 +28,19 @@ export const DOMAINS: Record<DepartmentId, DomainVisual> = {
     id: "marketing",
     label: "Marketing",
     emoji: "megaphone",
-    tileColor: "#6366f1",
-    tileBorder: "#4f46e5",
-    glowColor: "rgba(99,102,241,0.25)",
-    floorColor: "#F3F0FF",
+    tileColor: "#a1a1aa",
+    tileBorder: "#71717a",
+    glowColor: "rgba(161,161,170,0.2)",
+    floorColor: "#F4F4F5",
   },
   financeiro: {
     id: "financeiro",
     label: "Financeiro",
     emoji: "dollar-sign",
-    tileColor: "#3b82f6",
-    tileBorder: "#2563eb",
-    glowColor: "rgba(59,130,246,0.25)",
-    floorColor: "#EBF3FF",
+    tileColor: "#01C461",
+    tileBorder: "#14b8a6",
+    glowColor: "rgba(1,196,97,0.25)",
+    floorColor: "#ECFDF5",
   },
   operacoes: {
     id: "operacoes",
@@ -55,18 +55,18 @@ export const DOMAINS: Record<DepartmentId, DomainVisual> = {
     id: "atendimento",
     label: "Atendimento",
     emoji: "message-circle",
-    tileColor: "#06b6d4",
-    tileBorder: "#0891b2",
-    glowColor: "rgba(6,182,212,0.25)",
-    floorColor: "#ECFEFF",
+    tileColor: "#a1a1aa",
+    tileBorder: "#71717a",
+    glowColor: "rgba(161,161,170,0.25)",
+    floorColor: "#F4F4F5",
   },
 };
 
 // Tech domain mapped under operacoes for DepartmentId compatibility
 export const TECH_COLOR = {
-  tileColor: "#818cf8",
-  tileBorder: "#6366f1",
-  glowColor: "rgba(129,140,248,0.25)",
+  tileColor: "#71717a",
+  tileBorder: "#52525b",
+  glowColor: "rgba(113,113,122,0.2)",
 };
 
 // ─── Room Config ─────────────────────────────────────────

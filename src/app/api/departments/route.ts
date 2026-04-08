@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     .insert({
       tenant_id: tenantId, name,
       description: description ?? null,
-      color: color ?? "#6366f1", icon: icon ?? "Building",
+      color: color ?? "#01C461", icon: icon ?? "Building",
       emoji: emoji ?? null, order_index: order_index ?? 0,
     })
     .select()

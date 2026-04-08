@@ -7,7 +7,7 @@ import type { RoadmapCardItem, MoscowPriority, RoadmapStatus, ImpactLevel, Effor
 const PRIORITY_CONFIG: Record<MoscowPriority, { label: string; bg: string; text: string; border: string }> = {
   must: { label: 'Must', bg: 'rgba(244,63,94,0.12)', text: '#f43f5e', border: 'rgba(244,63,94,0.3)' },
   should: { label: 'Should', bg: 'rgba(245,158,11,0.12)', text: '#f59e0b', border: 'rgba(245,158,11,0.3)' },
-  could: { label: 'Could', bg: 'rgba(59,130,246,0.12)', text: '#3b82f6', border: 'rgba(59,130,246,0.3)' },
+  could: { label: 'Could', bg: 'rgba(113,113,122,0.12)', text: '#71717a', border: 'rgba(113,113,122,0.3)' },
   wont: { label: "Won't", bg: 'rgba(255,255,255,0.05)', text: 'rgba(255,255,255,0.35)', border: 'rgba(255,255,255,0.1)' },
 };
 

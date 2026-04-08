@@ -44,7 +44,7 @@ export function OnboardingTour() {
         style={{ animation: 'fade-in-up 0.4s ease both' }}
       >
         {/* Step indicator */}
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-500/20 border border-indigo-400/30 px-3 py-0.5 text-xs text-indigo-300 font-medium">
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[rgba(1,196,97,0.2)] border border-[rgba(1,196,97,0.3)] px-3 py-0.5 text-xs text-[#5eead4] font-medium">
           {step + 1} / {STEPS.length}
         </div>
 
@@ -54,7 +54,7 @@ export function OnboardingTour() {
             <span
               key={i}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === step ? 'w-6 bg-indigo-400' : i < step ? 'w-1.5 bg-indigo-400/50' : 'w-1.5 bg-[rgba(255,255,255,0.2)]'
+                i === step ? 'w-6 bg-[#01C461]' : i < step ? 'w-1.5 bg-[#01C461]/50' : 'w-1.5 bg-[rgba(255,255,255,0.2)]'
               }`}
             />
           ))}
@@ -62,7 +62,7 @@ export function OnboardingTour() {
 
         {/* Icon area */}
         <div className="flex justify-center mb-4">
-          <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-400/20 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-[rgba(1,196,97,0.1)] border border-[rgba(1,196,97,0.2)] flex items-center justify-center">
             {step === 0 && <span className="text-2xl">&#x1F680;</span>}
             {step === 1 && <span className="text-2xl">&#x1F4AC;</span>}
             {step === 2 && <span className="text-2xl">&#x1F5C2;</span>}
@@ -83,7 +83,7 @@ export function OnboardingTour() {
           </button>
           <button
             onClick={next}
-            className="rounded-lg bg-indigo-500 hover:bg-indigo-400 px-6 py-2 text-sm font-medium text-white transition-colors"
+            className="rounded-lg bg-[rgba(255,255,255,0.12)] hover:bg-[rgba(255,255,255,0.18)] border border-[rgba(255,255,255,0.1)] px-6 py-2 text-sm font-medium text-white transition-colors"
           >
             {step < STEPS.length - 1 ? 'Proximo' : 'Iniciar'}
           </button>

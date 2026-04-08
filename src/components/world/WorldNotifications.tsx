@@ -13,15 +13,15 @@ const typeConfig: Record<
   success: { icon: CheckCircle2, color: "#22c55e", bg: "rgba(34,197,94,0.08)" },
   warning: { icon: AlertTriangle, color: "#f59e0b", bg: "rgba(245,158,11,0.08)" },
   error: { icon: AlertCircle, color: "#ef4444", bg: "rgba(239,68,68,0.08)" },
-  info: { icon: Info, color: "#3b82f6", bg: "rgba(59,130,246,0.08)" },
+  info: { icon: Info, color: "#a1a1aa", bg: "rgba(161,161,170,0.08)" },
   // Map store notification types to icons as fallback
-  agent_moved: { icon: Info, color: "#3b82f6", bg: "rgba(59,130,246,0.08)" },
+  agent_moved: { icon: Info, color: "#71717a", bg: "rgba(113,113,122,0.08)" },
   task_completed: { icon: CheckCircle2, color: "#22c55e", bg: "rgba(34,197,94,0.08)" },
   alert: { icon: AlertTriangle, color: "#f59e0b", bg: "rgba(245,158,11,0.08)" },
-  presence: { icon: Info, color: "#3b82f6", bg: "rgba(59,130,246,0.08)" },
+  presence: { icon: Info, color: "#52525b", bg: "rgba(82,82,91,0.08)" },
 };
 
-const defaultTypeConfig = { icon: Info, color: "#3b82f6", bg: "rgba(59,130,246,0.08)" };
+const defaultTypeConfig = { icon: Info, color: "#a1a1aa", bg: "rgba(161,161,170,0.08)" };
 
 function timeAgo(ts: number | string): string {
   const time = typeof ts === "string" ? new Date(ts).getTime() : ts;

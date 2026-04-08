@@ -25,8 +25,8 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 const KPI_ACCENT: Record<string, { icon: string; ring: string; bg: string }> = {
   "Receita Total":  { icon: "text-emerald-400",  ring: "border-emerald-500/20",  bg: "bg-emerald-500/5"  },
-  "Receita 2025":   { icon: "text-sky-400",       ring: "border-sky-500/20",      bg: "bg-sky-500/5"      },
-  "Receita 2026":   { icon: "text-violet-400",    ring: "border-violet-500/20",   bg: "bg-violet-500/5"   },
+  "Receita 2025":   { icon: "text-emerald-300",    ring: "border-emerald-500/15",   bg: "bg-emerald-500/5"  },
+  "Receita 2026":   { icon: "text-[#01C461]",    ring: "border-[rgba(1,196,97,0.2)]",   bg: "bg-[rgba(1,196,97,0.05)]"   },
   "Margem Bruta":   { icon: "text-amber-400",     ring: "border-amber-500/20",    bg: "bg-amber-500/5"    },
   "COGS":           { icon: "text-rose-400",       ring: "border-rose-500/20",     bg: "bg-rose-500/5"     },
 };
@@ -71,7 +71,7 @@ export function VisaoGeralTab() {
           Receita total de{" "}
           <span className="text-emerald-400 font-medium">R$ 2.756.310</span>
           {" "}desde Abr/2024.{" "}
-          <span className="text-sky-400 font-medium">+161% YoY em 2025</span>
+          <span className="text-emerald-300 font-medium">+161% YoY em 2025</span>
         </p>
       </div>
 
@@ -88,7 +88,7 @@ export function VisaoGeralTab() {
               onClick={() => setActivePeriod(label)}
               className={`rounded-md px-3 py-1 text-xs font-medium transition-all duration-150 cursor-pointer ${
                 label === activePeriod
-                  ? "bg-[rgba(99,102,241,0.25)] text-[#a5b4fc] shadow-sm ring-1 ring-[rgba(99,102,241,0.4)]"
+                  ? "bg-[rgba(1,196,97,0.25)] text-[#5eead4] shadow-sm ring-1 ring-[rgba(1,196,97,0.4)]"
                   : "text-[rgba(255,255,255,0.5)] hover:text-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,0.05)]"
               }`}
             >
@@ -151,7 +151,7 @@ export function VisaoGeralTab() {
       {/* DRE Table */}
       <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
         <div className="flex items-center gap-2 mb-4">
-          <BarChart2 size={14} className="text-violet-400" />
+          <BarChart2 size={14} className="text-[#01C461]" />
           <span className="text-sm font-medium text-white">DRE Simplificado</span>
         </div>
         <div className="overflow-x-auto">
@@ -190,7 +190,7 @@ export function VisaoGeralTab() {
         {loadingSales ? <SkeletonChart height={280} /> : (
           <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
             <div className="flex items-center gap-2 mb-5">
-              <TrendingUp size={14} className="text-violet-400" />
+              <TrendingUp size={14} className="text-[#01C461]" />
               <span className="text-sm font-medium text-white">Receita Mensal</span>
             </div>
             <ResponsiveContainer width="100%" height={280}>
@@ -205,7 +205,7 @@ export function VisaoGeralTab() {
                 <XAxis dataKey="mes" stroke={CHART_THEME.axis.stroke} tick={CHART_THEME.axis.tick} axisLine={false} tickLine={false} interval={1} />
                 <YAxis stroke={CHART_THEME.axis.stroke} tick={CHART_THEME.axis.tick} axisLine={false} tickLine={false} tickFormatter={(v: number) => `R$${(v / 1000).toFixed(0)}k`} width={52} />
                 <Tooltip content={<CustomTooltip />} cursor={{ stroke: BRAND_DIM, strokeWidth: 1 }} />
-                <ReferenceLine x="Nov/25" stroke="rgba(99,102,241,0.5)" strokeDasharray="4 3" label={{ value: "R$ 491k", position: "top", fill: "rgba(165,180,252,0.8)", fontSize: 10 }} />
+                <ReferenceLine x="Nov/25" stroke="rgba(255,255,255,0.25)" strokeDasharray="4 3" label={{ value: "R$ 491k", position: "top", fill: "rgba(255,255,255,0.5)", fontSize: 10 }} />
                 <Area type="monotone" dataKey="receita" fill="url(#receitaGrad)" stroke={BRAND} strokeWidth={2} dot={false} activeDot={{ r: 4, fill: BRAND, stroke: "rgba(255,255,255,0.3)", strokeWidth: 1.5 }} />
               </AreaChart>
             </ResponsiveContainer>
@@ -215,7 +215,7 @@ export function VisaoGeralTab() {
         {/* Gastos por categoria */}
         <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
           <div className="flex items-center gap-2 mb-5">
-            <BarChart2 size={14} className="text-violet-400" />
+            <BarChart2 size={14} className="text-[#01C461]" />
             <span className="text-sm font-medium text-white">Gastos por Categoria</span>
           </div>
           <ResponsiveContainer width="100%" height={280}>
@@ -223,7 +223,7 @@ export function VisaoGeralTab() {
               <CartesianGrid stroke={CHART_THEME.grid.stroke} strokeDasharray={CHART_THEME.grid.strokeDasharray} horizontal={false} />
               <XAxis type="number" stroke={CHART_THEME.axis.stroke} tick={CHART_THEME.axis.tick} axisLine={false} tickLine={false} tickFormatter={(v: number) => `R$${(v / 1000).toFixed(0)}k`} />
               <YAxis dataKey="categoria" type="category" stroke={CHART_THEME.axis.stroke} tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 10 }} axisLine={false} tickLine={false} width={80} />
-              <Tooltip contentStyle={{ backgroundColor: "#0d0d14", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 12, color: "white", fontSize: 12 }} formatter={(v: number) => [fmtBRL(v), "Valor"]} />
+              <Tooltip contentStyle={{ backgroundColor: "#0d0d14", border: "1px solid rgba(1,196,97,0.25)", borderRadius: 12, color: "white", fontSize: 12 }} formatter={(v: number) => [fmtBRL(v), "Valor"]} />
               <Bar dataKey="valor" radius={[0, 4, 4, 0]} barSize={14}>
                 {GASTOS_POR_CATEGORIA.map((_, i) => (
                   <Cell key={`c-${i}`} fill={BAR_COLORS[i % BAR_COLORS.length]} fillOpacity={0.75} />
@@ -247,7 +247,7 @@ export function VisaoGeralTab() {
               <CartesianGrid stroke={CHART_THEME.grid.stroke} strokeDasharray={CHART_THEME.grid.strokeDasharray} />
               <XAxis dataKey="nome" stroke={CHART_THEME.axis.stroke} tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 9 }} axisLine={false} tickLine={false} interval={0} angle={-25} textAnchor="end" height={50} />
               <YAxis stroke={CHART_THEME.axis.stroke} tick={CHART_THEME.axis.tick} axisLine={false} tickLine={false} domain={[0, 60]} tickFormatter={(v: number) => `${v}%`} width={40} />
-              <Tooltip contentStyle={{ backgroundColor: "#0d0d14", border: "1px solid rgba(34,197,94,0.25)", borderRadius: 12, color: "white", fontSize: 12 }} formatter={(v: number) => [`${v}%`, "Margem"]} />
+              <Tooltip contentStyle={{ backgroundColor: "#0d0d14", border: "1px solid rgba(1,196,97,0.25)", borderRadius: 12, color: "white", fontSize: 12 }} formatter={(v: number) => [`${v}%`, "Margem"]} />
               <Bar dataKey="margem" radius={[4, 4, 0, 0]} barSize={24}>
                 {MARGEM_POR_PRODUTO.map((p, i) => (
                   <Cell key={`m-${i}`} fill={p.margem >= 50 ? "#22c55e" : p.margem >= 44 ? "#f59e0b" : "#ef4444"} fillOpacity={0.7} />
@@ -261,7 +261,7 @@ export function VisaoGeralTab() {
         {loadingProducts ? <SkeletonChart height={280} /> : (
           <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
             <div className="flex items-center gap-2 mb-5">
-              <Package size={14} className="text-violet-400" />
+              <Package size={14} className="text-[#01C461]" />
               <span className="text-sm font-medium text-white">Top Produtos por Receita</span>
             </div>
             <div className="overflow-x-auto">
@@ -277,14 +277,14 @@ export function VisaoGeralTab() {
                 </thead>
                 <tbody>
                   {topProdutos.map((p: typeof TOP_PRODUTOS[number], idx: number) => (
-                    <tr key={p.nome} className={`border-b border-[rgba(255,255,255,0.05)] transition-colors hover:bg-[rgba(99,102,241,0.07)] ${idx % 2 === 0 ? "bg-[rgba(255,255,255,0.02)]" : ""}`}>
+                    <tr key={p.nome} className={`border-b border-[rgba(255,255,255,0.05)] transition-colors hover:bg-[rgba(1,196,97,0.07)] ${idx % 2 === 0 ? "bg-[rgba(255,255,255,0.02)]" : ""}`}>
                       <td className="px-2 py-2.5 text-xs font-mono text-[rgba(255,255,255,0.5)]">{String(idx + 1).padStart(2, "0")}</td>
                       <td className="px-2 py-2.5 text-xs text-white max-w-[130px] truncate">{p.nome}</td>
                       <td className="px-2 py-2.5 text-xs text-emerald-300 font-medium tabular-nums">{p.receita}</td>
                       <td className="px-2 py-2.5 w-28">
                         <div className="flex items-center gap-2">
                           <div className="flex-1 h-1.5 rounded-full bg-[rgba(255,255,255,0.08)] overflow-hidden">
-                            <div className="h-full rounded-full bg-[#6366f1]" style={{ width: `${Math.min(parsePercent(p.percentual), 100)}%` }} />
+                            <div className="h-full rounded-full bg-[#01C461]" style={{ width: `${Math.min(parsePercent(p.percentual), 100)}%` }} />
                           </div>
                           <span className="text-[10px] text-[rgba(255,255,255,0.45)] tabular-nums w-8 shrink-0">{p.percentual}</span>
                         </div>

@@ -8,7 +8,7 @@ const PRIORITIES: { value: MoscowPriority | 'all'; label: string; color: string 
   { value: 'all', label: 'Todos', color: 'rgba(255,255,255,0.5)' },
   { value: 'must', label: 'Must', color: '#f43f5e' },
   { value: 'should', label: 'Should', color: '#f59e0b' },
-  { value: 'could', label: 'Could', color: '#3b82f6' },
+  { value: 'could', label: 'Could', color: '#71717a' },
   { value: 'wont', label: "Won't", color: 'rgba(255,255,255,0.3)' },
 ];
 

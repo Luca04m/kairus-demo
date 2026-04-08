@@ -9,32 +9,24 @@ import { GREETING_CONTEXT, CONEXOES_ATIVAS, AGENTES_RESUMO } from "@/data/dashbo
 import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
 import { KpiGridSkeleton, AgentGridSkeleton, SkeletonRow } from "@/components/ui/LoadingSkeleton";
 
-// Map KPI departamento label → accent color
-const kpiAccentColor: Record<string, string> = {
-  Financeiro: "#22c55e",
-  Marketing: "#6366f1",
-  Vendas: "#ec4899",
-  Operacoes: "#f59e0b",
-  Atendimento: "#06b6d4",
-};
 
 const severidadeCor: Record<string, string> = {
   critico: "bg-red-500",
-  alto: "bg-orange-500",
-  medio: "bg-yellow-500",
-  baixo: "bg-blue-500",
+  alto: "bg-amber-500/60",
+  medio: "bg-[rgba(1,196,97,0.5)]",
+  baixo: "bg-[rgba(1,196,97,0.3)]",
   info: "bg-[rgba(255,255,255,0.4)]",
 };
 
 const variacaoCor: Record<string, string> = {
   down: "text-red-400",
-  up: "text-green-400",
+  up: "text-[#01C461]",
   neutral: "text-[rgba(255,255,255,0.4)]",
 };
 
 const statusDot: Record<string, string> = {
-  ativo: "bg-green-400",
-  pausado: "bg-yellow-400",
+  ativo: "bg-[#01C461]",
+  pausado: "bg-amber-400",
   idle: "bg-[rgba(255,255,255,0.25)]",
 };
 
@@ -60,7 +52,7 @@ function getAgenteCor(nomeAgente: string): string {
 }
 
 function VariacaoIcon({ direcao }: { direcao: "up" | "down" | "neutral" }) {
-  if (direcao === "up") return <TrendingUp size={12} className="text-green-400 flex-shrink-0" />;
+  if (direcao === "up") return <TrendingUp size={12} className="text-[#01C461] flex-shrink-0" />;
   if (direcao === "down") return <TrendingDown size={12} className="text-red-400 flex-shrink-0" />;
   return <Minus size={12} className="text-[rgba(255,255,255,0.4)] flex-shrink-0" />;
 }
@@ -204,30 +196,24 @@ export function HomeContent() {
       {loadingKpis ? <KpiGridSkeleton count={5} /> : (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {kpis.map((kpi) => {
-          const accent = kpiAccentColor[kpi.departamento] ?? "rgba(255,255,255,0.4)";
           return (
             <div
               key={kpi.label}
-              className="glass-card rounded-xl p-4 relative overflow-hidden"
+              className="glass-card rounded-xl p-4"
             >
-              {/* Subtle left accent bar */}
-              <div
-                className="absolute left-0 top-3 bottom-3 w-0.5 rounded-full opacity-60"
-                style={{ backgroundColor: accent }}
-              />
-              <div className="flex items-center gap-1.5 mb-2 pl-3">
+              <div className="flex items-center gap-1.5 mb-2">
                 <IconByName name={kpi.emoji} size={14} />
                 <span className="text-xs text-[rgba(255,255,255,0.4)]">{kpi.label}</span>
               </div>
-              <div className="text-2xl font-semibold text-white pl-3">{kpi.valor}</div>
+              <div className="text-2xl font-semibold text-white">{kpi.valor}</div>
               {kpi.variacao && (
-                <div className={`flex items-center gap-1 text-xs mt-1 pl-3 ${variacaoCor[kpi.direcao]}`}>
+                <div className={`flex items-center gap-1 text-xs mt-1 ${variacaoCor[kpi.direcao]}`}>
                   <VariacaoIcon direcao={kpi.direcao} />
                   {kpi.variacao}
                 </div>
               )}
               {kpi.periodo && (
-                <div className="text-[10px] text-[rgba(255,255,255,0.5)] mt-0.5 pl-3">
+                <div className="text-[10px] text-[rgba(255,255,255,0.5)] mt-0.5">
                   {kpi.periodo}
                 </div>
               )}

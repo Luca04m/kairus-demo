@@ -13,7 +13,7 @@ const TOTAL_MS = QUARTER_END - QUARTER_START;
 const PRIORITY_COLOR: Record<MoscowPriority, string> = {
   must: '#f43f5e',
   should: '#f59e0b',
-  could: '#3b82f6',
+  could: '#71717a',
   wont: 'rgba(255,255,255,0.25)',
 };
 

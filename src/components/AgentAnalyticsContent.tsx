@@ -245,7 +245,7 @@ export function AgentAnalyticsContent() {
                 <path d="M 10 70 A 60 60 0 0 1 130 70" stroke="rgba(255,255,255,0.08)" strokeWidth="12" fill="none" strokeLinecap="round" />
                 <path
                   d={arcPath(0.88)}
-                  stroke="#818cf8"
+                  stroke="#01C461"
                   strokeWidth="12"
                   fill="none"
                   strokeLinecap="round"

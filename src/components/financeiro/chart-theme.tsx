@@ -1,7 +1,7 @@
 // Shared chart theme and helpers for Financeiro module
 
-export const BRAND = "#6366f1";
-export const BRAND_DIM = "rgba(99,102,241,0.18)";
+export const BRAND = "#01C461";
+export const BRAND_DIM = "rgba(1,196,97,0.18)";
 
 export const CHART_THEME = {
   grid: { stroke: "rgba(255,255,255,0.06)", strokeDasharray: "3 3" },
@@ -9,8 +9,8 @@ export const CHART_THEME = {
 };
 
 export const BAR_COLORS = [
-  "#ef4444", "#f59e0b", "#f97316", "#6366f1",
-  "#8b5cf6", "#ec4899", "#14b8a6", "#06b6d4", "#22c55e",
+  "#01C461", "rgba(1,196,97,0.7)", "rgba(1,196,97,0.45)",
+  "#ef4444", "#f59e0b", "#f97316", "#14b8a6", "#a1a1aa", "#22c55e",
 ];
 
 export function parsePercent(str: string): number {
@@ -29,7 +29,7 @@ export function CustomTooltip({ active, payload, label }: {
 }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl border border-[rgba(99,102,241,0.25)] bg-[#0d0d14] px-4 py-3 shadow-xl">
+    <div className="rounded-xl border border-[rgba(1,196,97,0.25)] bg-[#0d0d14] px-4 py-3 shadow-xl">
       <p className="text-xs text-[rgba(255,255,255,0.4)] mb-1">{label}</p>
       <p className="text-sm font-semibold text-white">
         R$ {payload[0].value.toLocaleString("pt-BR")}

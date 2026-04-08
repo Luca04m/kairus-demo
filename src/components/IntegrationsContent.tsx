@@ -6,19 +6,19 @@ import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
 import { SkeletonPulse } from "@/components/ui/LoadingSkeleton";
 
 const connectedIntegrationsMock = [
-  { name: "Meta Ads", category: "Marketing", status: "connected", color: "#6366f1", lastSync: "há 2 minutos" },
+  { name: "Meta Ads", category: "Marketing", status: "connected", color: "#a1a1aa", lastSync: "há 2 minutos" },
   { name: "Shopify", category: "E-commerce", status: "connected", color: "#22c55e", lastSync: "há 5 minutos" },
-  { name: "WhatsApp Business", category: "Communication", status: "connected", color: "#06b6d4", lastSync: "há 1 minuto" },
+  { name: "WhatsApp Business", category: "Communication", status: "connected", color: "#71717a", lastSync: "há 1 minuto" },
   { name: "Google Analytics", category: "Data Analytics", status: "pending", color: "#f59e0b", lastSync: "Aguardando sincronização" },
 ];
 
 const availableIntegrationsMock = [
   { category: "Developer Tools", name: "BrowserStack", desc: "Automatize testes de navegadores reais para garantir qualidade em múltiplas plataformas.", color: "#f97316" },
-  { category: "Data Analytics", name: "Adytel", desc: "Unifique dados de anúncios e métricas de campanha em um painel centralizado.", color: "#8b5cf6" },
+  { category: "Data Analytics", name: "Adytel", desc: "Unifique dados de anúncios e métricas de campanha em um painel centralizado.", color: "#71717a" },
   { category: "Business Management", name: "Drata", desc: "Automatize conformidade e auditoria de segurança para certificações como SOC 2.", color: "#e0e0e0" },
-  { category: "Databases", name: "Prisma Postgres", desc: "Conecte e gerencie seu banco de dados Postgres com ORM seguro e migrações automáticas.", color: "#06b6d4" },
-  { category: "Artificial Intelligence (AI)", name: "DeepImage", desc: "Aprimore e processe imagens com IA para elevar a qualidade visual do seu conteúdo.", color: "#6366f1" },
-  { category: "Communication", name: "Discord Bot", desc: "Integre seu agente ao Discord para notificações, suporte e automações em tempo real.", color: "#7c3aed" },
+  { category: "Databases", name: "Prisma Postgres", desc: "Conecte e gerencie seu banco de dados Postgres com ORM seguro e migrações automáticas.", color: "#71717a" },
+  { category: "Artificial Intelligence (AI)", name: "DeepImage", desc: "Aprimore e processe imagens com IA para elevar a qualidade visual do seu conteúdo.", color: "#a1a1aa" },
+  { category: "Communication", name: "Discord Bot", desc: "Integre seu agente ao Discord para notificações, suporte e automações em tempo real.", color: "#52525b" },
   { category: "Infrastructure & Cloud", name: "Encodian", desc: "Converta, processe e gerencie documentos na nuvem com automação de fluxos.", color: "#10b981" },
   { category: "Help Desk & Support", name: "Freshchat", desc: "Ofereça suporte ao cliente em tempo real via chat com automações inteligentes.", color: "#22c55e" },
   { category: "Help Desk & Support", name: "HelpDocs", desc: "Crie e publique uma base de conhecimento para reduzir tickets de suporte.", color: "#f59e0b" },
@@ -280,11 +280,11 @@ export function IntegrationsContent() {
             <div className="space-y-4">
               <div>
                 <label className="text-xs text-[rgba(255,255,255,0.5)] block mb-1.5">API Key</label>
-                <input className="w-full rounded-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none focus:border-[rgba(99,102,241,0.5)]" placeholder="sk-..." readOnly defaultValue="***-demo-key-***" />
+                <input className="w-full rounded-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none focus:border-[rgba(1,196,97,0.5)]" placeholder="sk-..." readOnly defaultValue="***-demo-key-***" />
               </div>
               <div>
                 <label className="text-xs text-[rgba(255,255,255,0.5)] block mb-1.5">Webhook URL</label>
-                <input className="w-full rounded-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none focus:border-[rgba(99,102,241,0.5)]" placeholder="https://..." readOnly defaultValue="https://kairus.app/webhook/..." />
+                <input className="w-full rounded-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none focus:border-[rgba(1,196,97,0.5)]" placeholder="https://..." readOnly defaultValue="https://kairus.app/webhook/..." />
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-[rgba(255,255,255,0.6)]">Sincronizacao automatica</span>

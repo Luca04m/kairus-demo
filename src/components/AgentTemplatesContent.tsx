@@ -9,7 +9,7 @@ const TEMPLATES_MOCK = [
     category: "Marketing",
     name: "Agente de Personalização Outbound B2B",
     desc: "Personalização de e-mails com IA que se adapta ao contexto do destinatário, estágio da campanha e persona — gerando mensagens altamente relevantes em escala.",
-    color: "#6366f1",
+    color: "#a1a1aa",
   },
   {
     category: "Finanças e Contabilidade",
@@ -21,13 +21,13 @@ const TEMPLATES_MOCK = [
     category: "Recursos Humanos",
     name: "Agente de Avaliação de Candidatos",
     desc: "Otimiza o recrutamento triando candidatos automaticamente com base nos requisitos da vaga, gerando relatórios de adequação detalhados para cada perfil analisado.",
-    color: "#8b5cf6",
+    color: "#71717a",
   },
   {
     category: "Recursos Humanos",
     name: "Agente de Sourcing de Candidatos",
     desc: "Agiliza o recrutamento buscando automaticamente perfis de candidatos para vagas em aberto, consolidando resultados de múltiplas fontes em uma única visualização.",
-    color: "#8b5cf6",
+    color: "#71717a",
   },
   {
     category: "Finanças e Contabilidade",
@@ -63,13 +63,13 @@ const TEMPLATES_MOCK = [
     category: "Suporte ao Cliente",
     name: "Agente de Gestão de Devoluções",
     desc: "Atua como assistente de atendimento automatizado, interpretando solicitações de devolução e gerenciando o fluxo completo do processo de pós-venda.",
-    color: "#06b6d4",
+    color: "#71717a",
   },
   {
     category: "Suporte ao Cliente",
     name: "Agente de Análise de Transcrições BPO",
     desc: "Automatiza a análise de transcrições de chamadas de clientes, extraindo insights acionáveis e identificando oportunidades de melhoria no atendimento.",
-    color: "#06b6d4",
+    color: "#71717a",
   },
   {
     category: "Conformidade",

@@ -24,9 +24,9 @@ const VISUALIZACOES: Visualizacao[] = [
 ];
 
 const TIPO_CONFIG: Record<TipoVisualizacao, { label: string; color: string; bg: string }> = {
-  tabela:  { label: "Tabela",  color: "#6366f1", bg: "rgba(99,102,241,0.15)" },
-  kanban:  { label: "Kanban",  color: "#22c55e", bg: "rgba(34,197,94,0.15)"  },
-  grafico: { label: "Gráfico", color: "#f59e0b", bg: "rgba(245,158,11,0.15)" },
+  tabela:  { label: "Tabela",  color: "#01C461", bg: "rgba(1,196,97,0.15)" },
+  kanban:  { label: "Kanban",  color: "rgba(1,196,97,0.7)", bg: "rgba(1,196,97,0.10)"  },
+  grafico: { label: "Gráfico", color: "rgba(1,196,97,0.5)", bg: "rgba(1,196,97,0.08)" },
 };
 
 const TIPO_FILTERS = ["Todas", "Tabela", "Kanban", "Gráfico"] as const;

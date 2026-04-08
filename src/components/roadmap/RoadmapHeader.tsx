@@ -55,8 +55,8 @@ export function RoadmapHeader({ itemCount }: RoadmapHeaderProps) {
           onClick={() => setShowAddForm(true)}
           className="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-medium text-white transition-all duration-150"
           style={{
-            background: 'linear-gradient(135deg, rgba(59,130,246,0.25) 0%, rgba(99,102,241,0.25) 100%)',
-            border: '1px solid rgba(59,130,246,0.35)',
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.08) 100%)',
+            border: '1px solid rgba(255,255,255,0.2)',
           }}
         >
           <Plus size={14} />

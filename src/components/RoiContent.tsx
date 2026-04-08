@@ -102,23 +102,23 @@ export function RoiContent() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
           <div>
             <label htmlFor="roi-setup" className="block text-xs text-[rgba(255,255,255,0.45)] mb-1">Setup inicial (R$)</label>
-            <input id="roi-setup" type="number" min={0} step={500} value={setupInicial} onChange={(e) => setSetupInicial(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(99,102,241,0.5)] transition-colors" />
+            <input id="roi-setup" type="number" min={0} step={500} value={setupInicial} onChange={(e) => setSetupInicial(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(1,196,97,0.5)] transition-colors" />
           </div>
           <div>
             <label htmlFor="roi-mensal" className="block text-xs text-[rgba(255,255,255,0.45)] mb-1">Investimento mensal (R$)</label>
-            <input id="roi-mensal" type="number" min={0} step={500} value={investMensal} onChange={(e) => setInvestMensal(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(99,102,241,0.5)] transition-colors" />
+            <input id="roi-mensal" type="number" min={0} step={500} value={investMensal} onChange={(e) => setInvestMensal(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(1,196,97,0.5)] transition-colors" />
           </div>
           <div>
             <label htmlFor="roi-meses" className="block text-xs text-[rgba(255,255,255,0.45)] mb-1">Periodo (meses)</label>
-            <input id="roi-meses" type="number" min={1} max={36} value={meses} onChange={(e) => setMeses(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(99,102,241,0.5)] transition-colors" />
+            <input id="roi-meses" type="number" min={1} max={36} value={meses} onChange={(e) => setMeses(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(1,196,97,0.5)] transition-colors" />
           </div>
           <div>
             <label htmlFor="roi-receita" className="block text-xs text-[rgba(255,255,255,0.45)] mb-1">Receita extra mensal (R$)</label>
-            <input id="roi-receita" type="number" min={0} step={1000} value={receitaExtra} onChange={(e) => setReceitaExtra(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(99,102,241,0.5)] transition-colors" />
+            <input id="roi-receita" type="number" min={0} step={1000} value={receitaExtra} onChange={(e) => setReceitaExtra(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(1,196,97,0.5)] transition-colors" />
           </div>
           <div>
             <label htmlFor="roi-economia" className="block text-xs text-[rgba(255,255,255,0.45)] mb-1">Economia operacional mensal (R$)</label>
-            <input id="roi-economia" type="number" min={0} step={1000} value={economiaOp} onChange={(e) => setEconomiaOp(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(99,102,241,0.5)] transition-colors" />
+            <input id="roi-economia" type="number" min={0} step={1000} value={economiaOp} onChange={(e) => setEconomiaOp(Number(e.target.value))} className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white tabular-nums outline-none focus:border-[rgba(1,196,97,0.5)] transition-colors" />
           </div>
         </div>
         {/* Computed results */}
@@ -205,7 +205,7 @@ export function RoiContent() {
       )}
 
       {/* Summary insight */}
-      <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] border-l-4 border-l-green-500/70 px-5 py-4 flex items-center gap-3">
+      <div className="glass-card rounded-xl border border-green-500/20 bg-green-500/5 px-5 py-4 flex items-center gap-3">
         <TrendingUp size={16} className="text-green-400 shrink-0" />
         <p className="text-sm text-[rgba(255,255,255,0.7)] leading-relaxed">
           Break-even atingido no 3° mes. ROI acumulado de 149% em 6 meses de operação.

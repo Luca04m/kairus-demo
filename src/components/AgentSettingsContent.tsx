@@ -100,7 +100,7 @@ export function AgentSettingsContent() {
           >
             {tab}
             {activeTab === tab && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-400 rounded-full" />
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full" />
             )}
           </button>
         ))}
@@ -147,7 +147,7 @@ export function AgentSettingsContent() {
                       onClick={() => setAvatarMode("avatar")}
                       className={`rounded-lg border px-4 py-1.5 text-sm transition-colors ${
                         avatarMode === "avatar"
-                          ? "border-indigo-400/50 bg-indigo-500/10 text-indigo-300"
+                          ? "border-[rgba(255,255,255,0.25)] bg-[rgba(255,255,255,0.1)] text-white"
                           : "border-[rgba(255,255,255,0.08)] text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.06)]"
                       }`}
                     >
@@ -157,7 +157,7 @@ export function AgentSettingsContent() {
                       onClick={() => setAvatarMode("imagem")}
                       className={`rounded-lg border px-4 py-1.5 text-sm transition-colors ${
                         avatarMode === "imagem"
-                          ? "border-indigo-400/50 bg-indigo-500/10 text-indigo-300"
+                          ? "border-[rgba(255,255,255,0.25)] bg-[rgba(255,255,255,0.1)] text-white"
                           : "border-[rgba(255,255,255,0.08)] text-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.06)]"
                       }`}
                     >
@@ -165,7 +165,7 @@ export function AgentSettingsContent() {
                     </button>
                   </div>
                   {avatarMode === "imagem" && (
-                    <button disabled title="Upload de imagem em breve" className="rounded-lg border border-dashed border-[rgba(255,255,255,0.15)] px-4 py-1.5 text-xs text-[rgba(255,255,255,0.4)] hover:border-indigo-400/40 hover:text-indigo-300 transition-colors opacity-50 cursor-not-allowed">
+                    <button disabled title="Upload de imagem em breve" className="rounded-lg border border-dashed border-[rgba(255,255,255,0.15)] px-4 py-1.5 text-xs text-[rgba(255,255,255,0.4)] hover:border-[rgba(255,255,255,0.3)] hover:text-white transition-colors opacity-50 cursor-not-allowed">
                       + Fazer upload
                     </button>
                   )}
@@ -178,7 +178,7 @@ export function AgentSettingsContent() {
               <input
                 value={agentName}
                 onChange={(e) => setAgentName(e.target.value)}
-                className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none transition-colors focus:border-indigo-400/60 focus:ring-1 focus:ring-indigo-400/20"
+                className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none transition-colors focus:border-[rgba(255,255,255,0.3)] focus:ring-1 focus:ring-[rgba(255,255,255,0.1)]"
               />
             </div>
             <div>
@@ -186,13 +186,13 @@ export function AgentSettingsContent() {
               <textarea
                 placeholder="Insira uma breve descrição do propósito e das tarefas do agente."
                 rows={3}
-                className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.4)] outline-none resize-none transition-colors focus:border-indigo-400/60 focus:ring-1 focus:ring-indigo-400/20"
+                className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.4)] outline-none resize-none transition-colors focus:border-[rgba(255,255,255,0.3)] focus:ring-1 focus:ring-[rgba(255,255,255,0.1)]"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-white mb-1.5">Categoria</label>
               <div className="relative">
-                <select className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-[rgba(255,255,255,0.4)] outline-none appearance-none transition-colors focus:border-indigo-400/60">
+                <select className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-[rgba(255,255,255,0.4)] outline-none appearance-none transition-colors focus:border-[rgba(255,255,255,0.3)]">
                   <option value="">Selecione uma categoria</option>
                   <option>Marketing</option>
                   <option>Finanças e Contabilidade</option>
@@ -213,7 +213,7 @@ export function AgentSettingsContent() {
                   setTimeout(() => setSaved(false), 2000);
                 }}
                 disabled={saved}
-                className={`rounded-lg transition-colors px-5 py-2 text-sm font-medium text-white shadow-md ${saved ? "bg-emerald-600 shadow-emerald-500/20" : "bg-indigo-500 hover:bg-indigo-400 shadow-indigo-500/20"}`}
+                className={`rounded-lg transition-colors px-5 py-2 text-sm font-medium text-white shadow-md ${saved ? "bg-emerald-600 shadow-emerald-500/20" : "bg-[rgba(255,255,255,0.15)] hover:bg-[rgba(255,255,255,0.2)] shadow-[rgba(255,255,255,0.05)]"}`}
               >
                 {saved ? "✓ Salvo" : "Salvar"}
               </button>

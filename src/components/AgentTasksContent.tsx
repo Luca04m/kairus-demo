@@ -40,9 +40,9 @@ const STATUS_CONFIG: Record<TarefaStatus, {
   em_progresso: {
     label: "Em progresso",
     icon: Loader2,
-    dot: "bg-blue-400",
-    badge: "bg-blue-500/10 border-blue-500/20",
-    text: "text-blue-400",
+    dot: "bg-[rgba(255,255,255,0.4)]",
+    badge: "bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.12)]",
+    text: "text-[rgba(255,255,255,0.4)]",
   },
   pendente: {
     label: "Pendente",
@@ -141,7 +141,7 @@ export function AgentTasksContent() {
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="Ex: Analisar metricas de vendas"
-                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none focus:border-indigo-400/60"
+                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none focus:border-[rgba(1,196,97,0.6)]"
                 />
               </div>
               <div>
@@ -151,7 +151,7 @@ export function AgentTasksContent() {
                   onChange={(e) => setNewDesc(e.target.value)}
                   rows={3}
                   placeholder="Descreva a tarefa..."
-                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none resize-none focus:border-indigo-400/60"
+                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none resize-none focus:border-[rgba(1,196,97,0.6)]"
                 />
               </div>
               <div>
@@ -159,7 +159,7 @@ export function AgentTasksContent() {
                 <select
                   value={newStatus}
                   onChange={(e) => setNewStatus(e.target.value as TarefaStatus)}
-                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none appearance-none focus:border-indigo-400/60"
+                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none appearance-none focus:border-[rgba(1,196,97,0.6)]"
                 >
                   <option value="pendente">Pendente</option>
                   <option value="em_progresso">Em progresso</option>

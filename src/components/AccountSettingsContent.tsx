@@ -57,7 +57,7 @@ export function AccountSettingsContent() {
           <div className="flex items-center gap-5">
             {/* Avatar with gradient */}
             <div className="h-16 w-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0"
-              style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.7) 0%, rgba(168,85,247,0.6) 100%)", border: "1px solid rgba(255,255,255,0.12)" }}>
+              style={{ background: "linear-gradient(135deg, rgba(1,196,97,0.5) 0%, rgba(34,197,94,0.4) 100%)", border: "1px solid rgba(255,255,255,0.12)" }}>
               <span className="text-xl font-bold text-white">{DEMO_USER.initials}</span>
             </div>
             <div className="flex flex-col gap-1.5">
@@ -106,7 +106,7 @@ export function AccountSettingsContent() {
           <input
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none transition-all focus:border-[rgba(99,102,241,0.6)] focus:bg-[rgba(99,102,241,0.06)] focus:ring-1 focus:ring-[rgba(99,102,241,0.2)]"
+            className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none transition-all focus:border-[rgba(1,196,97,0.6)] focus:bg-[rgba(1,196,97,0.06)] focus:ring-1 focus:ring-[rgba(1,196,97,0.2)]"
           />
         </div>
 
@@ -125,7 +125,7 @@ export function AccountSettingsContent() {
                   placeholder="Senha"
                   value={novaSenha}
                   onChange={(e) => setNovaSenha(e.target.value)}
-                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 pr-9 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none transition-all focus:border-[rgba(99,102,241,0.6)] focus:ring-1 focus:ring-[rgba(99,102,241,0.2)]"
+                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 pr-9 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none transition-all focus:border-[rgba(1,196,97,0.6)] focus:ring-1 focus:ring-[rgba(1,196,97,0.2)]"
                 />
                 <button
                   type="button"
@@ -164,7 +164,7 @@ export function AccountSettingsContent() {
                   placeholder="Confirmar senha"
                   value={confirmarSenha}
                   onChange={(e) => setConfirmarSenha(e.target.value)}
-                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 pr-9 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none transition-all focus:border-[rgba(99,102,241,0.6)] focus:ring-1 focus:ring-[rgba(99,102,241,0.2)]"
+                  className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 pr-9 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none transition-all focus:border-[rgba(1,196,97,0.6)] focus:ring-1 focus:ring-[rgba(1,196,97,0.2)]"
                 />
                 <button
                   type="button"
@@ -202,7 +202,7 @@ export function AccountSettingsContent() {
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setTheme("dark"); } }}
               className={`relative flex-1 rounded-xl p-3 cursor-pointer transition-all ${
                 theme === "dark"
-                  ? "border border-[rgba(99,102,241,0.6)] bg-[rgba(99,102,241,0.08)]"
+                  ? "border border-[rgba(255,255,255,0.3)] bg-[rgba(255,255,255,0.08)]"
                   : "border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] hover:border-[rgba(255,255,255,0.15)]"
               }`}
             >
@@ -214,7 +214,7 @@ export function AccountSettingsContent() {
               </div>
               <div className="flex items-center justify-between">
                 <span className={`text-xs font-medium ${theme === "dark" ? "text-white" : "text-[rgba(255,255,255,0.5)]"}`}>Escuro</span>
-                {theme === "dark" && <Check size={13} className="text-[rgba(99,102,241,0.9)]" />}
+                {theme === "dark" && <Check size={13} className="text-emerald-400" />}
               </div>
             </div>
             {/* Light card */}
@@ -225,7 +225,7 @@ export function AccountSettingsContent() {
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setTheme("light"); } }}
               className={`relative flex-1 rounded-xl p-3 cursor-pointer transition-all ${
                 theme === "light"
-                  ? "border border-[rgba(99,102,241,0.6)] bg-[rgba(99,102,241,0.08)]"
+                  ? "border border-[rgba(255,255,255,0.3)] bg-[rgba(255,255,255,0.08)]"
                   : "border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] hover:border-[rgba(255,255,255,0.15)]"
               }`}
             >
@@ -237,7 +237,7 @@ export function AccountSettingsContent() {
               </div>
               <div className="flex items-center justify-between">
                 <span className={`text-xs font-medium ${theme === "light" ? "text-white" : "text-[rgba(255,255,255,0.5)]"}`}>Claro</span>
-                {theme === "light" && <Check size={13} className="text-[rgba(99,102,241,0.9)]" />}
+                {theme === "light" && <Check size={13} className="text-emerald-400" />}
               </div>
             </div>
           </div>
@@ -256,7 +256,7 @@ export function AccountSettingsContent() {
             <select
               value={idioma}
               onChange={(e) => setIdioma(e.target.value)}
-              className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none appearance-none transition-all focus:border-[rgba(99,102,241,0.6)] focus:ring-1 focus:ring-[rgba(99,102,241,0.2)] cursor-pointer"
+              className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none appearance-none transition-all focus:border-[rgba(1,196,97,0.6)] focus:ring-1 focus:ring-[rgba(1,196,97,0.2)] cursor-pointer"
             >
               <option value="pt-BR">Portugues (Brasil)</option>
               <option value="en-US">English (US)</option>

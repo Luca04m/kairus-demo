@@ -23,7 +23,7 @@ function TemperatureBadge({ temp }: { temp: 'hot' | 'warm' | 'cold' }) {
   const config = {
     hot: { icon: Flame, color: 'text-red-400', bg: 'bg-red-400/10', label: 'Quente' },
     warm: { icon: Thermometer, color: 'text-amber-400', bg: 'bg-amber-400/10', label: 'Morno' },
-    cold: { icon: Snowflake, color: 'text-blue-400', bg: 'bg-blue-400/10', label: 'Frio' },
+    cold: { icon: Snowflake, color: 'text-[rgba(255,255,255,0.5)]', bg: 'bg-[rgba(255,255,255,0.05)]', label: 'Frio' },
   }[temp];
   const Icon = config.icon;
 
@@ -93,7 +93,7 @@ function MessageBubble({ message }: { message: SalesRoomMessage }) {
           max-w-[75%] px-3 py-2 rounded-xl text-[12px] leading-relaxed
           ${
             isAgent
-              ? 'bg-blue-600/20 text-[rgba(255,255,255,0.85)] border border-blue-500/20 rounded-br-sm'
+              ? 'bg-[rgba(1,196,97,0.12)] text-[rgba(255,255,255,0.85)] border border-[rgba(1,196,97,0.2)] rounded-br-sm'
               : 'bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.75)] border border-[rgba(255,255,255,0.06)] rounded-bl-sm'
           }
         `}
@@ -229,10 +229,10 @@ export function ConversationView({ agent }: ConversationViewProps) {
 
       {/* Suggested response */}
       {suggestion && (
-        <div className="mx-4 mt-2 px-3 py-1.5 rounded-md bg-blue-500/8 border border-blue-500/15 flex items-center gap-2">
-          <Lightbulb size={11} className="text-blue-400 flex-shrink-0" />
+        <div className="mx-4 mt-2 px-3 py-1.5 rounded-md bg-[rgba(1,196,97,0.06)] border border-[rgba(1,196,97,0.12)] flex items-center gap-2">
+          <Lightbulb size={11} className="text-[#01C461] flex-shrink-0" />
           <div className="flex-1 min-w-0">
-            <span className="text-[9px] text-blue-400 uppercase tracking-wider font-medium">
+            <span className="text-[9px] text-[#01C461] uppercase tracking-wider font-medium">
               {suggestion.label}
             </span>
             <p className="text-[10px] text-[rgba(255,255,255,0.5)] mt-0.5 truncate">
@@ -278,8 +278,8 @@ export function ConversationView({ agent }: ConversationViewProps) {
             type="button"
             className="
               flex h-8 w-8 items-center justify-center rounded-lg
-              bg-blue-600/20 border border-blue-500/20
-              text-blue-400 hover:bg-blue-600/30
+              bg-[rgba(1,196,97,0.12)] border border-[rgba(1,196,97,0.2)]
+              text-[#01C461] hover:bg-[rgba(1,196,97,0.2)]
               transition-colors duration-100 cursor-pointer
             "
             onClick={() => {

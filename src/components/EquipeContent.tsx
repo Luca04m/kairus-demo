@@ -2,6 +2,7 @@
 
 import { CheckCircle2, XCircle, ThumbsUp, Clock, Activity, Zap, Bot } from "lucide-react";
 import { AGENTES_EQUIPE as AGENTS } from "@/data/mrlion";
+import { OrgChart } from "@/components/OrgChart";
 
 /* ------------------------------------------------------------------ */
 /* Aggregate stats                                                     */
@@ -10,8 +11,8 @@ import { AGENTES_EQUIPE as AGENTS } from "@/data/mrlion";
 const totalConcluidas = AGENTS.reduce((s, a) => s + a.tarefasConcluidas, 0);
 
 const statusCor: Record<string, string> = {
-  ativo: "bg-green-500",
-  pausado: "bg-yellow-500",
+  ativo: "bg-[#01C461]",
+  pausado: "bg-amber-500",
 };
 
 const statusLabel: Record<string, string> = {
@@ -40,7 +41,7 @@ export function EquipeContent() {
       {/* Aggregate stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-4 flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-500/10 text-green-400">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#01C461]/10 text-[#01C461]">
             <Activity size={18} />
           </div>
           <div>
@@ -50,7 +51,7 @@ export function EquipeContent() {
         </div>
 
         <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-4 flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#01C461]/10 text-[#01C461]">
             <Zap size={18} />
           </div>
           <div>
@@ -60,7 +61,7 @@ export function EquipeContent() {
         </div>
 
         <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-4 flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#01C461]/10 text-[#01C461]">
             <CheckCircle2 size={18} />
           </div>
           <div>
@@ -70,13 +71,21 @@ export function EquipeContent() {
         </div>
       </div>
 
+      {/* Org chart */}
+      <section className="mb-8">
+        <h2 className="text-lg font-semibold text-white mb-4">Estrutura da Equipe AI</h2>
+        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-6">
+          <OrgChart />
+        </div>
+      </section>
+
       {/* Agent cards grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {AGENTS.map((agent) => (
           <div
             key={agent.id}
             className="group relative rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-4 flex flex-col gap-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.35)] hover:border-[rgba(255,255,255,0.13)]"
-            style={{ borderLeft: `3px solid ${agent.cor}` }}
+            style={{ borderLeft: "none" }}
           >
             {/* Role + status row */}
             <div className="flex items-center justify-between">
@@ -136,7 +145,7 @@ export function EquipeContent() {
             {/* Performance metrics */}
             <div className="flex items-center gap-4 text-xs text-[rgba(255,255,255,0.45)]">
               <span className="flex items-center gap-1">
-                <CheckCircle2 size={12} className="text-green-500" />
+                <CheckCircle2 size={12} className="text-[#01C461]" />
                 {agent.tarefasConcluidas}
               </span>
               <span className="flex items-center gap-1">

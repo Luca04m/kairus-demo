@@ -38,13 +38,11 @@ next-env.d.ts
 # Vercel
 .vercel
 
-# Testing
+# Test artifacts
 test-results/
 playwright-report/
 
-# Local config (AI tools, editors)
-.claude/
-.cursor/
-
-# Local temp files
-temp/
+# Databases (local)
+*.db
+*.rvf
+*.rvf.lock

@@ -11,8 +11,18 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { DEMO_USER } from "@/lib/constants";
+import { AGENT_META, AGENT_IDS } from "@/lib/ai/agent-meta";
 
-const AGENT_ID = "demo-agent";
+const AGENT_ALIAS: Record<string, string> = {
+  "demo-agent": "ecommerce",
+  leo: "ecommerce",
+  rex: "financeiro",
+  mia: "orquestrador",
+  sol: "estoque",
+  iris: "orquestrador",
+  kairus: "orquestrador",
+};
+
 const UNREAD_COUNT = 2;
 
 interface AppSidebarProps {
@@ -50,7 +60,7 @@ export function AppSidebar({ mobileOpen = false, onClose }: AppSidebarProps) {
   };
 
   const subItem = (href: string, children: React.ReactNode) => {
-    const active = pathname === href || (href !== `/agent/${AGENT_ID}` && pathname.startsWith(href));
+    const active = pathname === href || (!href.match(/^\/agent\/[^/]+$/) && pathname.startsWith(href));
     return (
       <Link
         href={href}
@@ -112,7 +122,7 @@ interface SidebarContentProps {
   onClose?: () => void;
 }
 
-function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarContentProps) {
+function SidebarContent({ pathname, isAgentRoute, navItem, subItem, onClose }: SidebarContentProps) {
   const { user, signOut } = useAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -186,37 +196,12 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
       </div>
 
       {/* Agent section */}
-      <div className="px-3">
-        <p className="px-3 py-1 text-xs font-medium text-[rgba(255,255,255,0.4)]">Seus agentes</p>
-        <Link
-          href={`/agent/${AGENT_ID}`}
-          onClick={onClose}
-          className="
-            flex cursor-pointer items-center gap-2 rounded-[10px] px-4 py-2
-            bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.06)]
-            transition-all duration-150
-            hover:bg-[rgba(255,255,255,0.07)] hover:border-[rgba(255,255,255,0.10)]
-          "
-        >
-          <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(34,197,94,0.2)] text-[10px] font-medium text-emerald-400">
-            LE
-          </span>
-          <span className="flex-1 text-sm text-white">Leo — Agente Financeiro</span>
-          {isAgentRoute
-            ? <ChevronDown size={14} color="rgba(255,255,255,0.4)" />
-            : <ChevronRight size={14} color="rgba(255,255,255,0.4)" />
-          }
-        </Link>
-        {isAgentRoute && (
-          <div className="ml-3 mt-0.5 flex flex-col gap-0.5">
-            {subItem(`/agent/${AGENT_ID}`, <><MessageSquare size={13} />Chat</>)}
-            {subItem(`/agent/${AGENT_ID}/tasks`, <><ListTodo size={13} />Tarefas</>)}
-            {subItem(`/agent/${AGENT_ID}/flow`, <><Workflow size={13} />Fluxo</>)}
-            {subItem(`/agent/${AGENT_ID}/settings`, <><Settings size={13} />Configurações</>)}
-            {subItem(`/agent/${AGENT_ID}/analytics`, <><BarChart2 size={13} />Análises</>)}
-          </div>
-        )}
-      </div>
+      <AgentList
+        pathname={pathname}
+        isAgentRoute={isAgentRoute}
+        subItem={subItem}
+        onClose={onClose}
+      />
 
       {/* Gradient fade separator */}
       <div className="mx-3 my-2 h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.12)] to-transparent" />
@@ -231,15 +216,14 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
         </div>
       </div>
 
-      {/* IA & Agentes section */}
+      {/* IA section */}
       <div className="px-3 mt-2">
-        {sectionHeader("IA & Agentes")}
+        {sectionHeader("IA")}
         <div className="flex flex-col gap-1">
           {navItem("/equipe", <><Users size={16} />Visão Geral</>)}
           {navItem("/sales-room", <><Headphones size={16} />Vendas</>)}
           {navItem("/world", <><Globe size={16} />World</>)}
           {navItem("/tasks", <><ListTodo size={16} />Tarefas</>)}
-          {navItem("/agent-templates", <><Bot size={16} />Meus Agentes</>)}
         </div>
       </div>
 
@@ -286,6 +270,72 @@ function SidebarContent({ isAgentRoute, navItem, subItem, onClose }: SidebarCont
           <ChevronsUpDown size={14} color="rgba(255,255,255,0.4)" />
         </Link>
       </div>
+    </div>
+  );
+}
+
+/* ── Dynamic agent list ─────────────────────────────────────────────── */
+
+interface AgentListProps {
+  pathname: string;
+  isAgentRoute: boolean;
+  subItem: (href: string, children: React.ReactNode) => React.ReactNode;
+  onClose?: () => void;
+}
+
+function AgentList({ pathname, isAgentRoute, subItem, onClose }: AgentListProps) {
+  const [agentsOpen, setAgentsOpen] = useState(true);
+
+  const activeAgentId = pathname.match(/^\/agent\/([^/]+)/)?.[1] || null;
+  const resolvedAgentId = activeAgentId
+    ? AGENT_ALIAS[activeAgentId] || activeAgentId
+    : null;
+
+  return (
+    <div className="px-3">
+      <button
+        onClick={() => setAgentsOpen(!agentsOpen)}
+        className="flex w-full items-center justify-between px-3 py-1"
+      >
+        <p className="text-xs font-medium text-[rgba(255,255,255,0.4)]">Seus agentes</p>
+        {agentsOpen
+          ? <ChevronDown size={12} className="text-[rgba(255,255,255,0.4)]" />
+          : <ChevronRight size={12} className="text-[rgba(255,255,255,0.4)]" />
+        }
+      </button>
+
+      {agentsOpen && (
+        <div className="flex flex-col gap-0.5">
+          {AGENT_IDS.map((id) => {
+            const meta = AGENT_META[id];
+            const Icon = meta.icon;
+            const isActive = resolvedAgentId === id;
+
+            return (
+              <Link
+                key={id}
+                href={`/agent/${id}`}
+                onClick={onClose}
+                className={`
+                  flex cursor-pointer items-center gap-2 rounded-[10px] px-3 py-2
+                  transition-all duration-150
+                  ${isActive
+                    ? "bg-[rgba(255,255,255,0.08)] text-white"
+                    : "text-[rgba(255,255,255,0.45)] hover:bg-[rgba(255,255,255,0.05)] hover:text-[rgba(255,255,255,0.7)]"
+                  }
+                `}
+              >
+                <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(255,255,255,0.06)]">
+                  <Icon size={12} className="text-[rgba(255,255,255,0.4)]" />
+                </span>
+                <span className="flex-1 truncate text-sm">
+                  {meta.nome}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

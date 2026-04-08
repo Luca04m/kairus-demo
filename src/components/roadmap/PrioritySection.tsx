@@ -8,7 +8,7 @@ import { RoadmapCard } from './RoadmapCard';
 const PRIORITY_META: Record<MoscowPriority, { label: string; color: string; description: string }> = {
   must: { label: 'Must Have', color: '#f43f5e', description: 'Essencial para a operação' },
   should: { label: 'Should Have', color: '#f59e0b', description: 'Importante, mas não bloqueante' },
-  could: { label: 'Could Have', color: '#3b82f6', description: 'Desejável se houver recursos' },
+  could: { label: 'Could Have', color: '#71717a', description: 'Desejável se houver recursos' },
   wont: { label: "Won't Have (agora)", color: 'rgba(255,255,255,0.35)', description: 'Adiado para o futuro' },
 };
 

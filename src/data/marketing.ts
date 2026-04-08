@@ -67,14 +67,14 @@ export interface CanalRow {
 }
 
 export const REVENUE_POR_CANAL: CanalRow[] = [
-  { canal: "Desconhecido", revenue: 680926, color: "#6366f1" },
-  { canal: "Instagram", revenue: 442228, color: "#ec4899" },
+  { canal: "Desconhecido", revenue: 680926, color: "#a1a1aa" },
+  { canal: "Instagram", revenue: 442228, color: "#01C461" },
   { canal: "Direto", revenue: 289145, color: "#f59e0b" },
   { canal: "Google Ads", revenue: 244338, color: "#10b981" },
-  { canal: "Facebook", revenue: 221364, color: "#3b82f6" },
-  { canal: "Google Organic", revenue: 199928, color: "#8b5cf6" },
+  { canal: "Facebook", revenue: 221364, color: "#71717a" },
+  { canal: "Google Organic", revenue: 199928, color: "#52525b" },
   { canal: "Meta Ads", revenue: 22560, color: "#ef4444" },
-  { canal: "Referral", revenue: 17183, color: "#64748b" },
+  { canal: "Referral", revenue: 17183, color: "#3f3f46" },
 ];
 
 export interface PagamentoRow {
@@ -86,7 +86,7 @@ export interface PagamentoRow {
 
 export const MIX_PAGAMENTO: PagamentoRow[] = [
   { tipo: "Pix", valor: 1362043, pct: "63,6%", color: "#10b981" },
-  { tipo: "Cartao", valor: 780559, pct: "36,4%", color: "#6366f1" },
+  { tipo: "Cartao", valor: 780559, pct: "36,4%", color: "#71717a" },
 ];
 
 export interface CupomRow {

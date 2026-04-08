@@ -81,7 +81,7 @@ export function RoiImpactoTab() {
       </div>
 
       {/* Pixel warning */}
-      <div className="glass-card rounded-xl border border-amber-500/30 bg-amber-500/5 border-l-4 border-l-amber-500/70 px-5 py-4 flex items-start gap-3">
+      <div className="glass-card rounded-xl border border-amber-500/30 bg-amber-500/5 px-5 py-4 flex items-start gap-3">
         <AlertTriangle size={16} className="text-amber-400 shrink-0 mt-0.5" />
         <p className="text-sm text-[rgba(255,255,255,0.7)] leading-relaxed">
           {META_ADS_DATA.pixelNote}
@@ -91,7 +91,7 @@ export function RoiImpactoTab() {
       {/* Campanhas Meta */}
       <div className="glass-card rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
         <div className="flex items-center gap-2 mb-4">
-          <BarChart2 size={14} className="text-violet-400" />
+          <BarChart2 size={14} className="text-[#01C461]" />
           <span className="text-sm font-medium text-white">Campanhas Meta Ads</span>
         </div>
         <div className="overflow-x-auto">
@@ -169,7 +169,7 @@ export function RoiImpactoTab() {
               <CartesianGrid stroke={CHART_THEME.grid.stroke} strokeDasharray={CHART_THEME.grid.strokeDasharray} />
               <XAxis dataKey="mes" stroke={CHART_THEME.axis.stroke} tick={CHART_THEME.axis.tick} axisLine={false} tickLine={false} />
               <YAxis stroke={CHART_THEME.axis.stroke} tick={CHART_THEME.axis.tick} axisLine={false} tickLine={false} tickFormatter={(v: number) => `R$ ${(v / 1000).toFixed(0)}k`} width={56} />
-              <Tooltip contentStyle={{ backgroundColor: "#0d0d14", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 12, color: "white", fontSize: 12 }} formatter={(value: number, name: string) => [`R$ ${value.toLocaleString("pt-BR")}`, name === "investimento" ? "Investimento" : "Valor Gerado"]} />
+              <Tooltip contentStyle={{ backgroundColor: "#0d0d14", border: "1px solid rgba(1,196,97,0.25)", borderRadius: 12, color: "white", fontSize: 12 }} formatter={(value: number, name: string) => [`R$ ${value.toLocaleString("pt-BR")}`, name === "investimento" ? "Investimento" : "Valor Gerado"]} />
               <Legend formatter={(value: string) => value === "investimento" ? "Investimento" : "Valor Gerado"} wrapperStyle={{ fontSize: "12px", paddingTop: "12px" }} iconType="circle" />
               <ReferenceLine x="Jan/26" stroke="rgba(255,255,255,0.5)" strokeWidth={1.5} strokeDasharray="5 4" label={{ value: "Break-even", fill: "rgba(255,255,255,0.65)", fontSize: 11, fontWeight: 600, position: "insideTopRight" }} />
               <Area type="monotone" dataKey="investimento" stroke="#ef4444" strokeWidth={2} fill="url(#investGrad2)" dot={{ fill: "#ef4444", r: 3, strokeWidth: 0 }} activeDot={{ r: 5, stroke: "rgba(239,68,68,0.4)", strokeWidth: 3 }} />

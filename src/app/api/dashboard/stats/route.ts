@@ -1,7 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuthContext, isAuthError, errorResponse, PRIVATE_CACHE_HEADERS } from "@/lib/api/auth";
+import { getAuthContext, isAuthError, PRIVATE_CACHE_HEADERS } from "@/lib/api/auth";
+import { getVaultDashboardData } from "@/lib/vault-data";
 
 export async function GET(_request: NextRequest) {
+  // 1. Try vault data first (server-side, no auth needed)
+  const vaultData = getVaultDashboardData();
+  if (vaultData) {
+    const stats = {
+      total_agents: 5,
+      active_agents: 5,
+      active_alerts: 7,
+      pending_approvals: 2,
+      open_conversations: 3,
+      total_revenue: parseFloat(vaultData.receitaTotal.replace(/[^\d.,]/g, '').replace('.', '').replace(',', '.')) || 0,
+      vault_source: true,
+      kpis: vaultData,
+    };
+    return NextResponse.json({ data: stats }, { headers: PRIVATE_CACHE_HEADERS });
+  }
+
+  // 2. Fallback to Supabase when vault not configured
   const auth = await getAuthContext();
   if (isAuthError(auth)) return auth;
   const { supabase, tenantId } = auth;

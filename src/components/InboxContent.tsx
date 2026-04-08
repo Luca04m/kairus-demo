@@ -1,446 +1,397 @@
 "use client";
-import { useState, useMemo, useCallback } from "react";
-import { SlidersHorizontal, MoreHorizontal, Search, Reply, CheckCheck, Archive, Inbox } from "lucide-react";
-import { useSupabaseQuery, isSupabaseConfigured } from "@/lib/useSupabaseQuery";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Search, Send, Inbox, Bot } from "lucide-react";
 
-type Prioridade = "alta" | "media" | "baixa";
+/* ─── Types ──────────────────────────────────────────────────── */
 
-interface Mensagem {
-  id: number;
-  remetente: string;
-  iniciais: string;
-  cor: string;
-  assunto: string;
-  resumo: string;
-  tempo: string;
-  lida: boolean;
-  prioridade: Prioridade;
+interface ChatMessage {
+  id: string;
+  role: "user" | "agent";
+  text: string;
+  time: string;
 }
 
-const MENSAGENS_MOCK: Mensagem[] = [
-  { id: 1, remetente: "Leo", iniciais: "LE", cor: "#22c55e", assunto: "Alerta: Margem negativa Honey Pingente", resumo: "A margem do produto Honey Pingente ficou negativa em Mar/2026. Recomendo revisar precificação com urgência antes que o impacto se amplie nas próximas semanas.", tempo: "há 2h", lida: false, prioridade: "alta" },
-  { id: 2, remetente: "Mia", iniciais: "MI", cor: "#6366f1", assunto: "Relatório semanal de campanhas", resumo: "CTR caiu para 1,64% em Mar/26. CPC subindo. Sugiro revisão de criativos e ajuste de segmentação para recuperar eficiência no canal pago.", tempo: "há 45min", lida: false, prioridade: "alta" },
-  { id: 3, remetente: "Sol", iniciais: "SO", cor: "#f59e0b", assunto: "Estoque crítico: Honey Garrafa", resumo: "Estoque abaixo de 50 unidades. Última reposição há 15 dias. Risco de ruptura nas próximas 48h se não houver pedido imediato ao fornecedor.", tempo: "há 3h", lida: true, prioridade: "alta" },
-  { id: 4, remetente: "Rex", iniciais: "RE", cor: "#ec4899", assunto: "12 clientes B2B para recompra", resumo: "Identifiquei 12 clientes B2B com ciclo de recompra vencido. Enviei lembretes automáticos via e-mail. Aguardo resposta de 8 deles.", tempo: "há 1h", lida: true, prioridade: "media" },
-  { id: 5, remetente: "Iris", iniciais: "IR", cor: "#06b6d4", assunto: "Resumo WhatsApp: 23 atendimentos", resumo: "Respondi 23 mensagens automaticamente hoje. 2 foram escaladas para atendimento humano por solicitação de reembolso e reclamação de produto.", tempo: "há 30min", lida: true, prioridade: "baixa" },
-  { id: 6, remetente: "Leo", iniciais: "LE", cor: "#22c55e", assunto: "Relatório mensal Fev/2026 pronto", resumo: "Relatório mensal de fevereiro está disponível. Destaque: prejuízo de R$ -2.329 principalmente por custos logísticos acima do esperado.", tempo: "há 5h", lida: true, prioridade: "media" },
-  { id: 7, remetente: "Mia", iniciais: "MI", cor: "#6366f1", assunto: "3 posts Instagram publicados", resumo: "Publiquei 3 posts na conta @mrlionbebidas conforme calendário editorial. Alcance total: 12.400 contas. Melhor post: foto de produto com 4.800 alcance.", tempo: "há 8h", lida: true, prioridade: "baixa" },
-  { id: 8, remetente: "Sol", iniciais: "SO", cor: "#f59e0b", assunto: "Logística: 5 reenvios processados", resumo: "Processados 5 reenvios de pedidos com extravios confirmados pela transportadora. Custo total: R$ 127,50. Abertura de disputa iniciada para 3 casos.", tempo: "há 1d", lida: true, prioridade: "baixa" },
+interface Conversation {
+  agentId: string;
+  agentName: string;
+  agentRole: string;
+  iniciais: string;
+  messages: ChatMessage[];
+  unread: number;
+}
+
+/* ─── Initial conversations — realistic Mr. Lion context ──── */
+
+function now() {
+  return new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+}
+
+const INITIAL_CONVERSATIONS: Conversation[] = [
+  {
+    agentId: "leo",
+    agentName: "Leo",
+    agentRole: "Vendas",
+    iniciais: "LE",
+    unread: 2,
+    messages: [
+      { id: "leo-1", role: "agent", text: "Pipeline atualizado: R$ 312K em oportunidades abertas. 8 leads B2B qualificados automaticamente nas ultimas 24h.", time: "09:15" },
+      { id: "leo-2", role: "agent", text: "Alerta: Margem negativa detectada no Honey Pingente. CMV R$ 52 + frete R$ 38 > preco R$ 89,90. Recomendo revisao de precificacao urgente.", time: "10:30" },
+      { id: "leo-3", role: "agent", text: "Relatorio semanal Semana 13 pronto. Receita R$ 8.200 (-12% vs semana anterior). 2 chargebacks abertos: R$ 1.340 total.", time: "11:45" },
+    ],
+  },
+  {
+    agentId: "mia",
+    agentName: "Mia",
+    agentRole: "Marketing",
+    iniciais: "MI",
+    unread: 1,
+    messages: [
+      { id: "mia-1", role: "agent", text: "Campanha 'Verao 2026' otimizada — CPC reduzido 18% (de R$ 0,39 para R$ 0,32). ROAS subiu de 0,3x para 0,5x.", time: "08:45" },
+      { id: "mia-2", role: "agent", text: "CTR caiu de 4,59% (Set/25) para 1,64% (Mar/26). Preparei 3 hipoteses: saturacao de audiencia, criativos desatualizados e mudancas no algoritmo Meta.", time: "10:00" },
+      { id: "mia-3", role: "agent", text: "3 posts publicados no Instagram @mrlionbebidas. Alcance total: 12.400 contas. Melhor post: unboxing do Honey Completo com 4.800 alcance.", time: "14:20" },
+    ],
+  },
+  {
+    agentId: "rex",
+    agentName: "Rex",
+    agentRole: "Financeiro",
+    iniciais: "RE",
+    unread: 1,
+    messages: [
+      { id: "rex-1", role: "agent", text: "DRE Fev/2026 consolidado. Receita bruta R$ 74.081, CMV R$ 33.581, margem bruta 54,7%. Resultado final: prejuizo de R$ 2.329.", time: "09:00" },
+      { id: "rex-2", role: "agent", text: "Chargebacks Fev/26: R$ 4.300 (7,9% do faturamento). Identifico 12 transacoes com mesmo padrao de CEP. Revisao manual recomendada.", time: "11:15" },
+      { id: "rex-3", role: "agent", text: "Ticket medio caiu de R$ 235 (Fev) para R$ 217 (Mar). Sugiro bundle 'Kit Honey Completo' com desconto 8% para estimular itens por pedido.", time: "14:00" },
+    ],
+  },
+  {
+    agentId: "sol",
+    agentName: "Sol",
+    agentRole: "Suporte",
+    iniciais: "SO",
+    unread: 0,
+    messages: [
+      { id: "sol-1", role: "agent", text: "Estoque critico: Honey Garrafa com apenas 47 unidades. Taxa de venda atual esgota em 3 dias. Pedido de reposicao urgente necessario.", time: "08:30" },
+      { id: "sol-2", role: "agent", text: "5 reenvios processados hoje. Custo total R$ 127,50. Abertura de disputa iniciada para 3 extravios confirmados pela transportadora.", time: "12:00" },
+      { id: "sol-3", role: "agent", text: "Auditoria mensal de estoque concluida. 12 SKUs ativos, 3 com giro lento (> 45 dias sem venda). Relatorio na aba Relatorios.", time: "15:30" },
+    ],
+  },
+  {
+    agentId: "iris",
+    agentName: "Iris",
+    agentRole: "Dados",
+    iniciais: "IR",
+    unread: 0,
+    messages: [
+      { id: "iris-1", role: "agent", text: "Dashboard de cohort analysis atualizado. Taxa de retencao 30 dias: 11,1%. LTV medio R$ 243,33, LTV repeat R$ 541,93.", time: "09:30" },
+      { id: "iris-2", role: "agent", text: "Cruzamento GA4 + Meta Pixel concluido. 428.287 sessions totais. Conversion rate: 2,38%. Revenue por session: R$ 5,00.", time: "11:00" },
+      { id: "iris-3", role: "agent", text: "23 mensagens WhatsApp respondidas automaticamente (09h-11h). 20 resolvidas, 3 escaladas para atendimento humano por reclamacoes.", time: "11:30" },
+    ],
+  },
 ];
 
-type Filtro = "todas" | "nao-lidas" | "alta-prioridade";
+/* ─── Simulated agent responses ──────────────────────────── */
 
-const PRIORIDADE_DOT: Record<Prioridade, string | null> = {
-  alta: "#ef4444",
-  media: "#f59e0b",
-  baixa: null,
+const AGENT_RESPONSES: Record<string, string[]> = {
+  leo: [
+    "Entendido. Vou analisar o pipeline e atualizar o forecast. Devo priorizar os leads B2B com maior potencial de conversao?",
+    "Acompanhando. O ticket medio B2B esta em R$ 1.240 vs R$ 186 no B2C. Vou preparar uma proposta de bundle especifico para revendedores.",
+    "Recebi. Monitorando as metricas de vendas em tempo real. Proximo relatorio automatico sera gerado em 48h.",
+    "Precificacao revisada. Com frete medio de R$ 38, o preco minimo viavel para o Honey Pingente seria R$ 109,90 para margem de 18%.",
+  ],
+  mia: [
+    "Otimo, vou ajustar a segmentacao da campanha. Tenho 3 variacoes de criativo prontas para A/B test — inicio em 2h.",
+    "Analise concluida. Recomendo pausar Remarketing (ROAS 0,6x) e realocar budget para Vendas (ROAS 6,6x). Economia estimada: R$ 150/dia.",
+    "Calendario editorial atualizado. Proximos 5 posts focam em Honey Completo e Capuccino, nossos top 2 em receita.",
+    "CPC otimizado. O custo por click da campanha principal caiu para R$ 0,28. Monitorando impacto no ROAS nas proximas 72h.",
+  ],
+  rex: [
+    "DRE atualizado com os novos dados. Margem bruta estabilizou em 54,7%. Ponto de atencao: despesas operacionais cresceram 3% MoM.",
+    "Fluxo de caixa projetado para os proximos 30 dias: entrada R$ 68K, saida R$ 71K. Recomendo postergar investimentos nao essenciais.",
+    "Chargebacks sob monitoramento. Abri disputa formal para os 4 casos pendentes. Prazo de resposta da operadora: 15 dias uteis.",
+    "Analise de margem por produto concluida. Top 3 mais rentaveis: Capuccino Garrafa (55%), Honey Garrafa (52%), Capuccino Completo (50%).",
+  ],
+  sol: [
+    "Pedido de reposicao emitido ao fornecedor. Prazo estimado de entrega: 5 dias uteis. Estoque de seguranca definido em 100 unidades.",
+    "Tickets do dia: 12 abertos, 9 resolvidos, 3 em andamento. Tempo medio de resposta: 8 minutos. SLA de 95% mantido.",
+    "Logistica otimizada. Identifiquei rota alternativa que reduz frete em 12% para entregas na regiao Sudeste.",
+    "Monitoramento ativo. Rastreamento de 18 pedidos em transito. 2 com atraso previsto — clientes ja notificados proativamente.",
+  ],
+  iris: [
+    "Dados cruzados. Sessoes organicas cresceram 8% MoM enquanto pagas cairam 22%. Sugiro reforcar SEO para compensar.",
+    "Anomalia detectada: bounce rate subiu de 42% para 58% nas ultimas 48h. Causa provavel: lentidao no carregamento mobile.",
+    "Relatorio de cohort pronto. Clientes adquiridos via Instagram tem LTV 34% maior que os de Meta Ads.",
+    "Analytics atualizado. Top 3 produtos mais buscados: Honey Garrafa (28%), Capuccino Completo (19%), Honey Completo (17%).",
+  ],
 };
 
-export function InboxContent() {
-  const skip = !isSupabaseConfigured();
+/* ─── Component ──────────────────────────────────────────── */
 
-  const fetchMessages = useCallback(async () => {
-    const res = await fetch("/api/inbox");
-    if (!res.ok) throw new Error("Failed to fetch messages");
-    const json = await res.json();
-    return (json.data ?? json ?? []) as Mensagem[];
+export function InboxContent() {
+  const [conversations, setConversations] = useState<Conversation[]>(INITIAL_CONVERSATIONS);
+  const [activeAgentId, setActiveAgentId] = useState<string | null>(null);
+  const [inputText, setInputText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [busca, setBusca] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const activeConvo = conversations.find((c) => c.agentId === activeAgentId) ?? null;
+
+  const scrollToBottom = useCallback(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  const { data: MENSAGENS } = useSupabaseQuery({
-    queryFn: fetchMessages,
-    mockData: MENSAGENS_MOCK,
-    skip,
-  });
+  useEffect(() => {
+    scrollToBottom();
+  }, [activeConvo?.messages.length, scrollToBottom]);
 
-  const [selecionadoId, setSelecionadoId] = useState<number | null>(null);
-  const [showReply, setShowReply] = useState(false);
-  const [replyText, setReplyText] = useState("");
-  const [replySent, setReplySent] = useState(false);
-  const [filtro, setFiltro] = useState<Filtro>("todas");
-  const [busca, setBusca] = useState("");
-  const [lidas, setLidas] = useState<Set<number>>(
-    new Set(MENSAGENS_MOCK.filter((m) => m.lida).map((m) => m.id))
-  );
-  const [arquivadas, setArquivadas] = useState<Set<number>>(new Set());
-
-  const mensagensFiltradas = useMemo(() => {
-    return MENSAGENS.filter((m) => {
-      if (arquivadas.has(m.id)) return false;
-      if (filtro === "nao-lidas" && lidas.has(m.id)) return false;
-      if (filtro === "alta-prioridade" && m.prioridade !== "alta") return false;
-      if (busca) {
-        const q = busca.toLowerCase();
-        return (
-          m.assunto.toLowerCase().includes(q) ||
-          m.remetente.toLowerCase().includes(q) ||
-          m.resumo.toLowerCase().includes(q)
-        );
-      }
-      return true;
-    });
-  }, [filtro, busca, lidas, arquivadas, MENSAGENS]);
-
-  const naoLidasCount = MENSAGENS.filter(
-    (m) => !lidas.has(m.id) && !arquivadas.has(m.id)
-  ).length;
-
-  const mensagemSelecionada = MENSAGENS.find((m) => m.id === selecionadoId) ?? null;
-
-  function marcarLida(id: number) {
-    setLidas((prev) => new Set([...prev, id]));
+  function selectConversation(agentId: string) {
+    setActiveAgentId(agentId);
+    setConversations((prev) =>
+      prev.map((c) => (c.agentId === agentId ? { ...c, unread: 0 } : c))
+    );
   }
 
-  function toggleLida(id: number) {
-    setLidas((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
+  function sendMessage() {
+    const text = inputText.trim();
+    if (!text || !activeAgentId || isTyping) return;
+
+    const userMsg: ChatMessage = {
+      id: `user-${Date.now()}`,
+      role: "user",
+      text,
+      time: now(),
+    };
+
+    setConversations((prev) =>
+      prev.map((c) =>
+        c.agentId === activeAgentId
+          ? { ...c, messages: [...c.messages, userMsg] }
+          : c
+      )
+    );
+    setInputText("");
+    setIsTyping(true);
+
+    // Simulate agent response after delay
+    const delay = 1200 + Math.random() * 1500;
+    setTimeout(() => {
+      const responses = AGENT_RESPONSES[activeAgentId] ?? [];
+      const responseText = responses[Math.floor(Math.random() * responses.length)] ?? "Processando sua solicitacao...";
+
+      const agentMsg: ChatMessage = {
+        id: `agent-${Date.now()}`,
+        role: "agent",
+        text: responseText,
+        time: now(),
+      };
+
+      setConversations((prev) =>
+        prev.map((c) =>
+          c.agentId === activeAgentId
+            ? { ...c, messages: [...c.messages, agentMsg] }
+            : c
+        )
+      );
+      setIsTyping(false);
+    }, delay);
   }
 
-  function arquivar(id: number) {
-    setArquivadas((prev) => new Set([...prev, id]));
-    if (selecionadoId === id) setSelecionadoId(null);
-  }
+  const totalUnread = conversations.reduce((s, c) => s + c.unread, 0);
 
-  const FILTRO_TABS: { key: Filtro; label: string }[] = [
-    { key: "todas", label: "Todas" },
-    { key: "nao-lidas", label: "Não lidas" },
-    { key: "alta-prioridade", label: "Alta prioridade" },
-  ];
+  const filteredConversations = busca
+    ? conversations.filter((c) =>
+        c.agentName.toLowerCase().includes(busca.toLowerCase()) ||
+        c.agentRole.toLowerCase().includes(busca.toLowerCase()) ||
+        c.messages.some((m) => m.text.toLowerCase().includes(busca.toLowerCase()))
+      )
+    : conversations;
 
   return (
     <div className="flex h-full overflow-hidden" style={{ background: "#080808" }}>
-      {/* Left panel */}
+      {/* ─── Left panel: Conversation list ─── */}
       <div
         className="flex-shrink-0 flex flex-col border-r w-full sm:w-[280px] md:w-[320px]"
-        style={{
-          borderColor: "rgba(255,255,255,0.06)",
-          background: "#080808",
-        }}
+        style={{ borderColor: "rgba(255,255,255,0.06)", background: "#080808" }}
       >
         {/* Header */}
-        <div
-          className="flex items-center justify-between px-4 py-3 border-b"
-          style={{ borderColor: "rgba(255,255,255,0.08)" }}
-        >
+        <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
           <div className="flex items-center gap-2">
-            <h1 className="text-sm font-semibold text-white">Caixa de entrada</h1>
-            {naoLidasCount > 0 && (
-              <span
-                className="text-[10px] font-bold px-1.5 py-0.5 rounded-full"
-                style={{ background: "#3b82f6", color: "#fff", lineHeight: 1.2 }}
-              >
-                {naoLidasCount}
+            <h1 className="text-sm font-semibold text-white">Mensagens</h1>
+            {totalUnread > 0 && (
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[rgba(1,196,97,0.2)] text-[#01C461]" style={{ lineHeight: 1.2 }}>
+                {totalUnread}
               </span>
             )}
-          </div>
-          <div className="flex items-center gap-0.5">
-            <button
-              disabled
-              title="Filtros avançados em breve"
-              aria-label="Filtros avançados"
-              className="rounded p-1 transition-colors text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.08)] opacity-50 cursor-not-allowed"
-            >
-              <SlidersHorizontal size={14} />
-            </button>
-            <button
-              disabled
-              title="Mais opções em breve"
-              aria-label="Mais opções"
-              className="rounded p-1 transition-colors text-[rgba(255,255,255,0.4)] hover:text-white hover:bg-[rgba(255,255,255,0.08)] opacity-50 cursor-not-allowed"
-            >
-              <MoreHorizontal size={14} />
-            </button>
           </div>
         </div>
 
         {/* Search */}
         <div className="px-3 py-2">
-          <div
-            className="flex items-center gap-2 rounded-lg px-3 py-1.5"
-            style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}
-          >
+          <div className="flex items-center gap-2 rounded-lg px-3 py-1.5" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}>
             <Search size={13} style={{ color: "rgba(255,255,255,0.35)", flexShrink: 0 }} />
             <input
               value={busca}
               onChange={(e) => setBusca(e.target.value)}
-              placeholder="Buscar mensagens..."
+              placeholder="Buscar conversas..."
               className="bg-transparent text-xs w-full outline-none placeholder:text-[rgba(255,255,255,0.3)] text-white"
             />
           </div>
         </div>
 
-        {/* Filter tabs */}
-        <div
-          className="flex gap-1 px-3 pb-2 border-b"
-          style={{ borderColor: "rgba(255,255,255,0.08)" }}
-        >
-          {FILTRO_TABS.map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setFiltro(tab.key)}
-              className="text-[10px] font-medium px-2 py-1 rounded-md transition-all"
-              style={
-                filtro === tab.key
-                  ? { background: "rgba(59,130,246,0.2)", color: "#60a5fa", border: "1px solid rgba(59,130,246,0.3)" }
-                  : { background: "transparent", color: "rgba(255,255,255,0.4)", border: "1px solid transparent" }
-              }
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Message list */}
+        {/* Conversation list */}
         <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "none" }}>
-          {mensagensFiltradas.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-32 gap-2">
-              <Inbox size={24} style={{ color: "rgba(255,255,255,0.2)" }} strokeWidth={1.5} />
-              <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
-                Nenhuma mensagem
-              </p>
-            </div>
-          ) : (
-            mensagensFiltradas.map((msg) => {
-              const estaLida = lidas.has(msg.id);
-              const estaSelecionada = selecionadoId === msg.id;
-              const dotColor = PRIORIDADE_DOT[msg.prioridade];
+          {filteredConversations.map((convo) => {
+            const lastMsg = convo.messages[convo.messages.length - 1];
+            const isActive = convo.agentId === activeAgentId;
 
-              return (
-                <button
-                  key={msg.id}
-                  onClick={() => {
-                    setSelecionadoId(msg.id);
-                    marcarLida(msg.id);
-                  }}
-                  className="w-full text-left px-3 py-2.5 transition-all relative"
-                  style={{
-                    background: estaSelecionada
-                      ? "rgba(59,130,246,0.12)"
-                      : !estaLida
-                      ? "rgba(255,255,255,0.04)"
-                      : "transparent",
-                    borderLeft: estaSelecionada
-                      ? "2px solid #3b82f6"
-                      : "2px solid transparent",
-                    borderBottom: "1px solid rgba(255,255,255,0.04)",
-                  }}
-                >
-                  <div className="flex items-start gap-2.5">
-                    {/* Avatar */}
-                    <div
-                      className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white mt-0.5"
-                      style={{ background: msg.cor }}
-                    >
-                      {msg.iniciais}
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-1 mb-0.5">
-                        <span
-                          className="text-xs truncate"
-                          style={{
-                            color: !estaLida ? "#fff" : "rgba(255,255,255,0.7)",
-                            fontWeight: !estaLida ? 600 : 500,
-                          }}
-                        >
-                          {msg.remetente}
-                        </span>
-                        <span
-                          className="text-[10px] flex-shrink-0"
-                          style={{ color: "rgba(255,255,255,0.3)" }}
-                        >
-                          {msg.tempo}
-                        </span>
-                      </div>
-                      <p
-                        className="text-[11px] truncate mb-0.5"
-                        style={{
-                          color: !estaLida ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.55)",
-                          fontWeight: !estaLida ? 500 : 400,
-                        }}
-                      >
-                        {msg.assunto}
-                      </p>
+            return (
+              <button
+                key={convo.agentId}
+                onClick={() => selectConversation(convo.agentId)}
+                className="w-full text-left px-3 py-3 transition-all relative"
+                style={{
+                  background: isActive ? "rgba(255,255,255,0.06)" : "transparent",
+                  borderLeft: isActive ? "2px solid #01C461" : "2px solid transparent",
+                  borderBottom: "1px solid rgba(255,255,255,0.04)",
+                }}
+              >
+                <div className="flex items-start gap-2.5">
+                  {/* Avatar */}
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white mt-0.5 bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.1)]">
+                    {convo.iniciais}
+                  </div>
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-1 mb-0.5">
                       <div className="flex items-center gap-1.5">
-                        <p
-                          className="text-[10px] truncate flex-1"
-                          style={{ color: "rgba(255,255,255,0.3)" }}
-                        >
-                          {msg.resumo}
-                        </p>
-                        <div className="flex items-center gap-1 flex-shrink-0">
-                          {dotColor && (
-                            <span
-                              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                              style={{ background: dotColor }}
-                            />
-                          )}
-                          {!estaLida && (
-                            <span
-                              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                              style={{ background: "#3b82f6" }}
-                            />
-                          )}
-                        </div>
+                        <span className="text-xs font-medium text-white">{convo.agentName}</span>
+                        <span className="text-[10px] text-[rgba(255,255,255,0.3)]">{convo.agentRole}</span>
                       </div>
+                      <span className="text-[10px] flex-shrink-0 text-[rgba(255,255,255,0.3)]">
+                        {lastMsg?.time}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-[11px] truncate flex-1 text-[rgba(255,255,255,0.4)]">
+                        {lastMsg?.role === "user" ? "Voce: " : ""}{lastMsg?.text}
+                      </p>
+                      {convo.unread > 0 && (
+                        <span className="w-4 h-4 flex-shrink-0 rounded-full bg-[rgba(1,196,97,0.2)] text-[#01C461] text-[9px] font-bold flex items-center justify-center">
+                          {convo.unread}
+                        </span>
+                      )}
                     </div>
                   </div>
-                </button>
-              );
-            })
-          )}
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Right panel */}
-      {mensagemSelecionada ? (
+      {/* ─── Right panel: Chat view ─── */}
+      {activeConvo ? (
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Message header */}
-          <div
-            className="px-6 py-4 border-b flex items-start justify-between gap-4"
-            style={{ borderColor: "rgba(255,255,255,0.08)" }}
-          >
-            <div className="flex items-start gap-3">
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
-                style={{ background: mensagemSelecionada.cor }}
-              >
-                {mensagemSelecionada.iniciais}
+          {/* Chat header */}
+          <div className="px-6 py-3 border-b flex items-center gap-3" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+            <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.1)]">
+              {activeConvo.iniciais}
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-white">{activeConvo.agentName}</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.4)]">{activeConvo.agentRole}</span>
               </div>
-              <div>
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className="text-sm font-semibold text-white">
-                    {mensagemSelecionada.remetente}
-                  </span>
-                  {(() => {
-                    const dotColor = PRIORIDADE_DOT[mensagemSelecionada.prioridade];
-                    return dotColor ? (
-                      <span
-                        className="text-[10px] font-semibold px-1.5 py-0.5 rounded"
-                        style={{
-                          background: mensagemSelecionada.prioridade === "alta" ? "rgba(239,68,68,0.15)" : "rgba(245,158,11,0.15)",
-                          color: dotColor,
-                          border: `1px solid ${dotColor}30`,
-                        }}
-                      >
-                        {mensagemSelecionada.prioridade === "alta" ? "Alta prioridade" : "Média prioridade"}
-                      </span>
-                    ) : null;
-                  })()}
-                </div>
-                <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
-                  Agente Kairus · {mensagemSelecionada.tempo}
-                </p>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" style={{ animation: "pulseSoft 2s ease-in-out infinite" }} />
+                <span className="text-[10px] text-[rgba(255,255,255,0.4)]">Online</span>
               </div>
             </div>
           </div>
 
-          {/* Message body */}
-          <div className="flex-1 overflow-y-auto px-6 py-5">
-            <h3 className="text-base font-semibold text-white mb-4">
-              {mensagemSelecionada.assunto}
-            </h3>
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "rgba(255,255,255,0.7)" }}
-            >
-              {mensagemSelecionada.resumo}
-            </p>
-          </div>
-
-          {/* Action bar */}
-          <div
-            className="px-6 py-4 border-t flex items-center gap-2"
-            style={{
-              borderColor: "rgba(255,255,255,0.08)",
-              background: "rgba(255,255,255,0.02)",
-            }}
-          >
-            <button
-              onClick={() => { setShowReply(!showReply); setReplySent(false); }}
-              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all bg-[rgba(59,130,246,0.15)] text-[#60a5fa] border border-[rgba(59,130,246,0.25)] hover:bg-[rgba(59,130,246,0.25)]"
-            >
-              <Reply size={13} />
-              Responder
-            </button>
-            <button
-              onClick={() => toggleLida(mensagemSelecionada.id)}
-              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.1)] hover:text-white"
-            >
-              <CheckCheck size={13} />
-              {lidas.has(mensagemSelecionada.id) ? "Marcar como não lida" : "Marcar como lida"}
-            </button>
-            <button
-              onClick={() => arquivar(mensagemSelecionada.id)}
-              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all bg-[rgba(255,255,255,0.06)] text-[rgba(255,255,255,0.6)] border border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.1)] hover:text-white"
-            >
-              <Archive size={13} />
-              Arquivar
-            </button>
-          </div>
-
-          {/* Reply area */}
-          {showReply && (
-            <div className="px-6 py-4 border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-              {replySent ? (
-                <div className="flex items-center gap-2 text-emerald-400 text-sm py-2">
-                  <CheckCheck size={15} />
-                  <span>Resposta enviada com sucesso</span>
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3" style={{ scrollbarWidth: "thin" }}>
+            {activeConvo.messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-[80%] rounded-xl px-4 py-2.5 text-sm leading-relaxed ${
+                    msg.role === "user"
+                      ? "bg-[rgba(1,196,97,0.12)] text-white border border-[rgba(1,196,97,0.15)]"
+                      : "bg-[rgba(255,255,255,0.04)] text-[rgba(255,255,255,0.8)] border border-[rgba(255,255,255,0.06)]"
+                  }`}
+                >
+                  {msg.role === "agent" && (
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <Bot size={11} className="text-[rgba(255,255,255,0.3)]" />
+                      <span className="text-[10px] font-medium text-[rgba(255,255,255,0.35)]">{activeConvo.agentName}</span>
+                    </div>
+                  )}
+                  <p>{msg.text}</p>
+                  <p className="text-[10px] text-[rgba(255,255,255,0.25)] mt-1 text-right">{msg.time}</p>
                 </div>
-              ) : (
-                <div className="flex flex-col gap-3">
-                  <textarea
-                    value={replyText}
-                    onChange={(e) => setReplyText(e.target.value)}
-                    rows={3}
-                    placeholder="Escreva sua resposta..."
-                    className="w-full rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-3 py-2 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none resize-none focus:border-blue-400/40 transition-colors"
-                  />
-                  <div className="flex justify-end gap-2">
-                    <button
-                      onClick={() => { setShowReply(false); setReplyText(""); }}
-                      className="text-xs px-3 py-1.5 rounded-lg text-[rgba(255,255,255,0.5)] hover:bg-[rgba(255,255,255,0.06)] transition-colors"
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      disabled={!replyText.trim()}
-                      onClick={() => {
-                        setReplySent(true);
-                        setReplyText("");
-                        setTimeout(() => { setShowReply(false); setReplySent(false); }, 2000);
-                      }}
-                      className="text-xs font-medium px-3 py-1.5 rounded-lg bg-blue-500 text-white hover:bg-blue-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                    >
-                      Enviar
-                    </button>
+              </div>
+            ))}
+
+            {/* Typing indicator */}
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)] rounded-xl px-4 py-3">
+                  <div className="flex items-center gap-1.5">
+                    <Bot size={11} className="text-[rgba(255,255,255,0.3)]" />
+                    <span className="text-[10px] text-[rgba(255,255,255,0.35)]">{activeConvo.agentName} digitando</span>
+                    <span className="flex gap-1 ml-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[rgba(255,255,255,0.3)] animate-bounce" style={{ animationDelay: "0ms" }} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[rgba(255,255,255,0.3)] animate-bounce" style={{ animationDelay: "150ms" }} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[rgba(255,255,255,0.3)] animate-bounce" style={{ animationDelay: "300ms" }} />
+                    </span>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
+
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input area */}
+          <div className="px-6 py-4 border-t" style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.02)" }}>
+            <div className="flex items-center gap-3">
+              <input
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                  }
+                }}
+                placeholder={`Mensagem para ${activeConvo.agentName}...`}
+                disabled={isTyping}
+                className="flex-1 rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-2.5 text-sm text-white placeholder-[rgba(255,255,255,0.3)] outline-none transition-colors focus:border-[rgba(1,196,97,0.3)] disabled:opacity-50"
+              />
+              <button
+                onClick={sendMessage}
+                disabled={!inputText.trim() || isTyping}
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-[rgba(255,255,255,0.08)] text-white hover:bg-[rgba(255,255,255,0.12)] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                <Send size={16} />
+              </button>
             </div>
-          )}
+          </div>
         </div>
       ) : (
         /* Empty state */
         <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
-          <div
-            className="w-14 h-14 rounded-2xl flex items-center justify-center mb-1"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
-          >
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-1" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
             <Inbox size={26} style={{ color: "rgba(255,255,255,0.3)" }} strokeWidth={1.5} />
           </div>
-          <p className="text-sm font-medium text-white">Selecione uma mensagem</p>
+          <p className="text-sm font-medium text-white">Selecione uma conversa</p>
           <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
-            {naoLidasCount > 0
-              ? `${naoLidasCount} mensagem${naoLidasCount > 1 ? "s" : ""} não lida${naoLidasCount > 1 ? "s" : ""}`
-              : "Tudo em dia por aqui"}
+            {totalUnread > 0
+              ? `${totalUnread} mensagem${totalUnread > 1 ? "ns" : ""} nao lida${totalUnread > 1 ? "s" : ""}`
+              : "Seus 5 agentes estao disponiveis para conversa"}
           </p>
         </div>
       )}

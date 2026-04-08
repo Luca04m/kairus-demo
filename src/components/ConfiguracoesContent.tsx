@@ -50,7 +50,7 @@ function StyledSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full appearance-none rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none focus:border-[rgba(99,102,241,0.5)]"
+        className="w-full appearance-none rounded-lg border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.06)] px-3 py-2 text-sm text-white outline-none focus:border-[rgba(1,196,97,0.5)]"
       >
         {options.map((o) => (
           <option key={o}>{o}</option>
@@ -119,7 +119,7 @@ function SectionCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5">
+    <div className="glass-card rounded-xl p-5">
       <h3 className="mb-5 text-sm font-semibold text-white">{title}</h3>
       <div className="flex flex-col gap-5">{children}</div>
     </div>
@@ -244,7 +244,7 @@ function SegurancaPanel() {
         />
       </SectionCard>
 
-      <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5">
+      <div className="glass-card rounded-xl p-5">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium text-white">Gerenciar acessos</p>
@@ -313,10 +313,10 @@ function IntegracoesPanel() {
 function PlanoPanel() {
   return (
     <div className="flex flex-col gap-5">
-      <div className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] p-5">
+      <div className="glass-card rounded-xl p-5">
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-sm font-semibold text-white">Plano atual</h3>
-          <span className="inline-flex items-center rounded-full bg-[rgba(99,102,241,0.15)] px-3 py-1 text-xs font-semibold text-[#818cf8]">
+          <span className="inline-flex items-center rounded-full bg-[rgba(1,196,97,0.15)] px-3 py-1 text-xs font-semibold text-[#01C461]">
             Profissional
           </span>
         </div>
@@ -328,7 +328,7 @@ function PlanoPanel() {
           </div>
           <div className="h-1.5 w-full rounded-full bg-[rgba(255,255,255,0.08)]">
             <div
-              className="h-1.5 rounded-full bg-[#818cf8]"
+              className="h-1.5 rounded-full bg-[#01C461]"
               style={{ width: "80%" }}
             />
           </div>

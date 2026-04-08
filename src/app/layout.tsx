@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: { default: "Kairus OS", template: "%s | Kairus OS" },
   description: "Painel inteligente para PMEs — gestao, financeiro, marketing e vendas em um lugar",
   manifest: "/manifest.json",
-  themeColor: "#6366f1",
+  themeColor: "#080808",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

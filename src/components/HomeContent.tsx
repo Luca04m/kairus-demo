@@ -1,5 +1,5 @@
 "use client";
-import { useCallback } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Activity, Bell, TrendingUp, TrendingDown, Minus, Wifi, Bot } from "lucide-react";
 import { IconByName } from "@/lib/icons";
@@ -30,9 +30,8 @@ const statusDot: Record<string, string> = {
   idle: "bg-[rgba(255,255,255,0.25)]",
 };
 
-// Time-aware greeting (Bom dia default for demo)
+// Time-aware greeting — computed only on client to avoid hydration mismatch
 function getGreeting(): string {
-  if (typeof window === "undefined") return "Bom dia";
   const h = new Date().getHours();
   if (h >= 5 && h < 12) return "Bom dia";
   if (h >= 12 && h < 18) return "Boa tarde";
@@ -117,7 +116,8 @@ export function HomeContent() {
     (a: typeof ALERTAS[number]) => a.severidade === "critico" || a.severidade === "alto"
   ).length;
 
-  const greeting = getGreeting();
+  const [greeting, setGreeting] = useState("Bom dia");
+  useEffect(() => { setGreeting(getGreeting()); }, []);
 
   return (
     <div className="flex-1 overflow-auto p-6 space-y-6">
